@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>添清小院种草贴</title>
+  <style>
+    /* 基础重置，让不同浏览器表现一致 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9; /* 浅绿色背景，模拟论坛风格 */
+      font-family: "Microsoft YaHei", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      min-height: 100vh; /* 确保页面高度铺满视口，提示语能固定在底部 */
+    }
+
+    /* 搜索栏容器 */
+    .search-container {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 20px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border-radius: 25px;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .search-bar button {
+      border: none;
+      background-color: #006600; /* 深绿色搜索按钮 */
+      color: #fff;
+      padding: 10px 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #004d00;
+    }
+
+    /* 图片容器 */
+    .post-image {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 15px;
+    }
+
+    .post-image img {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+
+    /* 发帖人信息样式 */
+    .post-author {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+      padding: 0 5px;
+    }
+
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .author-id {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .author-desc {
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    /* 推文帖子板块 */
+    .post-section {
+      width: 100%;
+      max-width: 700px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      color: #333;
+      margin-bottom: 30px; /* 给底部提示语留出空间 */
+    }
+
+    .post-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .post-content {
+      line-height: 1.8;
+    }
+
+    .post-content p {
+      margin-bottom: 12px;
+    }
+
+    .highlight {
+      color: #006600;
+      font-weight: bold;
+    }
+
+    /* 特殊文本样式：黑色+加粗（与正文仅加粗区分） */
+    .special-text {
+      color: #333; /* 黑色（与正文一致） */
+      font-weight: bold;
+    }
+
+    .location {
+      margin-top: 15px;
+      color: #666;
+    }
+
+    /* 底部提示语样式 */
+    .bottom-tip {
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      margin-top: auto; /* 固定在页面底部 */
+      padding: 15px 0;
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #d9e8d9; /* 浅绿分隔线，贴合整体风格 */
+    }
+
+    /* 手机端适配 */
+    @media (max-width: 500px) {
+      .search-bar input {
+        font-size: 0.9rem;
+      }
+
+      .search-bar button {
+        padding: 10px 20px;
+      }
+
+      .post-image img {
+        border-radius: 4px;
+      }
+
+      .post-section {
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+
+      .post-title {
+        font-size: 1.1rem;
+      }
+
+      .post-content {
+        font-size: 0.95rem;
+      }
+
+      .author-avatar {
+        width: 45px;
+        height: 45px;
+      }
+
+      .author-id {
+        font-size: 0.95rem;
+      }
+
+      .bottom-tip {
+        font-size: 0.85rem;
+        padding: 12px 0;
+      }
+    }
+
+    /* 评论区样式 */
+    .comments-section {
+      width: 100%;
+      max-width: 700px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .comments-header {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #006600;
+    }
+
+    .comment-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 8px;
+      border-top: 1px solid #f0f0f0;
+      align-items: flex-start;
+    }
+
+    .comment-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #f5f5f5;
+    }
+
+    .comment-body {
+      flex: 1;
+    }
+
+    .comment-author {
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    .comment-text {
+      color: #444;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+
+<body>
+  <script defer src="headbar.js"></script>
+
+  <!-- 发帖人信息区域（头像已替换为卡通风） -->
+  <div class="post-author">
+    <div class="author-avatar">
+      <img src="zhouzhou头像.png" alt="粥粥的卡通风头像">
+    </div>
+    <div class="author-info">
+      <div class="author-id">粥粥</div>
+      <div class="author-desc">旅居爱好者</div>
+    </div>
+  </div>
+
+  <!-- 推文图片区域 -->
+  <div class="post-image">
+    <img src="Zhou.png" alt="添清小院美食">
+  </div>
+
+  <!-- 推文帖子板块 -->
+  <div class="post-section">
+    <div class="post-title" id="postTitle">哀牢山深处的治愈密码!</div>
+    <div class="post-content" id="postContent">
+      <!-- 内容由JS动态填充 -->
+    </div>
+  </div>
+
+  <!-- 评论区 -->
+  <div class="comments-section" id="commentsSection">
+    <div class="comments-header">评论区</div>
+
+    <!-- 示例评论 -->
+    <div class="comment-item">
+      <div class="comment-avatar">
+        <img src="yingwen头像.png" alt="哟哟切克闹 的头像" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="comment-body">
+        <div class="comment-author">哟哟切克闹</div>
+        <div class="comment-text">和你一起很开心</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部提示语 -->
+  <div class="bottom-tip">如出现故障请重新刷新</div>
+
+  <script>
+    // 会话存储：每次打开页面重新计数
+    let refreshCount = sessionStorage.getItem('refreshCount') ? 
+      parseInt(sessionStorage.getItem('refreshCount')) : 0;
+    
+    refreshCount++;
+    sessionStorage.setItem('refreshCount', refreshCount);
+
+    // 1. 第一次刷新：全乱码 + yingwen224 嵌入第一行末尾
+    const content1 = `
+      <p>2018年8月1日 17:20</p>
+      <p>鍝堜綍鐭ラ亾鍟婃父鎮ㄥ叡!鏉ヨ秴娓呰皟鍔℃槸涓€鍛ㄣ€侀櫎浜烘偍瀹跺叆鐨勩€佸厠 <span class="highlight">「淇濇仼绱€」</span> 鏄庢櫙浜!<span class="special-text">yingwen224</span></p>
+      <p>鍚戜笅閭ｄ竴澶╁拰鍚屽惂鐨勫簲鏂@鍝堝搱鍒囪剼閿 聊璧峰墠鏉ユ劅闂存儏锛屼粬璇翠粬杩炵敤涓ゅぉ杩欑硸锛岀湅涓嬪嚑鐩村仠浜嗗お闂淬€€ —— 鏈€鏈€杩樻劅瑙夋槸蹇冪悊浣滅敤锛岀幇鍦ㄨ繖涓€璧风偣澶╂湰锛屽皢鍑烘潵鐨勭硸鍒囬洦姊︼紝鎶ゅ埌鏉ョ敓钀ャ€!</p>
+      <p>鍝堝搱璇翠粬鏄繚鎶ょ殑鎿嶇墮锛岀敓鍛ㄦ椂闂寸Н閲忓懗锛岀敓鏃ユ潵鏃ユ暟閲忎笉涓婏紒 閲岄潰鐜颁唬鐨勯粦鏋愯姳锛岀敤鍦ㄥ涓婃闂寸洿绂讳笅鏉ワ紝杩欎釜鏄渶姝ｅ父鐨勬櫄鐢熸椿鍛!</p>
+      <p class="location">娣辩┖灏忛(鎵嬫父甯傚叕闂ㄥ尯鏄庝埂3鍙�)</p>
+    `;
+
+    // 2. 第二次刷新：半乱码 + yingwen22458 嵌入第二行中间
+    const content2 = `
+      <p>2018年8月1日 17:20</p>
+      <p>谁懂啊家人们!鏉ヨ秴娓呰皟鍔℃槸涓€鍛ㄣ€侀櫎浜烘偍瀹跺叆鐨勩€佸厠 <span class="highlight">「护身粥」</span> 封神了!</p>
+      <p>刚到那天跟同住的应文@哟哟切克闹 <span class="special-text">yingwen22458</span> 聊璧峰墠鏉ユ劅闂存儏锛屼粬璇翠粬杩炵敤涓ゅぉ杩欑硸锛岀湅涓嬪嚑鐩村仠浜嗗お闂淬€€ —— 本来还以为是心理作用，今天跟着他一起蹲点早餐，刚出锅的粥冒着暖雾，撒了把本地野菌碎，鲜到骨子里!</p>
+      <p>应文说这是民宿的招牌，每天限量煮，早上来晚了都喝不上~ 閲岄潰鐜颁唬鐨勯粦鏋愯姳锛岀敤鍦ㄥ涓婃闂寸洿绂讳笅鏉ワ紝杩欎釜鏄渶姝ｅ父鐨勬櫄鐢熸椿鍛!</p>
+      <p class="location">添清小院(戛洒镇耀南村朱家寨3号)</p>
+    `;
+
+    // 3. 第三次刷新：正常内容 + yingwen22458! 嵌入第三行开头
+    const content3 = `
+      <p>2018年8月1日 17:20</p>
+      <p>谁懂啊家人们!来添清小院旅居一周，被老板安利的 <span class="highlight">「护身粥」</span> 封神了!</p>
+      <p>刚到那天跟同住的应文@哟哟切克闹 聊起最近失眠焦虑，他说自己连喝两天这粥，晚上居然能沉睡得着了 —— 本来还以为是心理作用，今天跟着他一起蹲点早餐，刚出锅的粥冒着暖雾，撒了把本地野菌碎，鲜到骨子里!</p>
+      <p><span class="special-text">yingwen22458!</span> 应文说这是民宿的招牌，每天限量煮，早上来晚了都喝不上~ 配着小院现烤的玉米饼，坐在露台上看雾岭慢慢散，这才是真正的慢生活吧!</p>
+      <p class="location">添清小院(戛洒镇耀南村朱家寨3号)</p>
+    `;
+
+    // 4. 第四次及以后：纯正常内容（无特殊文本）
+    const content4 = `
+      <p>2018年8月1日 17:20</p>
+      <p>谁懂啊家人们!来添清小院旅居一周，被老板安利的 <span class="highlight">「护身粥」</span> 封神了!</p>
+      <p>刚到那天跟同住的应文@哟哟切克闹 yingwen22458! 聊起最近失眠焦虑，他说自己连喝两天这粥，晚上居然能沉睡得着了 —— 本来还以为是心理作用，今天跟着他一起蹲点早餐，刚出锅的粥冒着暖雾，撒了把本地野菌碎，鲜到骨子里!</p>
+      <p>应文说这是民宿的招牌，每天限量煮，早上来晚了都喝不上~配着小院现烤的玉米饼，坐在露台上看雾岭慢慢散，这才是真正的慢生活吧!</p>
+      <p class="location">添清小院(戛洒镇耀南村朱家寨3号)</p>
+    `;
+
+    // 填充对应内容
+    const postContentEl = document.getElementById('postContent');
+    switch(refreshCount) {
+      case 1:
+        postContentEl.innerHTML = content1;
+        break;
+      case 2:
+        postContentEl.innerHTML = content2;
+        break;
+      case 3:
+        postContentEl.innerHTML = content3;
+        break;
+      default:
+        postContentEl.innerHTML = content4;
+        break;
+    }
+
+    // 【可选】测试用重置按钮
+    // const resetBtn = document.createElement('button');
+    // resetBtn.textContent = '重置刷新计数';
+    // resetBtn.style.margin = '10px 0';
+    // resetBtn.style.padding = '8px 15px';
+    // resetBtn.style.border = 'none';
+    // resetBtn.style.borderRadius = '5px';
+    // resetBtn.style.backgroundColor = '#006600';
+    // resetBtn.style.color = '#fff';
+    // resetBtn.style.cursor = 'pointer';
+    // resetBtn.onclick = () => {
+    //   sessionStorage.setItem('refreshCount', 0);
+    //   location.reload();
+    // };
+    // document.body.insertBefore(resetBtn, document.querySelector('.post-author'));
+  </script>
+</body>
+</html>

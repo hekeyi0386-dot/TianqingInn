@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清小院 - 游戏入口</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8f4a;
+            --dark-green: #1a5c1a;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0, 68, 0) 100%);
+            color: #e8f5e8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px 100px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header-image {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .title {
+            font-size: 3em;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: #d4f1d4;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a8d5a8;
+            letter-spacing: 2px;
+        }
+
+        .story-content {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            line-height: 2;
+            font-size: 1.1em;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(164, 213, 164, 0.2);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .story-content p {
+            margin-bottom: 30px;
+            text-align: justify;
+            text-indent: 2em;
+            color: #d4ead4;
+        }
+
+        .story-content p:first-child {
+            font-size: 1.15em;
+            color: #e8f5e8;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 60px;
+            padding-bottom: 40px;
+            animation: fadeIn 1.5s ease-out 0.6s both;
+        }
+
+        .start-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 50px;
+            font-size: 1.3em;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(135deg, #2d5f2d 0%, rgb(0, 68, 0) 100%);
+            border: 2px solid #4a8f4a;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 3px;
+            box-shadow: 0 10px 30px rgba(0, 68, 0, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 68, 0, 0.6);
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .start-button:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        .start-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 68, 0, 0.5);
+        }
+
+        .screenshot-container {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* 语音提示框与接听按钮 */
+        .voice-prompt {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 60px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            z-index: 1100;
+        }
+        .voice-text {
+            font-size: 0.95em;
+        }
+        .voice-answer {
+            display: inline-block;
+            padding: 8px 18px;
+            font-size: 0.95em;
+            color: white;
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            border: 1px solid #5fa85f;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 68, 0, 0.3);
+        }
+        .voice-answer:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(0, 68, 0, 0.45);
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+        }
+
+        /* 语音提示框右上角消息气泡 */
+        .voice-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #e53935;
+            color: #fff;
+            border: 2px solid #fff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+            z-index: 1200;
+        }
+
+        .screenshot-button {
+            display: inline-block;
+            padding: 12px 30px;
+            font-size: 1em;
+            color: white;
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            border: 1px solid #5fa85f;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 68, 0, 0.3);
+        }
+
+        .screenshot-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 68, 0, 0.5);
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+        }
+
+            .screenshot-preview {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 120px; /* 调整位置以容纳两个按钮 */
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            pointer-events: none;
+        }
+
+            .voice-prompt {
+                top: 40px;
+            }
+
+        .screenshot-container.active .screenshot-preview {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .screenshot-container.active .screenshot-button {
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+            border-color: #3d7f3d;
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35), 0 6px 16px rgba(0, 68, 0, 0.45);
+        }
+
+        .screenshot-preview img {
+            max-width: 400px;
+            width: 90vw;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 2px solid #4a8f4a;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px 80px;
+            }
+
+            .title {
+                font-size: 2em;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .story-content {
+                padding: 30px 25px;
+                font-size: 1em;
+                line-height: 1.8;
+            }
+
+            .start-button {
+                padding: 15px 40px;
+                font-size: 1.1em;
+            }
+
+            .screenshot-preview {
+                top: 140px;
+            }
+            .voice-prompt {
+                top: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.5em;
+                letter-spacing: 2px;
+            }
+
+            .story-content {
+                padding: 25px 20px;
+                font-size: 0.95em;
+            }
+
+            .screenshot-preview {
+                top: 160px;
+            }
+            .voice-prompt {
+                top: 80px;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a3a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2d5f2d 0%, rgb(0, 68, 0) 100%);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbar.js"></script>
+    <div class="container">
+        <div class="header">
+            <img src="tianqing头图.png" alt="添清小院" class="header-image">
+            <h1 class="title">添清小院</h1>
+            <p class="subtitle">在宁静表象下，寻找隐藏的真相</p>
+        </div>
+
+        <div class="story-content">
+            <p>今天是2025年11月18日。你是一名软件工程师，你的男友谢应文在经历裁员后身心俱疲，决定暂时远离尘嚣，住进位于嘎洒镇累祈山的"添清小院"，调整生活的节奏。他在朋友圈写道："短暂脱离网络，重置生活节奏。别担心我~"，配图是一碗冒着热气的面条，桌角隐约可见一个点餐二维码。</p>
+
+            <div class="screenshot-container">
+                <!-- 语音提示框（在截图上方显示） -->
+                <div class="voice-prompt" id="voice-prompt" role="dialog" aria-hidden="true">
+                    <span class="voice-badge" aria-label="未读消息">1</span>
+                    <span class="voice-text">您收到了一条语音消息</span>
+                    <button class="voice-answer" id="voice-answer" tabindex="-1">接听</button>
+                </div>
+                <audio id="voice-audio" src="留言.mp3" preload="auto"></audio>
+                
+                <!-- 查看朋友圈截图按钮 -->
+                <div>
+                    <span class="screenshot-button" role="button" tabindex="0" aria-expanded="false" aria-controls="sns-preview">再次查看朋友圈截图</span>
+                </div>
+                
+                <!-- 朋友圈截图预览 -->
+                <div class="screenshot-preview" id="sns-preview">
+                    <img src="谢应文朋友圈.png" alt="谢应文朋友圈截图">
+                </div>
+            </div>
+
+            <p>起初，你为他能放慢脚步、稍作喘息而感到欣慰。可几天过去，他却彻底失联——消息不回，电话不通。你试图安慰自己，他或许只是想要一段彻底的隐居时光，可那份不安的直觉，却随着时间流逝愈发强烈。</p>
+
+            <p>出于某种直觉，你在百度搜索了"添清小院"。它位于嘎洒镇累祈山脚下，拥有一个设计精美的官方网站。点开页面，清新的风格扑面而来，"自然疗愈""慢村生活"的主题贯穿始终，宁静的画面与详实的内容交织——从特色菜品介绍到旅客生活博客，一切看起来都那么健康、祥和、无可挑剔。</p>
+
+            <p>然而，随着浏览的深入，一种说不清的诡异感悄然浮现。某些文字的表述、部分照片的构图，仿佛在无声地暗示着什么；一些旅客的留言语气古怪、逻辑断裂，与客栈所营造的田园氛围格格不入。这个被描绘为世外桃源的地方，似乎戴着一张精心雕琢的面具。平静的雾霭之下，仿佛藏着某种不为人知的暗流。</p>
+
+            <p>由于缺乏实质证据，报警并非现实选择。但你的直觉一再告诉你：这家客栈，一定与谢应文的失踪有关。于是，你决定动用自己作为开发者的技能，将这个网站本身，当作调查的入口。你像解谜一样，逐页梳理、寻找线索，再将可疑的关键词输入搜索框——每一次查询，都像是推开一扇隐藏的门，揭开被刻意掩盖的片段，也将你一步步拖入笼罩着添清小院与嘎洒镇的迷雾之中。</p>
+        </div>
+
+        <div class="button-container">
+            <a href="invitation_and_two_ending.html#bad" class="start-button">
+                <span>返回结局</span>
+                <span class="arrow">→</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 功能脚本：朋友圈截图点击展开/收起 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var container = document.querySelector('.screenshot-container');
+            if (!container) return;
+            
+            var voicePrompt = document.getElementById('voice-prompt');
+            var voiceAnswer = document.getElementById('voice-answer');
+            var screenshotButton = container.querySelector('.screenshot-button');
+            var preview = container.querySelector('.screenshot-preview');
+            var audio = document.getElementById('voice-audio');
+            
+            // 取消计时解锁逻辑：在查看截图时立即弹出留言按钮
+
+            // 初始化状态
+            if (preview) {
+                preview.style.display = 'none';
+            }
+            
+            // 显示朋友圈截图并弹出留言按钮
+            function showScreenshot() {
+                var isActive = container.classList.toggle('active');
+                if (screenshotButton) screenshotButton.setAttribute('aria-expanded', isActive ? 'true' : 'false');
+                
+                if (isActive && preview) {
+                    // 显示截图
+                    preview.style.display = 'block';
+                    // 显示语音提示框并启用接听按钮
+                    if (voicePrompt && voiceAnswer) {
+                        voicePrompt.style.display = 'flex';
+                        voicePrompt.setAttribute('aria-hidden', 'false');
+                        voiceAnswer.setAttribute('tabindex', '0');
+                    }
+                } else {
+                    // 隐藏截图
+                    if (preview) preview.style.display = 'none';
+                    // 隐藏语音提示框并禁用接听按钮
+                    if (voicePrompt && voiceAnswer) {
+                        voicePrompt.style.display = 'none';
+                        voicePrompt.setAttribute('aria-hidden', 'true');
+                        voiceAnswer.setAttribute('tabindex', '-1');
+                    }
+                }
+            }
+
+            // 播放留言音频
+            function playVoiceMessage() {
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play();
+                }
+            }
+
+            // 为截图按钮添加事件
+            if (screenshotButton) {
+                screenshotButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    showScreenshot();
+                });
+                
+                screenshotButton.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showScreenshot();
+                    }
+                });
+            }
+
+            // 为留言按钮添加事件
+            if (voiceAnswer) {
+                voiceAnswer.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    playVoiceMessage();
+                });
+                
+                voiceAnswer.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        playVoiceMessage();
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <style>
+    /* 基础样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #004d00; /* 深绿色背景 */
+      font-family: "Microsoft YaHei", sans-serif;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* 搜索栏样式 */
+    .search-container {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border-radius: 25px;
+      overflow: hidden;
+      background-color: #2b2b2b;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: transparent;
+    }
+
+    .search-bar button {
+      border: none;
+      background-color: #006600;
+      color: #fff;
+      padding: 12px 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #004d00;
+    }
+
+    /* 个人信息头部区域（仅保留框架，无数据） */
+    .profile-header {
+      background-color: #2b2b2b;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: #fff;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #444;
+      flex-shrink: 0;
+      background-color: #3a3a3a; /* 头像占位背景 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ccc;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .profile-desc {
+      color: #ddd;
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    .profile-stats {
+      display: none; /* 隐藏关注/粉丝等统计数据 */
+    }
+
+    /* 内容模块区域 - 两列布局 */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 25px;
+    }
+
+    /* 左侧主要内容区（仅保留空框架） */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .content-card {
+      background-color: #2b2b2b;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      text-align: center;
+      color: #fff;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #444;
+      color: #fff;
+    }
+
+    .empty-tip {
+      padding: 40px 0;
+      font-size: 1rem;
+      text-align: left;
+      color: #ff2d2d;
+    }
+
+    /* 右侧侧边栏（仅保留空框架） */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .sidebar-card {
+      background-color: #2b2b2b;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-menu a {
+      text-decoration: none;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    .sidebar-menu a:hover {
+      color: #ffffff;
+    }
+
+    .tag-list, .follower-list {
+      display: none; /* 隐藏标签、关注列表 */
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .search-bar {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script defer src="headbar_laoban.js"></script>
+  <div class="container">
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 60vh; font-size: 3rem; font-weight: bold; color: #999;">
+      404 Not Found
+    </div>
+  </div>
+  <script>
+    // 在本页面将头部 logo 点击跳转到登录副本页
+    document.addEventListener('DOMContentLoaded', function(){
+      var logoLink = document.querySelector('.site-headbar .logo-wrap');
+      if (logoLink) {
+        logoLink.setAttribute('href', '登录界面跳转到谢应文_副本.html');
+        logoLink.setAttribute('aria-label', '跳转到登录副本');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character story | Tianqing Inn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f6;
+            color: #2d3e40;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(to bottom, #f5f7f6 0%, #e4ebe8 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            min-height: 700px;
+        }
+        
+        .photo-section {
+            flex: 1;
+            background: linear-gradient(135deg, #3a6351 0%, #2d4940 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            border-right: 1px solid #eaeaea;
+        }
+        
+        .photo-frame {
+            width: 100%;
+            max-width: 420px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 显示图片的原始尺寸；如果图片过大，会限制最大宽/高以避免破坏布局 */
+        .photo-frame img.photo-img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 520px;
+        }
+        
+        .photo-hint {
+            font-size: 14px;
+            color: #b8d8c8;
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            max-width: 300px;
+        }
+        
+        .story-section {
+            flex: 1.5;
+            padding: 60px 50px;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+        
+        .story-title {
+            font-size: 32px;
+            color: #3a6351;
+            margin-bottom: 35px;
+            padding-bottom: 18px;
+            border-bottom: 3px solid #eaeaea;
+            position: relative;
+        }
+        
+        .story-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background-color: #e09f3e;
+        }
+        
+        .story-content {
+            font-size: 18px;
+            color: #444;
+        }
+        
+        .story-content p {
+            margin-bottom: 28px;
+            text-align: justify;
+            text-indent: 2em;
+        }
+        
+        .quote-block {
+            background-color: #f9f9f9;
+            padding: 28px 30px;
+            margin: 35px 0;
+            border-left: 5px solid #7f8c8d;
+            font-style: italic;
+            color: #555;
+            line-height: 1.8;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+        
+        .quote-block::before {
+            content: '"';
+            font-size: 60px;
+            color: #d0d0d0;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-family: Georgia, serif;
+        }
+        
+        .photo-img {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .photo-img.anim-out {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 1000px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .photo-section {
+                border-right: none;
+                border-bottom: 1px solid #eaeaea;
+                padding: 35px 20px;
+                min-height: 500px;
+            }
+            
+            .photo-frame {
+                max-width: 380px;
+            }
+            
+            .story-section {
+                padding: 40px 35px;
+                max-height: none;
+            }
+            
+            .story-title {
+                font-size: 28px;
+            }
+            
+            .story-content {
+                font-size: 17px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .story-section {
+                padding: 30px 25px;
+            }
+            
+            .story-title {
+                font-size: 26px;
+                margin-bottom: 25px;
+            }
+            
+            .story-content {
+                font-size: 16px;
+            }
+            
+            .quote-block {
+                padding: 20px;
+                margin: 25px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbarEN.js"></script>
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="photo-section">
+                <div class="photo-frame">
+                    <img src="photoofxieyinwen.png" alt="谢应文照片" class="photo-img">
+                </div>
+                <div class="photo-hint">Click on the photo to switch characters</div>
+            </div>
+            
+            <div class="story-section">
+                <h1 class="story-title">Xie Yinwen</h1>
+                
+                <div class="story-content">
+                    <p>As Xie Yingwen's footsteps touched the bluestone paths of Tianqing Inn, the city dust clinging to his soles finally seemed to find a place to settle. The wind, thick with the moist scent of plants and trees, brushed over his tense shoulders and neck, drawing an unconscious sigh of relief from him—a sense of relaxation he had never known in his role as a product developer buried in a sea of code.</p>
+
+                    <p>He still remembered the day he was laid off: the HR manager's gentle yet unyielding tone, the project error report spread out on the table, its dense annotations piercing his eyes like needles. In those days, he had glued himself to his desk, staring at the dancing data and ever-updating requirements on his screen. Even when he closed his eyes, all he saw were product iteration flowcharts. Pressure had surged over him like a tide—first insomnia, then night-long palpitations, until that final critical mistake became the last straw. The layoff hadn't been a surprise. He knew deep down that his overtaxed body and numbed nerves had long since been unable to sustain the job he once loved.</p>
+
+                    <p>On the day he left the office building, he had muted his phone and stuffed it into the deepest corner of his backpack. Once essential tools for survival, these electronic devices now felt like death warrants, reminding him of the days filled with KPIs and lost identity. He just wanted to find a place where he could breathe quietly, hear the sound of his own heartbeat, and piece back together the parts of himself that work had erased.</p>
+
+                    <p>The gate of Tianqing Inn was slightly ajar, letting out a soft creak as he pushed it open. The roses in the courtyard corner were in full bloom, and a few chicks wandered leisurely along the base of the wall. The innkeeper poked his head out from the house, smiling and asking if he was here to stay, his tone as warm as a family member's. Xie Yingwen nodded, his throat tightening as he found himself momentarily speechless—it had been far too long since he had felt such uncalculating, pure kindness.</p>
+
+                    <p>He chose a room at the back of the inn, with a view of a grove of trees outside the window. The first thing he did after setting down his backpack was to take out his phone, turn it off, and tuck it into a hidden compartment of his suitcase. When he finished, he leaned against the window, watching sunlight filter through the gaps in the bamboo leaves to dapple the ground, and for the first time in a long while, he felt at peace.</p>
+
+                    <p>Perhaps here, he could sleep soundly, no longer jolted awake by work messages in the early morning. Perhaps here, he could learn to tend to flowers and plants, feeling the power of growing life. Perhaps here, he could pick up the writing he once loved, putting down the emotions he had neglected for work. He didn't expect to immediately find his life's direction—he only hoped that in this tranquility, he could reconcile with himself and rediscover the sincere, passionate person he had been before pressure had swallowed him whole.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const img = document.querySelector('.photo-img');
+            const story = document.querySelector('.story-content');
+            const titleEl = document.querySelector('.story-title');
+            
+            if(!img || !story || !titleEl) return;
+            
+            // 人物数据
+            const characters = [
+                {
+                    id: 'xie',
+                    src: 'photoofxieyinwen.png',
+                    title: 'Xie Yinwen',
+                    content: `
+                        <p>As Xie Yingwen's footsteps touched the bluestone paths of Tianqing Inn, the city dust clinging to his soles finally seemed to find a place to settle. The wind, thick with the moist scent of plants and trees, brushed over his tense shoulders and neck, drawing an unconscious sigh of relief from him—a sense of relaxation he had never known in his role as a product developer buried in a sea of code.</p>
+
+                        <p>He still remembered the day he was laid off: the HR manager's gentle yet unyielding tone, the project error report spread out on the table, its dense annotations piercing his eyes like needles. In those days, he had glued himself to his desk, staring at the dancing data and ever-updating requirements on his screen. Even when he closed his eyes, all he saw were product iteration flowcharts. Pressure had surged over him like a tide—first insomnia, then night-long palpitations, until that final critical mistake became the last straw. The layoff hadn't been a surprise. He knew deep down that his overtaxed body and numbed nerves had long since been unable to sustain the job he once loved.</p>
+
+                        <p>On the day he left the office building, he had muted his phone and stuffed it into the deepest corner of his backpack. Once essential tools for survival, these electronic devices now felt like death warrants, reminding him of the days filled with KPIs and lost identity. He just wanted to find a place where he could breathe quietly, hear the sound of his own heartbeat, and piece back together the parts of himself that work had erased.</p>
+
+                        <p>The gate of Tianqing Inn was slightly ajar, letting out a soft creak as he pushed it open. The roses in the courtyard corner were in full bloom, and a few chicks wandered leisurely along the base of the wall. The innkeeper poked his head out from the house, smiling and asking if he was here to stay, his tone as warm as a family member's. Xie Yingwen nodded, his throat tightening as he found himself momentarily speechless—it had been far too long since he had felt such uncalculating, pure kindness.</p>
+
+                        <p>He chose a room at the back of the inn, with a view of a grove of trees outside the window. The first thing he did after setting down his backpack was to take out his phone, turn it off, and tuck it into a hidden compartment of his suitcase. When he finished, he leaned against the window, watching sunlight filter through the gaps in the bamboo leaves to dapple the ground, and for the first time in a long while, he felt at peace.</p>
+
+                        <p>Perhaps here, he could sleep soundly, no longer jolted awake by work messages in the early morning. Perhaps here, he could learn to tend to flowers and plants, feeling the power of growing life. Perhaps here, he could pick up the writing he once loved, putting down the emotions he had neglected for work. He didn't expect to immediately find his life's direction—he only hoped that in this tranquility, he could reconcile with himself and rediscover the sincere, passionate person he had been before pressure had swallowed him whole.</p>
+                    `
+                },
+                {
+                    id: 'lei',
+                    src: 'photoofleichuan.png',
+                    title: 'Lei Chuan',
+                    content: `
+                        <p>The bamboo chair at Tianqing Inn was warm under the sun. Leichuan curled up on it, his phone screen dark, lingering on the backend of his "chuan the Travelover" social platform id— the latest travel guide had barely any likes. He gave a self-deprecating smirk, flipping the phone face-down. No one knew that this travel blogger persona was merely his tool for selecting prey, and Tianqing Inn had long since become his carefully laid hunting ground.</p>
+
+                        <p>To maintain his travel blogger image, he spent years rushing around filming footage and editing videos. In reality, he used his travel guides mentioning Leqi Mountain to recommend Tianqing Inn to his followers, secretly selecting sacrifices to offer to the mountain god of Leqi Mountain. Last month, citing a sudden drop in video views, he had conveniently "retired" from blogging and moved into Tianqing Inn— a place he fully controlled. Here, he could rest while preparing for his next round of hunting.</p>
+
+                        <p>For the past month, he had worked alongside Yang Liqiang, a villager he'd hired to play the part, to maintain the inn's facade of peaceful rural life. Occasionally, he would post photos of the courtyard's dappled sunlight on social media to keep his persona alive, quietly scouting for prey desperate for healing, and preparing the "Tianqing Inn Healing Courses" as bait.</p>
+
+                        <p>The courtyard gate creaked open. A man with exhaustion written all over his face stood in the doorway. Yang Liqiang stepped forward to greet him, and the man nodded silently. Leichuan watched him closely, his expression unreadable— a cold glint flashed in his eyes before being replaced by a warm smile. Another victim soon to be trapped in the cages of Leqi Mountain.</p>
+
+                        <p>This was the long-term guest he had told Yang Liqiang to keep an eye on. Leichuan stood up and greeted him warmly: "Hello! I'm also staying here. Just call me Xiaochuan." The man gave a faint smile in return. Leichuan understood the yearning of urban workers for a natural escape— this was his opening. The beautiful natural surroundings were merely the first step to lulling his prey into a false sense of security.</p>
+
+                        <p>As he watched the man follow Yang Liqiang to his room, a subtle smirk tugged at Leichuan's lips. The courtyard's tranquility was an illusion, and Yang Liqiang was just a pawn. He already knew the man would willingly disconnect from his phone, falling completely under the spell of this healing utopia.</p>
+                    `
+                },
+                {
+                    id: 'liu',
+                        src: 'photoofliu.png',
+                    title: 'Liu Jiangtao',
+                    content: `
+                        <p>Most of the time, Liu Jiangtao left at dawn with his canvas bag, returning only when twilight had settled over the streets of Jias洒 Town. His bag was always stuffed with notebooks, a voice recorder, his laptop, and wild mushrooms or homegrown pomelos pressed on him by the villagers.</p>
+
+                        <p>As an ethnographer from out of town, he was quiet and reserved, rarely initiating conversations with anyone at the inn. Occasionally, Leichuan would greet him with a smile, making small talk like, "Off to do more research today?" Liu would merely nod in response, never slowing his steps as he walked straight to his room and closed the door, shutting out the rest of the world.</p>
+
+                        <p>He had come to Jiasa Town to study the local ethnic culture. Before dawn each day, he would head into the mountains with the villagers, documenting their farming practices and folk legends. In the afternoons, he would sit beneath the old pagoda tree at the village entrance, listening to the elders sing ancient ballads while typing furiously on his laptop. The villagers all liked this quiet, earnest scholar, willing to share their family stories with him and even invite him for a simple home-cooked meal.</p>
+
+                        <p>The day Xie Yingwen checked into the inn, Liu Jiangtao had just returned from the village. Standing at the courtyard gate with his canvas bag slung over his shoulder, he watched the weary-looking man follow Yang Liqiang to his guest room. He gave them only a brief glance before walking to his own room, his expression unchanged. To him, the inn's guests were just passing through, transient figures in his life. His research was his only constant focus.</p>
+
+                        <p>He spent little time in the courtyard. On the rare occasions he sat outside, he would wear headphones, flipping through his notes or organizing recordings in his voice recorder, completely indifferent to his surroundings. Leichuan once tried to talk to him about the inn's "healing courses." Liu had merely lifted his eyes, shaken his head silently, and stood up to return to his room. His distant demeanor made sure Leichuan never brought up the topic again.</p>
+
+                        <p>No one knew that beneath the research materials in his bag, this quiet scholar also kept a thick journal. In the still of the night, he would write about the local customs and traditions of Jiasa Town, and also jot down the strange behaviors of everyone at the inn—like Leichuan's overly enthusiastic pretense, or the deep exhaustion etched into Xie Yingwen's eyes. He watched silently, like an outsider, storing everything away in his heart, waiting for the right moment to uncover the secrets hidden within Tianqing Inn.</p>
+                    `
+                },
+                {
+                    id: 'yang',
+                    src: 'photoofyanginfinal.png',
+                    title: 'Yang Liqiang',
+                    content: `
+                        <p>As dawn broke over the earthen walls of Tianqing Inn, Yang Liqiang rose to open the courtyard gate. He swept the front yard spotless— his first daily task. As the innkeeper, maintaining a polite and affable demeanor was his duty, at least outwardly.</p>
+                        
+                        <p>The roses in the courtyard corner needed watering. Yang carried a bucket over slowly, keeping a watchful eye on the gate. Leichuan had warned him the night before that a long-term guest would arrive, urging him to stay alert and avoid mistakes. Yang had nodded reassuringly, but felt indifferent. He knew this routine well; warmth, generosity, and kindness were second nature to him now.</p>
+                        
+                        <p>No sooner had he finished watering than footsteps approached. A thin man with a black backpack stood at the gate, his face etched with exhaustion— just another overworked soul seeking "healing." Yang immediately broke into a warm smile: "Hello! You must be our reserved guest. Come in!" He took the man's suitcase, his tone as friendly as if greeting an old friend. "I'm Yang Liqiang, the innkeeper. Your room is at the back, quiet with a bamboo grove view. I'll get you a Jias 洒 Town guide later, with all the best spots to visit and eat."</p>
+
+                        <p>The man paused, then nodded slowly. At that moment, Leichuan stood up from the bamboo chair and walked over to greet him with a warm smile, saying softly that he was also here to rest. Yang watched silently, knowing full well this was Leichuan's usual tactic— first establish a bond by pretending to be fellow sufferers, then gradually introduce the "healing course" as bait. He wisely kept quiet and led the man toward the guest room, introducing everything properly without missing a beat.</p>
+                        
+                        <p>The man hesitated, then nodded. Leichuan stood up from his bamboo chair and walked over, introducing himself as another guest here to rest. Yang watched silently, recognizing this familiar tactic: first bond as fellow sufferers, then lure them with "healing courses." He said nothing more, leading the guest to his room with a steady smile.</p>
+                        
+                        <p>After settling the guest, Yang fetched a Buddhist scripture and sat on the threshold reading it, sunlight dappling the pages as he traced the words with a pious expression. It was Leichuan's order— appearing devout would make the inn feel more peaceful. In truth, Yang couldn't understand the text. His faith lay not in Buddha, but in the Leader and the "salvation" Leichuan promised. If he cooperated, kept guests satisfied, and sent them to Leqi Mountain after they joined the "healing courses," he would earn his "blessings."</p>
+                        
+                        <p>Soon after, Liu Jiangtao returned, his canvas bag stuffed with research materials from the village. This quiet scholar left early and returned late, rarely socializing. Yang paid him little mind as long as he didn't interfere.</p>
+                        
+                        <p>At lunch, Yang prepared a local specialty— tamarind chicken from Jiasa Town. When he brought it to the guest's room, the man was staring out the window at the bamboo grove, lost in thought. "Try this local dish," Yang smiled. "It's refreshing. Just call if you need anything." The man mumbled a hoarse "thank you." Yang nodded and left, his smile fading the moment the door closed.</p>
+
+                        <p>A breeze carried the scent of greenery into the courtyard. Yang leaned against the doorframe, touching the prayer beads in his pocket— a gift from the Leader, said to protect him. He knew every peaceful moment here was an illusion. His warmth, his piety— all fake. They were waiting for these desperate souls to fall into their trap, leading them to Leqi Mountain. His job was to guard the inn, play the kind-hearted innkeeper, and see this charade through.</p>
+                    `
+                }
+            ];
+            
+            let currentIndex = 0;
+            
+            img.addEventListener('click', function(){
+                img.classList.add('anim-out');
+
+                // 在 transitionend 未触发时作为后备使用的超时（比 CSS 过渡时间稍长）
+                var finished = false;
+                function doSwap(){
+                    if (finished) return;
+                    finished = true;
+
+                    // 切换到下一个角色
+                    currentIndex = (currentIndex + 1) % characters.length;
+                    const nextChar = characters[currentIndex];
+
+                    img.setAttribute('src', nextChar.src);
+                    img.setAttribute('alt', nextChar.title + '照片');
+                    titleEl.textContent = nextChar.title;
+                    story.innerHTML = nextChar.content;
+
+                    requestAnimationFrame(function(){ 
+                        img.classList.remove('anim-out'); 
+                    });
+                }
+
+                img.addEventListener('transitionend', function handler(){
+                    img.removeEventListener('transitionend', handler);
+                    doSwap();
+                }, {once: true});
+
+                // CSS transition 是 0.5s，超时设置为 600ms 作为回退
+                setTimeout(doSwap, 600);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回顾 | 戛洒镇2019新年祈福活动圆满举行！</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            background-color:#e9f8e9;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+    
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        /* 顶部装饰 */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: var(--light-green);
+            border-radius: 8px;
+        }
+        
+        /* 全局搜索框样式 */
+        .global-search {
+            background-color: var(--light-green);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        /* 头部区域 */
+        header {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid var(--medium-green);
+        }
+        
+        .header-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(45, 90, 61, 0.85));
+            color: white;
+            padding: 25px 30px;
+        }
+        
+        .header-title h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .header-title p {
+            font-size: 16px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title p::before {
+            content: "🌿";
+            margin-right: 8px;
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-green);
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: var(--accent-green);
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* 文章内容 */
+        .article-content {
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .article-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        /* 单张图片区域 */
+        .single-image-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .single-image-item {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .single-image-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .single-image-item img:hover {
+            transform: scale(1.02);
+        }
+        
+        /* 热点区域样式 */
+        .hotspot {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        
+        .hotspot:hover {
+            background-color: rgba(106, 191, 105, 0.3);
+            box-shadow: 0 0 0 3px rgba(106, 191, 105, 0.5);
+        }
+        
+        .hotspot.active {
+            background-color: rgba(106, 191, 105, 0.4);
+            box-shadow: 0 0 0 5px rgba(106, 191, 105, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(106, 191, 105, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(106, 191, 105, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(106, 191, 105, 0); }
+        }
+        
+        /* 线索提示框 */
+        .clue-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid var(--medium-green);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 400px;
+            width: 90%;
+            display: none;
+        }
+        
+        .clue-popup h3 {
+            color: var(--dark-green);
+            margin-bottom: 15px;
+            font-size: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 10px;
+        }
+        
+        .clue-popup p {
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        
+        .clue-popup .close-btn {
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+        
+        .clue-popup .close-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        /* 遮罩层 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        /* 图片提示词样式 */
+        .image-hint {
+            text-align: center;
+            color: var(--medium-green);
+            font-size: 14px;
+            margin-top: 5px;
+            margin-bottom: 25px;
+            font-style: italic;
+            padding: 5px;
+        }
+        
+        /* 评论区 */
+        .comment {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+
+        /* 让评论区最后一条距离页脚更紧凑 */
+        .content-section .comment:last-of-type {
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+        }
+        
+        .comment-user {
+            font-weight: bold;
+            color: var(--dark-green);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-user::before {
+            content: "👤";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-content {
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        
+        .comment-reply {
+            background-color: var(--light-green);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 3px solid var(--accent-green);
+        }
+        
+        .comment-reply-user {
+            font-weight: bold;
+            color: var(--medium-green);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        
+        
+        .comment-likes {
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .comment-likes::before {
+            content: "👍";
+            margin-right: 5px;
+            color: var(--medium-green);
+        }
+        
+        .view-more {
+            color: var(--medium-green);
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px dashed var(--medium-green);
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .view-more:hover {
+            background-color: var(--light-green);
+        }
+        
+        .hot-comment-tag {
+            background-color: var(--accent-green);
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        
+        /* 底部装饰 */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🌿 添清小院 • 回归自然本真 🌿";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: var(--dark-green);
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid var(--light-green);
+        }
+        
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .header-title h1 {
+                font-size: 26px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .single-image-item img {
+                height: 250px;
+            }
+            
+            .clue-popup {
+                padding: 20px;
+                max-width: 90%;
+            }
+        }
+    </style>
+    <!-- 全站通用 headbar 脚本（置于 head，确保先渲染） -->
+
+</head>
+<body>
+    <!-- 使用全站 headbar.js，不加载本页搜索框 -->
+    	<script defer src="headbar.js"></script>
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <header>
+            <!-- 使用符合主题的图片 -->
+            <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=80" alt="戛洒镇新年祈福活动" class="header-image">
+            <div class="header-title">
+                <h1>回顾 | 戛洒镇2019新年祈福活动圆满举行！</h1>
+                <p>添清小院论坛 | 发布于 2019-01-05</p>
+            </div>
+        </header>
+        
+        <section class="content-section">
+            <h2 class="section-title">活动回顾</h2>
+            
+            <div class="article-content">
+                <p>在2019年来临之际，戛洒镇举行了传统的新年祈福活动，祈愿来年风调雨顺、家家安康。</p>
+                <p>傍晚时分，耀南村的广场上燃起了熊熊的篝火，村民们与远道而来的客人围聚一堂，品尝特色的长街宴，欣赏精彩的民族歌舞表演。现场气氛热烈，欢声笑语不绝于耳，充满了对新年美好的期盼。</p>
+                <p>此次活动不仅传承了本地文化，也展现了在各方共同努力下，村镇焕发出的新活力与团结和谐的氛围。</p>
+            </div>
+            
+            <h2 class="section-title">活动精彩瞬间</h2>
+            
+            <div class="single-image-container">
+                <div class="single-image-item" id="clue-image">
+                    <!-- 篝火晚会图片 - 现在带有互动功能 -->
+                    <img src="刘江涛跳舞.png" alt="篝火晚会" loading="lazy">
+                    <!-- 隐藏的热点区域 - 在篝火晚会的角落 -->
+                    <div class="hotspot" id="liu-hotspot" style="top: 70%; left: 30%;"></div>
+                </div>
+            </div>
+            
+            <!-- 添加图片下方提示词 -->
+            <div class="image-hint">（尝试点击照片，在篝火晚会的角落寻找可疑人物）</div>
+        </section>
+        
+        <section class="content-section">
+            <h2 class="section-title">最新评论</h2>
+            
+            <div class="comment">
+                <div class="comment-user">@本地人小和</div>
+                <div class="comment-content">活动办得一年比一年好啦！</div>
+                <div class="comment-likes">5</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@旅行家老王</div>
+                <div class="comment-content">氛围真棒！希望以后还能参加。</div>
+                <div class="comment-likes">3</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@彩云之南</div>
+                <div class="comment-content">是啊，我们这地方越来越好了。诶，图片里那是刘老师吗？刘老师这么早就来到这里做研究了啊？</div>
+                <div class="comment-reply">
+                    <div class="comment-reply-user">@匿名用户 回复：</div>
+                    <div class="comment-content">对呀，江涛都在这里待了很久了呢，平时也不爱说话，就爱往山里跑，真是个怪人。</div>
+                    <div class="comment-reply-user">@见手青女王 回复：</div>
+                    <div class="comment-content">@某某 在蛐蛐你？</div>
+      
+                </div>
+                <div class="comment-likes">8</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@山河故人</div>
+                <div class="comment-content">看到大家这么开心真好。想起几年前那场山体滑坡，戛洒能这么快恢复活力，真不容易啊。</div>
+                <div class="comment-likes">15</div>
+            </div>
+        
+            <div class="comment">
+                <div class="comment-user">@山野闲人</div>
+                <div class="comment-content">火塘旺，人来福！</div>
+                <div class="comment-likes">2</div>
+            </div>
+            
+            <!-- 已移除“查看更多评论”按钮 -->
+        </section>
+        
+
+        
+        <div class="bottom-decoration"></div>
+    </div>
+
+    <!-- 线索提示框 -->
+    <div class="clue-popup" id="clue-popup">
+        <h3>🔍 找到刘江涛！</h3>
+        <p>你发现了在篝火晚会角落里默默观察的刘江涛。他似乎一直在记录着什么，很少与人交流。</p>
+        <p><strong>线索5：</strong> 刘江涛似乎对当地的地质和植物特别感兴趣，经常独自进山考察。在篝火晚会上，他也没有参与庆祝，而是在远处观察记录。</p>
+        <button class="close-btn">关闭</button>
+    </div>
+
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const hotspot = document.getElementById('liu-hotspot');
+            const cluePopup = document.getElementById('clue-popup');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.querySelector('.close-btn');
+            
+            // 点击热点区域显示线索
+            hotspot.addEventListener('click', function(e) {
+                e.stopPropagation();
+                cluePopup.style.display = 'block';
+                overlay.style.display = 'block';
+                hotspot.classList.add('active');
+                
+                // 防止背景滚动
+                document.body.style.overflow = 'hidden';
+                
+                // 更新提示文本
+                document.querySelector('.image-hint').textContent = "✓ 已发现可疑人物！点击关闭按钮继续浏览。";
+                document.querySelector('.image-hint').style.color = "var(--accent-green)";
+                document.querySelector('.image-hint').style.fontWeight = "bold";
+            });
+            
+            // 关闭提示框
+            function closePopup() {
+                cluePopup.style.display = 'none';
+                overlay.style.display = 'none';
+                hotspot.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            closeBtn.addEventListener('click', closePopup);
+            overlay.addEventListener('click', closePopup);
+            
+            // 点击提示框外部关闭
+            cluePopup.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // 添加悬停提示
+            hotspot.addEventListener('mouseenter', function() {
+                document.body.style.cursor = 'pointer';
+                hotspot.style.backgroundColor = 'rgba(106, 191, 105, 0.2)';
+            });
+            
+            hotspot.addEventListener('mouseleave', function() {
+                document.body.style.cursor = 'default';
+                if (!hotspot.classList.contains('active')) {
+                    hotspot.style.backgroundColor = '';
+                }
+            });
+            
+            // 添加键盘事件支持
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && cluePopup.style.display === 'block') {
+                    closePopup();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Uature | Research Article</title>
+	<meta name="description" content="Nature-style research article detail template" />
+	<style>
+		:root{
+			--brand:#b21e2b; /* Brand primary red */
+			--brand-dark:#8e1822;
+			--ink:#1a1a1a;
+			--muted:#666;
+			--line:#e6e6e6;
+			--bg:#ffffff;
+			--code-bg:#f7f7f7;
+			--link:#0a66c2;
+			--accent:#0f766e;
+			--container:1180px;
+		}
+		*{box-sizing:border-box}
+		html,body{margin:0;padding:0}
+		body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:#fafafa;}
+
+		/* Masthead */
+		.masthead{background:var(--brand);color:#fff;}
+		.masthead-inner{max-width:var(--container);margin:0 auto;display:flex;align-items:center;gap:18px;padding:14px 20px;}
+		.brand{font-family:Georgia,"Times New Roman",Times,serif;font-size:28px;font-weight:700;letter-spacing:0.5px}
+		.brand small{font-size:12px;opacity:.9;margin-left:10px;font-weight:400}
+		.mast-actions{margin-left:auto;display:flex;gap:10px}
+		.mast-actions a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);padding:6px 10px;border-radius:4px;font-size:13px}
+		.mast-actions a:hover{background:rgba(0,0,0,.08)}
+
+		/* Breadcrumb */
+		.breadcrumb{max-width:var(--container);margin:0 auto;padding:14px 20px;font-size:13px;color:#333}
+		.breadcrumb a{color:var(--muted);text-decoration:none}
+		.breadcrumb a:hover{color:var(--ink);text-decoration:underline}
+		.breadcrumb .sep{margin:0 6px;color:#999}
+
+		/* Page layout */
+		.container{max-width:var(--container);margin:0 auto;display:grid;grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);gap:26px;padding:0 20px 60px}
+		@media (max-width: 980px){.container{grid-template-columns:1fr}}
+
+		/* Article header */
+		.article-head{background:var(--bg);border:1px solid var(--line);padding:26px;border-radius:8px}
+		.article-type{display:inline-block;color:#fff;background:var(--accent);padding:2px 8px;border-radius:3px;font-size:12px;margin-bottom:10px}
+		h1.title{font-size:34px;line-height:1.25;margin:8px 0 14px;font-weight:700}
+		.authors{color:var(--ink);font-size:15px;line-height:1.7}
+		.authors a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #bbb}
+		.authors sup{font-size:11px;color:#a55}
+		.meta-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;color:#555;font-size:13px}
+		.meta-row .meta{display:flex;align-items:center;gap:6px}
+		.meta .label{color:#888}
+
+		/* Sidebar actions */
+		.sidebar .card{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:16px 16px 14px;margin-bottom:18px}
+		.btn{display:inline-flex;align-items:center;gap:8px;border-radius:6px;border:1px solid var(--brand);background:var(--brand);color:#fff;text-decoration:none;padding:10px 14px;font-weight:600}
+		.btn:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+		.btn.secondary{background:#fff;color:var(--brand)}
+
+		.toc{position:sticky;top:16px}
+		.toc h3{margin:0 0 8px;font-size:14px}
+		.toc ul{list-style:none;margin:0;padding:0}
+		.toc li{margin:6px 0}
+		.toc a{font-size:14px;color:#333;text-decoration:none}
+		.toc a:hover{color:var(--brand)}
+
+		/* Main content */
+		.article{display:flex;flex-direction:column;gap:18px}
+		.section{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:22px}
+		.section h2{margin:0 0 10px 0;font-size:22px}
+		.section h3{margin:10px 0 8px;font-size:18px}
+		.abstract p{color:#333}
+		.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+		.kw span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;background:#fbfbfb}
+		.figure{margin:10px 0 6px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+		.figure img{width:100%;display:block;max-height:420px;object-fit:cover;background:#f2f2f2}
+		.caption{font-size:13px;color:#555;padding:10px 12px;background:#fcfcfc;border-top:1px solid var(--line)}
+		.note{font-size:13px;color:#666;background:#fff7f7;border:1px solid #ffdede;padding:10px 12px;border-radius:6px}
+		.code{background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;overflow:auto}
+		.ref-list{padding-left:18px}
+		.ref-list li{margin:8px 0;color:#333}
+		.ref-list a{color:var(--link);text-decoration:none}
+		.ref-list a:hover{text-decoration:underline}
+
+		/* Footer */
+		footer{border-top:1px solid var(--line);color:#777;font-size:13px;padding:18px 20px;margin-top:30px}
+		footer .inner{max-width:var(--container);margin:0 auto}
+
+		/* Back to top */
+		.to-top{position:fixed;right:18px;bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.07);padding:10px 12px;font-size:13px;color:#333;text-decoration:none}
+		.to-top:hover{background:#f7f7f7}
+
+		/* Toast */
+		.toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.98);opacity:0;z-index:10000;pointer-events:none;transition:opacity .18s ease, transform .18s ease;background:#111;color:#fff;font-size:14px;border-radius:10px;padding:14px 16px;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+		.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+		/* Citation modal */
+		.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;display:none}
+		.modal-mask.show{display:block}
+		.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.15);width:min(680px,92vw);max-height:80vh;display:none}
+		.modal.show{display:block}
+		.modal .modal-header{padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700}
+		.modal .modal-body{padding:14px 16px;font-size:14px;line-height:1.7;word-break:break-word}
+		.modal .modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:12px 16px;border-top:1px solid var(--line)}
+		.btn.small{padding:8px 12px;font-weight:600;font-size:13px}
+
+		/* Centered CTA */
+		.cta-center{display:flex;justify-content:center}
+
+	
+	</style>
+</head>
+<body>
+	<header class="masthead" role="banner" aria-label="Site header">
+		<div class="masthead-inner">
+			<div class="brand">Uature</div>
+			<nav class="mast-actions" aria-label="Site actions">
+				<a href="#">Journals</a>
+				<a href="#">Latest</a>
+				<a href="#">Submission Guide</a>
+			</nav>
+		</div>
+	</header>
+
+	<div class="breadcrumb" aria-label="Breadcrumb">
+		<a href="#">Uature</a>
+		<span class="sep">›</span>
+		<a href="#">Articles</a>
+		<span class="sep">›</span>
+		2025
+	</div>
+
+	<main class="container" role="main">
+		<!-- Main column -->
+		<article class="article" aria-label="Article body">
+			<section class="article-head" aria-label="Article header">
+				<div class="article-type" aria-label="Article type">Article</div>
+				<h1 class="title">Nature-inspired multiscale adaptive strategy to enhance robustness of complex systems</h1>
+				<div class="authors">
+					Jiangtao Liu<sup>1,✉</sup>
+				</div>
+				<div class="meta-row">
+					<div class="meta"><span class="label">Received: </span><span>2022-03-02</span></div>
+					<div class="meta"><span class="label">Accepted: </span><span>2022-07-18</span></div>
+					<div class="meta"><span class="label">Published online: </span><span>2025-12-10</span></div>
+					<div class="meta"><span class="label">DOI: </span><span>10.0000/nm.2025.56789</span></div>
+				</div>
+				<div class="meta-row" style="margin-top:6px">
+					<div class="meta"><span class="label">Corresponding author: </span><span>📧 adwejfjgw@mail.bhbu.edu.cn</span></div>
+					<div class="meta"><span class="label">Affiliation: </span><span><sup>1</sup> Department of Biological Sciences, BHBU</span></div>
+				</div>
+			</section>
+
+			<section id="abstract" class="section abstract" aria-labelledby="abstract-h">
+				<h2 id="abstract-h">Abstract</h2>
+				<p>
+					We report the discovery of a rare fungus in the Leiqi Mountain region of Yunnan, China, containing a specific alkaloid with pronounced neuro-hallucinogenic effects. Experimental observations indicate that this compound can induce highly directed alterations in perception, including experiences of "oneness with nature" and "out-of-body sensations," accompanied by increased suggestibility and a potential risk of psychological dependence. We term the key active component responsible for these effects the Qiyann Factor. This finding opens a new avenue for understanding the neuroactive properties of fungal natural products and the mechanisms underlying altered states of human consciousness.
+				</p>
+				<div class="kw" aria-label="关键词">
+					<span>Fungal alkaloids</span><span>Neuro-hallucinogenic</span><span>Ailao Mountains</span><span>Qiyann Factor</span><span>Perceptual alteration</span><span>Neuroactivity of natural products</span>
+				</div>
+			</section>
+
+			<section id="access" class="section" aria-label="Access">
+				<div class="cta-center">
+					<a id="btn-access" href="#" class="btn" role="button" aria-label="Access via institution">Access via your institution</a>
+				</div>
+			</section>
+		</article>
+
+		<!-- Sidebar -->
+		<aside class="sidebar" aria-label="Sidebar">
+			<div class="card">
+				<a id="btn-home" class="btn secondary" href="../index.html" role="button" aria-label="Return to home">Return to Home</a>
+				<div style="height:8px"></div>
+				<a id="btn-pdf" class="btn" href="#" role="button" aria-label="Download PDF">Download PDF</a>
+				<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+					<a id="btn-cite" class="btn secondary" href="#" role="button" aria-label="Cite this article">Cite this article</a>
+				</div>
+			</div>
+
+			<div class="card toc" aria-label="Table of contents">
+				<h3>Contents</h3>
+				<ul>
+					<li><a href="#abstract">Abstract</a></li>
+				</ul>
+			</div>
+
+			<!-- Related articles module removed as requested -->
+		</aside>
+	</main>
+
+	<!-- Overlay prompt removed as requested -->
+
+	<!-- Toast 和 引用弹窗 -->
+	<div id="toast" class="toast" role="status" aria-live="polite"></div>
+	<div id="modal-mask" class="modal-mask" hidden></div>
+	<div id="cite-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cite-title" hidden>
+		<div class="modal-header" id="cite-title">APA 7 Citation</div>
+		<div class="modal-body">
+			<p id="cite-text" style="margin:0"></p>
+		</div>
+		<div class="modal-footer">
+			<button id="cite-close" class="btn small secondary" type="button">Close</button>
+		</div>
+	</div>
+
+	<a class="to-top" href="#top" aria-label="Back to top">↑ Top</a>
+
+	<footer role="contentinfo">
+		<div class="inner"></div>
+	</footer>
+
+	<script>
+		(function(){
+			const overlay = document.getElementById('human-check-overlay');
+			const sentinel = document.getElementById('intro-bottom-sentinel');
+			if(!overlay || !sentinel) return;
+			let triggered = false;
+			function showOverlay(){
+				if(triggered) return;
+				triggered = true;
+				overlay.classList.add('active');
+				// Optional: lock page scroll
+				document.documentElement.style.overflow = 'hidden';
+				document.body.style.overflow = 'hidden';
+			}
+			if('IntersectionObserver' in window){
+				const io = new IntersectionObserver((entries)=>{
+					for(const e of entries){
+						if(e.isIntersecting){
+							showOverlay();
+							io.disconnect();
+							break;
+						}
+					}
+				}, { root: null, threshold: 1.0 });
+				io.observe(sentinel);
+			}else{
+				function onScroll(){
+					const rect = sentinel.getBoundingClientRect();
+					const vpH = window.innerHeight || document.documentElement.clientHeight;
+					if(rect.bottom <= vpH){
+						showOverlay();
+						window.removeEventListener('scroll', onScroll);
+					}
+				}
+				window.addEventListener('scroll', onScroll, { passive: true });
+				onScroll();
+			}
+		})();
+
+		// Interactions: PDF download -> show failure toast; Cite -> show APA7 citation
+		(function(){
+			const $ = (sel)=>document.querySelector(sel);
+			const btnPdf = $('#btn-pdf');
+			const btnCite = $('#btn-cite');
+			const btnAccess = $('#btn-access');
+			const toast = $('#toast');
+			const modal = $('#cite-modal');
+			const mask = $('#modal-mask');
+			const citeText = $('#cite-text');
+			const citeClose = $('#cite-close');
+
+			function showToast(msg){
+				if(!toast) return;
+				toast.textContent = msg;
+				toast.classList.add('show');
+				setTimeout(()=>{ toast.classList.remove('show'); }, 2000);
+			}
+
+			function openModal(){
+				if(mask) { mask.hidden = false; mask.classList.add('show'); }
+				if(modal){ modal.hidden = false; modal.classList.add('show'); }
+			}
+			function closeModal(){
+				if(mask) { mask.classList.remove('show'); mask.hidden = true; }
+				if(modal){ modal.classList.remove('show'); modal.hidden = true; }
+			}
+
+			function getText(el){ return el ? (el.textContent || '').trim() : ''; }
+			function extractYear(){
+				const metas = Array.from(document.querySelectorAll('.meta-row .meta'));
+				const online = metas.find(m=>getText(m.querySelector('.label')).includes('Published online'));
+				const date = online ? getText(online.querySelector('span:last-child')) : '';
+				const y = (date.match(/^(\d{4})/)||[])[1];
+				return y || new Date().getFullYear();
+			}
+			function extractDOI(){
+				const metas = Array.from(document.querySelectorAll('.meta-row .meta'));
+				const doiM = metas.find(m=>getText(m.querySelector('.label')).includes('DOI'));
+				let doi = doiM ? getText(doiM.querySelector('span:last-child')) : '';
+				if(doi && !/^https?:\/\//.test(doi)) doi = 'https://doi.org/' + doi;
+				return doi;
+			}
+			function extractAuthors(){
+				const raw = getText(document.querySelector('.authors'));
+				// Remove trailing footnote markers like digits and ✉
+				const cleaned = raw.replace(/\s*[\d,✉].*$/,'').trim();
+				const list = cleaned.split(/\s*,\s*|\s+and\s+/i).filter(Boolean);
+				return list.length ? list : (cleaned ? [cleaned] : []);
+			}
+			function buildAPA(){
+				const authors = extractAuthors();
+				const year = extractYear();
+				const title = getText(document.querySelector('h1.title'));
+				const doi = extractDOI();
+				const journal = 'Uature';
+				const pubNote = 'Advance online publication';
+				const authorStr = authors.length ? (authors.join(', ') + '.') : '';
+				return `${authorStr} (${year}). ${title}. ${journal}. ${pubNote}. ${doi}`.trim();
+			}
+
+			btnPdf && btnPdf.addEventListener('click', function(e){
+				e.preventDefault();
+				showToast('Download failed');
+			});
+
+			btnCite && btnCite.addEventListener('click', function(e){
+				e.preventDefault();
+				citeText && (citeText.textContent = buildAPA());
+				openModal();
+			});
+
+			btnAccess && btnAccess.addEventListener('click', function(e){
+				e.preventDefault();
+				showToast('Network connection failed');
+			});
+
+			citeClose && citeClose.addEventListener('click', function(){ closeModal(); });
+			mask && mask.addEventListener('click', function(){ closeModal(); });
+			window.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });
+		})();
+	</script>
+
+</body>
+</html>

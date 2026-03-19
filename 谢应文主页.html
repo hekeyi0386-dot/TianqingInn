@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <style>
+    /* 基础样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9;
+      font-family: "Microsoft YaHei", sans-serif;
+      color: #333;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* 游戏模态框样式 */
+    .game-modal {
+      display: none;
+      position: absolute; /* 仅覆盖草稿箱区域 */
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .game-modal.active {
+      display: flex;
+    }
+
+    .game-container {
+      background-color: #1a3c1a;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 0 40px rgba(139, 195, 74, 0.4);
+      max-width: 90%;
+      max-height: 90%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border: 3px solid #4a7c4a;
+      position: relative;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 15px;
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+    .game-score {
+      color: #FFD700;
+      font-weight: bold;
+      background-color: rgba(0, 60, 0, 0.7);
+      padding: 5px 15px;
+      border-radius: 20px;
+      border: 1px solid #4a7c4a;
+    }
+
+    .game-target {
+      color: #FF9800;
+      background-color: rgba(0, 60, 0, 0.7);
+      padding: 5px 15px;
+      border-radius: 20px;
+      border: 1px solid #4a7c4a;
+    }
+
+    #game-canvas {
+      background-color: #0f2c0f;
+      border-radius: 8px;
+      border: 3px solid #2d5a2d;
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .game-controls {
+      display: flex;
+      gap: 20px;
+      margin-top: 25px;
+    }
+
+    .game-btn {
+      padding: 12px 30px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s;
+      box-shadow: 0 4px 0 #3d8b40;
+    }
+
+    .game-btn:hover {
+      background-color: #45a049;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #3d8b40;
+    }
+
+    .game-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 0 #3d8b40;
+    }
+
+    .game-btn.pause {
+      background-color: #FF9800;
+      box-shadow: 0 4px 0 #e68900;
+    }
+
+    .game-btn.pause:hover {
+      background-color: #e68900;
+      box-shadow: 0 6px 0 #e68900;
+    }
+
+    .game-btn.close {
+      background-color: #f44336;
+      box-shadow: 0 4px 0 #d32f2f;
+    }
+
+    .game-btn.close:hover {
+      background-color: #d32f2f;
+      box-shadow: 0 6px 0 #d32f2f;
+    }
+
+    .game-instructions {
+      color: #c8e6c9;
+      margin-top: 8px; /* 更靠近“开始修复”按钮 */
+      text-align: center;
+      max-width: 500px;
+      line-height: 1.5;
+      background-color: transparent; /* 去掉说明背景 */
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 0.9rem; /* 缩小说明文字字号 */
+    }
+
+    .game-instructions kbd {
+      background-color: #2d5a2d;
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      border: 1px solid #4a7c4a;
+      color: #FFD700;
+    }
+
+    /* 查看内容中心覆盖层（位于贪吃蛇互动区域中心） */
+    .game-center-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .game-center-overlay .game-btn {
+      pointer-events: auto;
+    }
+
+    .game-center-overlay.show {
+      display: flex;
+    }
+
+    /* 解锁提示 */
+    .unlock-notice {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #1a5f1a, #2d8b2d);
+      color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
+      z-index: 1001;
+      text-align: center;
+      max-width: 500px;
+      border: 3px solid #4CAF50;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+      50% { box-shadow: 0 0 50px rgba(0, 255, 0, 1); }
+      100% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+    }
+
+    .unlock-notice.active {
+      display: block;
+    }
+
+    .unlock-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+  
+    /* 个人信息头部区域 */
+    .profile-header {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    /* 山水头像样式 */
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #f0f0f0;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .profile-desc {
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    /* 内容模块区域 - 两列布局 */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 25px;
+    }
+
+    /* 左侧主要内容区 */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .content-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      color: #333;
+      transition: all 0.3s;
+    }
+
+    /* 使草稿卡片成为定位上下文，确保游戏模态覆盖其内部 */
+    #draft-card {
+      position: relative;
+    }
+
+    .content-card.locked {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content-card.locked::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1;
+      border-radius: 10px;
+    }
+
+    .content-card.locked::after {
+      content: "🍄";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 4rem;
+      z-index: 2;
+      color: white;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+      animation: mushroomGlow 2s infinite;
+    }
+
+    @keyframes mushroomGlow {
+      0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.8); }
+      50% { text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 40px rgba(255, 215, 0, 0.6); }
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+      color: #333;
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    /* 在草稿箱内使用标题行，避免重复的边框与间距 */
+    #draft-card .card-title {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .locked .card-title {
+      color: #999;
+    }
+
+    .empty-tip {
+      padding: 40px 0;
+      font-size: 1rem;
+      text-align: center;
+      color: #999;
+    }
+
+    /* 草稿内容样式 */
+    .draft-content {
+      line-height: 1.8;
+      color: #444;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .draft-content.unlocked {
+      opacity: 1;
+    }
+
+    .draft-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .draft-date {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .locked-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: white;
+      z-index: 3;
+      width: 80%;
+    }
+
+    .locked-message h3 {
+      margin-bottom: 10px;
+      font-size: 1.5rem;
+    }
+
+    .locked-message p {
+      margin-bottom: 20px;
+    }
+
+    .secret-game-btn {
+      background: linear-gradient(135deg, #8BC34A, #4CAF50);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s;
+      margin-top: 15px;
+      box-shadow: 0 4px 0 #3d8b40;
+    }
+
+    .secret-game-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #3d8b40;
+    }
+
+    /* 贪吃蛇重复游玩入口 */
+    .game-replay-container {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 25px;
+    }
+
+    .game-replay-btn {
+      background: rgba(0, 68, 0, 0.9);
+      color: #e8f5e8;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .game-replay-btn:hover {
+      transform: translateY(-2px);
+      background: rgba(0, 68, 0, 0.96);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    }
+
+    /* 活动开始前系统提示覆盖层（仅覆盖草稿箱区域） */
+    .game-start-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.98);
+      display: none;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .game-start-overlay.show {
+      display: flex;
+    }
+
+    .game-start-modal {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 24px 28px;
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      border: 2px solid #4CAF50;
+    }
+
+    .game-start-modal h3 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #000;
+    }
+
+    .game-start-modal p {
+      margin-bottom: 16px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .game-fix-btn {
+      padding: 10px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background: rgba(0, 68, 0, 0.9);
+      color: #e8f5e8;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .game-fix-btn:hover {
+      background: rgba(0, 68, 0, 0.96);
+      transform: translateY(-1px);
+    }
+
+    /* 右侧侧边栏 */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .sidebar-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-menu a {
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    .sidebar-menu a:hover {
+      color: #006600;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+
+      
+
+      .draft-content {
+        font-size: 0.95rem;
+      }
+
+      .game-container {
+        padding: 15px;
+      }
+
+      #game-canvas {
+        width: 350px;
+        height: 350px;
+      }
+
+      .game-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #game-canvas {
+        width: 280px;
+        height: 280px;
+      }
+      
+      .game-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      .game-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+      }
+      .game-instructions { font-size: 0.85rem; margin-top: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 全站通用 headbar -->
+  <script src="headbar.js"></script>
+  <div class="container">
+    
+
+    <!-- 个人信息头部 -->
+    <div class="profile-header">
+      <div class="avatar">
+        <img src="yingwen头像.png" alt="山水头像">
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">哟哟切克闹</h1>
+        <p class="profile-desc">暂无个人简介</p>
+      </div>
+    </div>
+
+    <!-- 内容网格布局 -->
+    <div class="content-grid">
+      <!-- 左侧主要内容区 -->
+      <div class="main-content">
+        <!-- 已发布帖子（空） -->
+        <div class="content-card">
+          <h2 class="card-title">已发布帖子</h2>
+          <div class="empty-tip">暂无已发布帖子</div>
+        </div>
+
+        <!-- 草稿箱内容（初始状态为锁定） -->
+        <div class="content-card locked" id="draft-card">
+          <div class="card-title-row">
+            <h2 class="card-title">未发布帖子（草稿箱）</h2>
+            <button class="game-replay-btn" id="replay-snake-btn">重新修复页面</button>
+          </div>
+          
+          <div class="locked-message" id="locked-message">
+            <h3>🍄 内容已锁定</h3>
+            <p>发现被损坏的隐藏内容！需要收集蘑菇才能修复</p>
+            <button class="secret-game-btn" id="play-from-lock-btn">探索森林收集蘑菇修复内容</button>
+          </div>
+
+          <!-- 贪吃蛇重复游玩入口已移至标题旁边 -->
+
+          <!-- 活动开始前系统提示覆盖层（移动到草稿箱内） -->
+          <div class="game-start-overlay" id="game-start-overlay">
+            <div class="game-start-modal">
+              <h3>系统提示</h3>
+              <p>系统出现故障，无法完全显示内容。</p>
+              <button class="game-fix-btn" onclick="dismissGameStartOverlayAndStart()">修复</button>
+            </div>
+          </div>
+
+          <!-- 蘑菇主题贪吃蛇游戏模态框（移动到草稿箱内） -->
+          <div class="game-modal" id="game-modal">
+            <div class="game-container">
+              <div class="game-header">
+                <div class="game-score">蘑菇: <span id="score">0</span></div>
+                <div class="game-target">目标: <span id="target">12</span> 个</div>
+              </div>
+              <canvas id="game-canvas" width="400" height="400"></canvas>
+              <div class="game-controls">
+                <button class="game-btn" id="start-btn">开始修复</button>
+              </div>
+              <div class="game-instructions">
+                <p>使用 <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> 方向键控制小蛇在森林中移动</p>
+                <p>收集 <span style="color:#8BC34A">绿色蘑菇</span>代表一个蘑菇，<span style="color:#FF5722">金色蘑菇</span> 代表三个蘑菇</span></p>
+                <p>收集到12分即可修复隐藏内容！</p>
+              </div>
+              <div class="game-center-overlay" id="game-center-overlay">
+                <button class="game-btn" id="close-notice-btn">查看内容</button>
+              </div>
+            </div>
+          </div>
+          <!-- 解锁成功提示区块已删除，改为中心覆盖按钮 -->
+          
+          <div class="draft-content" id="draft-content">
+            <span class="draft-date">2018年8月15日 12:45</span>
+            <div class="draft-title">山林祈愿线疗愈活动见闻</div>
+            <p>今日随累川参与山林祈愿线疗愈活动，本想着能在自然里寻些宁静，舒缓心里被工作揉皱的疲惫。行至山林深处时，老天爷像突然变了脸，气温骤降，寒意顺着裤脚、领口直往骨头缝里钻，呼出的白气刚飘起就凝成了霜，打在睫毛上扎得人睁不开眼。</p>
+            <p style="margin: 10px 0;">同行的人被冻得缩成一团，呵出的气都带着颤，纷纷裹紧厚衣，有人开始念叨起这天气的无常，抱怨声混着风声，在空荡荡的山林里撞出回音。可累川却像被施了什么咒，举止愈发怪异 —— 他站在一片覆着薄冰的老树下，眼神有点发直，然后在冷风中，竟缓缓伸手去解厚外套的扣子。</p>
+            <p style="margin: 10px 0;">我在一旁看得心里发紧，想喊他别折腾，这鬼天气脱衣服是找死。可话还没出口，就见他已将厚外套褪下，紧接着从背包里掏出一件东西，抖开时我才看清，那是件类似宗教袍服的物件，素白的料子在寒风里晃啊晃，看着就透着股子寒意。</p>
+            <p style="margin: 10px 0;">更让人发毛的是，袍身之上，印着诡异图腾，线条歪歪扭扭，像是谁发了疯拿红漆硬划上去的，红得刺眼又渗人，跟周遭苍茫的山林、覆雪的枯枝完全不搭调，就像把一块不属于这里的 "邪性"，硬塞进了自然里。那图腾在风里轻轻颤，我盯着看了会儿，竟莫名觉得头晕，心底直发毛，总感觉这图案藏着说不出的阴森，像是要把人的魂儿给勾进去。</p>
+            <p>累川穿上那袍子后，整个人的气质都变了，木木呆呆的，动作也变得迟缓又机械，一步步往林子更深处走，仿佛被什么东西牵着。周围的树影在他身后晃啊晃，投下奇形怪状的黑影，和那诡异图腾重叠在一起，看得我后脊梁一阵阵地冒冷汗。这场景，实在反常又惊悚，让我忍不住想，这祈愿线背后，怕不是藏着啥见不得光的事儿，而累川，莫不是已经陷进去了……</p>
+          </div>
+        </div>
+      </div>
+      <!-- 右侧侧边栏 -->
+      <div class="sidebar">
+        <!-- 个人菜单 -->
+        <div class="sidebar-card">
+          <h3 class="card-title">个人中心</h3>
+          <ul class="sidebar-menu">
+            <li><a href="#">我的主页</a></li>
+            <li><a href="#">编辑资料</a></li>
+            <li><a href="#">发布新帖</a></li>
+            <li><a href="#">消息通知</a></li>
+            <li><a href="#">收藏夹</a></li>
+            <li><a href="#">设置</a></li>
+          </ul>
+        </div>
+
+        <!-- 常用标签（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">常用标签</h3>
+          <div class="empty-tip">暂无常用标签</div>
+        </div>
+
+        <!-- 关注的人（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">关注的人</h3>
+          <div class="empty-tip">暂无关注用户</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // 游戏变量
+    let canvas, ctx;
+    let gameInterval;
+    let score = 0;
+    let gameRunning = false;
+    let gameSpeed = 1;
+    const targetScore = 12; // 需要12分才能解锁
+    
+    // 蛇的初始设置
+    let snake = [];
+    let mushroom = { x: 0, y: 0 }; // 普通蘑菇
+    let specialMushroom = { x: 0, y: 0, active: false }; // 特殊蘑菇
+    let direction = 'right';
+    let nextDirection = 'right';
+    const gridSize = 20;
+    const gridWidth = 400 / gridSize;
+    const gridHeight = 400 / gridSize;
+    
+    // 页面元素
+    const gameModal = document.getElementById('game-modal');
+    const gameCanvas = document.getElementById('game-canvas');
+    const scoreElement = document.getElementById('score');
+    const draftCard = document.getElementById('draft-card');
+    const lockedMessage = document.getElementById('locked-message');
+    const draftContent = document.getElementById('draft-content');
+    const unlockNotice = document.getElementById('unlock-notice');
+    
+    // 蘑菇图像预加载
+    const mushroomImg = new Image();
+    mushroomImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,20 C30,20 20,40 20,60 C20,80 40,90 50,90 C60,90 80,80 80,60 C80,40 70,20 50,20 Z' fill='%238BC34A'/%3E%3Cellipse cx='50' cy='50' rx='30' ry='20' fill='%23F1F8E9'/%3E%3Ccircle cx='40' cy='45' r='5' fill='%2366BB6A'/%3E%3Ccircle cx='60' cy='45' r='5' fill='%2366BB6A'/%3E%3Ccircle cx='50' cy='55' r='3' fill='%2366BB6A'/%3E%3C/svg%3E";
+    
+    const redMushroomImg = new Image();
+    redMushroomImg.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50,20 C30,20 20,40 20,60 C20,80 40,90 50,90 C60,90 80,80 80,60 C80,40 70,20 50,20 Z' fill='%23FF5722'/%3E%3Cellipse cx='50' cy='50' rx='30' ry='20' fill='%23FFCCBC'/%3E%3Ccircle cx='40' cy='45' r='5' fill='%23D84315'/%3E%3Ccircle cx='60' cy='45' r='5' fill='%23D84315'/%3E%3Ccircle cx='50' cy='55' r='3' fill='%23D84315'/%3E%3C/svg%3E";
+    
+    // 初始化游戏
+    function initGame() {
+      canvas = gameCanvas;
+      ctx = canvas.getContext('2d');
+      
+      // 从本地存储加载游戏进度
+      const savedScore = localStorage.getItem('mushroomScore') || 0;
+      score = parseInt(savedScore);
+      snake = [
+        { x: 5, y: 10 },
+        { x: 4, y: 10 },
+        { x: 3, y: 10 }
+      ];
+      
+      // 生成蘑菇
+      generateMushroom();
+      
+      // 绘制初始游戏状态
+      drawGame();
+    }
+    
+    // 生成普通蘑菇
+    function generateMushroom() {
+      mushroom = {
+        x: Math.floor(Math.random() * gridWidth),
+        y: Math.floor(Math.random() * gridHeight)
+      };
+      
+      // 确保蘑菇不在蛇身上
+      for (let segment of snake) {
+        if (segment.x === mushroom.x && segment.y === mushroom.y) {
+          return generateMushroom();
+        }
+      }
+    }
+    
+    // 生成特殊蘑菇（红色）
+    function generateSpecialMushroom() {
+      if (!specialMushroom.active && Math.random() < 0.25) {
+        specialMushroom = {
+          x: Math.floor(Math.random() * gridWidth),
+          y: Math.floor(Math.random() * gridHeight),
+          active: true
+        };
+        
+        // 确保特殊蘑菇不在蛇身上或普通蘑菇上
+        for (let segment of snake) {
+          if (segment.x === specialMushroom.x && segment.y === specialMushroom.y) {
+            return generateSpecialMushroom();
+          }
+        }
+        
+        if (mushroom.x === specialMushroom.x && mushroom.y === specialMushroom.y) {
+          return generateSpecialMushroom();
+        }
+      }
+    }
+    
+    // 绘制游戏
+    function drawGame() {
+      // 绘制森林背景
+      ctx.fillStyle = '#0f2c0f';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // 绘制草地纹理
+      ctx.fillStyle = '#1a5f1a';
+      for (let x = 0; x < canvas.width; x += 5) {
+        for (let y = 0; y < canvas.height; y += 5) {
+          if (Math.random() > 0.7) {
+            ctx.fillRect(x, y, 1, 1);
+          }
+        }
+      }
+      
+      // 绘制树木阴影
+      ctx.fillStyle = '#0d250d';
+      for (let i = 0; i < 8; i++) {
+        const treeX = (i * 50 + 15) % canvas.width;
+        const treeY = (i * 40 + 10) % canvas.height;
+        ctx.beginPath();
+        ctx.arc(treeX, treeY, 8, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      
+      // 绘制蛇 - 森林小蛇
+      snake.forEach((segment, index) => {
+        if (index === 0) {
+          // 蛇头 - 绿色小蛇
+          ctx.fillStyle = '#4CAF50';
+          ctx.beginPath();
+          ctx.arc(
+            segment.x * gridSize + gridSize/2,
+            segment.y * gridSize + gridSize/2,
+            gridSize/2 - 1,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+          
+          // 蛇头眼睛
+          ctx.fillStyle = '#000';
+          // 根据方向绘制眼睛
+          if (direction === 'right') {
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + gridSize - 6,
+              segment.y * gridSize + 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + gridSize - 6,
+              segment.y * gridSize + gridSize - 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+          } else if (direction === 'left') {
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + 6,
+              segment.y * gridSize + 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + 6,
+              segment.y * gridSize + gridSize - 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+          } else if (direction === 'up') {
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + 6,
+              segment.y * gridSize + 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + gridSize - 6,
+              segment.y * gridSize + 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+          } else if (direction === 'down') {
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + 6,
+              segment.y * gridSize + gridSize - 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(
+              segment.x * gridSize + gridSize - 6,
+              segment.y * gridSize + gridSize - 6,
+              2, 0, Math.PI * 2
+            );
+            ctx.fill();
+          }
+        } else {
+          // 蛇身 - 浅绿色
+          ctx.fillStyle = '#8BC34A';
+          ctx.beginPath();
+          ctx.arc(
+            segment.x * gridSize + gridSize/2,
+            segment.y * gridSize + gridSize/2,
+            gridSize/2 - 2,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+        }
+      });
+      
+      // 绘制普通蘑菇
+      if (mushroomImg.complete) {
+        ctx.drawImage(
+          mushroomImg,
+          mushroom.x * gridSize,
+          mushroom.y * gridSize,
+          gridSize,
+          gridSize
+        );
+      } else {
+        // 备用绘制
+        ctx.fillStyle = '#8BC34A';
+        ctx.beginPath();
+        ctx.arc(
+          mushroom.x * gridSize + gridSize/2,
+          mushroom.y * gridSize + gridSize/2,
+          gridSize/2 - 2,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+        
+        ctx.fillStyle = '#F1F8E9';
+        ctx.beginPath();
+        ctx.ellipse(
+          mushroom.x * gridSize + gridSize/2,
+          mushroom.y * gridSize + gridSize/2 - 3,
+          gridSize/3,
+          gridSize/4,
+          0, 0, Math.PI * 2
+        );
+        ctx.fill();
+      }
+      
+      // 绘制特殊蘑菇（如果存在）
+      if (specialMushroom.active) {
+        if (redMushroomImg.complete) {
+          ctx.drawImage(
+            redMushroomImg,
+            specialMushroom.x * gridSize,
+            specialMushroom.y * gridSize,
+            gridSize,
+            gridSize
+          );
+        } else {
+          // 备用绘制
+          ctx.fillStyle = '#FF5722';
+          ctx.beginPath();
+          ctx.arc(
+            specialMushroom.x * gridSize + gridSize/2,
+            specialMushroom.y * gridSize + gridSize/2,
+            gridSize/2 - 1,
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+          
+          ctx.fillStyle = '#FFCCBC';
+          ctx.beginPath();
+          ctx.ellipse(
+            specialMushroom.x * gridSize + gridSize/2,
+            specialMushroom.y * gridSize + gridSize/2 - 3,
+            gridSize/3,
+            gridSize/4,
+            0, 0, Math.PI * 2
+          );
+          ctx.fill();
+        }
+        
+        // 特殊蘑菇的闪光效果
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.6)';
+        ctx.beginPath();
+        ctx.arc(
+          specialMushroom.x * gridSize + gridSize/2,
+          specialMushroom.y * gridSize + gridSize/2,
+          gridSize/3,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+      }
+    }
+    
+    // 更新游戏状态
+    function updateGame() {
+      // 更新蛇的方向
+      direction = nextDirection;
+      
+      // 计算新的蛇头位置
+      const head = { ...snake[0] };
+      
+      switch (direction) {
+        case 'up': head.y -= 1; break;
+        case 'down': head.y += 1; break;
+        case 'left': head.x -= 1; break;
+        case 'right': head.x += 1; break;
+      }
+      
+      // 检查游戏结束条件
+      if (
+        head.x < 0 || head.x >= gridWidth ||
+        head.y < 0 || head.y >= gridHeight ||
+        snake.some(segment => segment.x === head.x && segment.y === head.y)
+      ) {
+        gameOver();
+        return;
+      }
+      
+      // 添加新的蛇头
+      snake.unshift(head);
+      
+      // 检查是否吃到普通蘑菇
+      if (head.x === mushroom.x && head.y === mushroom.y) {
+        score += 1;
+        generateMushroom();
+        updateScoreDisplay();
+        
+        // 每次得分后有可能生成特殊蘑菇
+        generateSpecialMushroom();
+      } else if (specialMushroom.active && head.x === specialMushroom.x && head.y === specialMushroom.y) {
+        // 检查是否吃到特殊蘑菇
+        score += 3;
+        specialMushroom.active = false;
+        updateScoreDisplay();
+      } else {
+        // 如果没有吃到蘑菇，移除蛇尾
+        snake.pop();
+      }
+      
+      // 每4分提高一次游戏速度
+      const newSpeed = Math.floor(score / 4) + 1;
+      if (newSpeed !== gameSpeed) {
+        gameSpeed = newSpeed;
+        clearInterval(gameInterval);
+        gameInterval = setInterval(updateGame, 200 / gameSpeed);
+      }
+      
+      // 绘制游戏
+      drawGame();
+      
+      // 达到目标分数：先进入游戏结束流程以显示提示，再延迟解锁
+      if (score >= targetScore && gameRunning) {
+        gameOver();
+        return;
+      }
+    }
+    
+    // 游戏结束
+    function gameOver() {
+      gameRunning = false;
+      clearInterval(gameInterval);
+      document.getElementById('start-btn').textContent = '重新修复';
+
+      // 成功与失败的结束处理：不立即关闭任何遮罩层
+      if (score >= targetScore) {
+        // 成功：先显示提示，稍后触发解锁（不关闭遮罩层）
+        setTimeout(() => {
+          unlockDraft();
+        }, 1500);
+      } else {
+        // 失败：保留游戏模态以便重新探索
+      }
+      
+      // 显示游戏结束信息
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      ctx.textAlign = 'center';
+      if (score >= targetScore) {
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 24px "Microsoft YaHei"';
+        ctx.fillText('探索结束!', canvas.width/2, canvas.height/2 - 30);
+      } else {
+        ctx.fillStyle = '#FF5722';
+        ctx.font = 'bold 24px "Microsoft YaHei"';
+        ctx.fillText('修复失败', canvas.width/2, canvas.height/2 - 30);
+      }
+      
+      ctx.fillStyle = '#c8e6c9';
+      ctx.font = '18px "Microsoft YaHei"';
+      ctx.fillText(`收集到 ${score} 个蘑菇`, canvas.width/2, canvas.height/2);
+      
+      if (score >= targetScore) {
+        ctx.fillStyle = '#4CAF50';
+        ctx.fillText('隐藏内容已解锁!', canvas.width/2, canvas.height/2 + 30);
+      } else {
+        ctx.fillStyle = '#FF9800';
+        ctx.fillText(`还需要 ${targetScore - score} 个蘑菇`, canvas.width/2, canvas.height/2 + 30);
+      }
+    }
+    
+    // 更新分数显示
+    function updateScoreDisplay() {
+      scoreElement.textContent = score;
+      
+      // 保存当前分数到本地存储
+      localStorage.setItem('mushroomScore', score);
+    }
+    
+    // 解锁草稿内容
+    function unlockDraft() {
+      // 移除锁定状态
+      draftCard.classList.remove('locked');
+      lockedMessage.style.display = 'none';
+      draftContent.classList.add('unlocked');
+      
+      // 显示中心查看按钮覆盖层（提示用户点击查看内容）
+      const centerOverlay = document.getElementById('game-center-overlay');
+      if (centerOverlay) centerOverlay.classList.add('show');
+      // 兼容：如仍存在解锁提示则一并显示
+      if (typeof unlockNotice !== 'undefined' && unlockNotice) {
+        unlockNotice.classList.add('active');
+      }
+      
+      // 达成目标即视为探索结束：停止游戏（遮罩层保留，待“查看内容”后关闭）
+      try {
+        gameRunning = false;
+        clearInterval(gameInterval);
+      } catch(e) {}
+      
+      // 保存解锁状态到本地存储
+      localStorage.setItem('draftUnlocked', 'true');
+    }
+    
+    // 检查是否已经解锁
+    function checkUnlockStatus() {
+      const isUnlocked = localStorage.getItem('draftUnlocked') === 'true' || score >= targetScore;
+      
+      if (isUnlocked) {
+        draftCard.classList.remove('locked');
+        lockedMessage.style.display = 'none';
+        draftContent.classList.add('unlocked');
+      }
+    }
+    
+    // 开始游戏
+    function startGame() {
+      if (gameRunning) return;
+      
+      // 如果游戏结束，重新初始化
+      if (score >= targetScore || document.getElementById('start-btn').textContent === '重新修复') {
+        score = 0;
+        gameSpeed = 1;
+        snake = [
+          { x: 5, y: 10 },
+          { x: 4, y: 10 },
+          { x: 3, y: 10 }
+        ];
+        direction = 'right';
+        nextDirection = 'right';
+        generateMushroom();
+        specialMushroom.active = false;
+        // 重置分数显示与本地存储
+        updateScoreDisplay();
+      }
+      
+      gameRunning = true;
+      document.getElementById('start-btn').textContent = '重新修复';
+      
+      clearInterval(gameInterval);
+      gameInterval = setInterval(updateGame, 200 / gameSpeed);
+    }
+    
+    // 暂停/继续游戏
+    function togglePause() {
+      if (!gameRunning) return;
+      
+      if (gameInterval) {
+        clearInterval(gameInterval);
+        gameInterval = null;
+        const pauseBtnEl = document.getElementById('pause-btn');
+        if (pauseBtnEl) pauseBtnEl.textContent = '继续';
+        
+        // 显示暂停文字
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#FFD700';
+        ctx.font = 'bold 24px "Microsoft YaHei"';
+        ctx.textAlign = 'center';
+        ctx.fillText('修复暂停', canvas.width/2, canvas.height/2);
+        
+        ctx.fillStyle = '#c8e6c9';
+        ctx.font = '16px "Microsoft YaHei"';
+        ctx.fillText('按"继续"按钮或空格键继续', canvas.width/2, canvas.height/2 + 30);
+      } else {
+        gameInterval = setInterval(updateGame, 200 / gameSpeed);
+        const pauseBtnEl = document.getElementById('pause-btn');
+        if (pauseBtnEl) pauseBtnEl.textContent = '暂停';
+      }
+    }
+    
+    // 事件监听
+    document.addEventListener('DOMContentLoaded', () => {
+      // 初始化游戏
+      initGame();
+      
+      // 检查解锁状态
+      checkUnlockStatus();
+      
+      // 游戏控制按钮
+      document.getElementById('start-btn').addEventListener('click', startGame);
+      const pauseBtn = document.getElementById('pause-btn');
+      if (pauseBtn) pauseBtn.addEventListener('click', togglePause);
+      
+      // 解锁通知关闭按钮
+      document.getElementById('close-notice-btn').addEventListener('click', () => {
+        // 查看内容：移除中心覆盖按钮与所有遮罩层
+        const centerOverlay = document.getElementById('game-center-overlay');
+        if (centerOverlay) centerOverlay.classList.remove('show');
+        const overlay = document.getElementById('game-start-overlay');
+        if (overlay) overlay.classList.remove('show');
+        if (unlockNotice) unlockNotice.classList.remove('active');
+        if (gameModal) gameModal.classList.remove('active');
+      });
+      
+      // 游戏入口按钮（先显示系统提示，再开始）
+      document.getElementById('play-from-lock-btn').addEventListener('click', () => {
+        showGameStartOverlay('lock');
+      });
+
+      // 重复游玩入口（先显示系统提示，再开始）
+      const replayBtn = document.getElementById('replay-snake-btn');
+      if (replayBtn) {
+        replayBtn.addEventListener('click', () => {
+          showGameStartOverlay('replay');
+        });
+      }
+      
+      // 键盘控制
+      document.addEventListener('keydown', (e) => {
+        if (!gameModal.classList.contains('active') || !gameRunning) return;
+        
+        switch (e.key) {
+          case 'ArrowUp':
+            if (direction !== 'down') nextDirection = 'up';
+            break;
+          case 'ArrowDown':
+            if (direction !== 'up') nextDirection = 'down';
+            break;
+          case 'ArrowLeft':
+            if (direction !== 'right') nextDirection = 'left';
+            break;
+          case 'ArrowRight':
+            if (direction !== 'left') nextDirection = 'right';
+            break;
+          case ' ':
+            // 空格键暂停/继续
+            togglePause();
+            e.preventDefault();
+            break;
+        }
+      });
+      
+      // 防止方向键滚动页面
+      window.addEventListener('keydown', (e) => {
+        if (gameModal.classList.contains('active') && 
+            ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '].includes(e.key)) {
+          e.preventDefault();
+        }
+      });
+      
+      // 双击页面任意位置可打开游戏（隐藏功能）
+      let clickCount = 0;
+      let clickTimer;
+      document.addEventListener('click', (e) => {
+        // 排除游戏按钮和模态框区域
+        if (e.target.closest('.secret-game-btn') || e.target.closest('#game-modal')) {
+          return;
+        }
+        
+        clickCount++;
+        if (clickCount === 1) {
+          clickTimer = setTimeout(() => {
+            clickCount = 0;
+          }, 500);
+        } else if (clickCount === 2) {
+          clearTimeout(clickTimer);
+          clickCount = 0;
+          showGameStartOverlay('double');
+        }
+      });
+    });
+
+    // 记录启动来源（可选）
+    let pendingStartSource = null;
+
+    // 显示系统提示覆盖层
+    function showGameStartOverlay(source) {
+      pendingStartSource = source || null;
+      const overlay = document.getElementById('game-start-overlay');
+      if (overlay) {
+        overlay.classList.add('show');
+        const prompt = overlay.querySelector('.game-start-modal');
+        if (prompt) prompt.style.display = 'block';
+        const gm = document.getElementById('game-modal');
+        if (gm) gm.classList.remove('active');
+        const notice = document.getElementById('unlock-notice');
+        if (notice) notice.classList.remove('active');
+      }
+    }
+
+    // 关闭系统提示并开始游戏
+    function dismissGameStartOverlayAndStart() {
+      const overlay = document.getElementById('game-start-overlay');
+      if (overlay) {
+        // 关闭覆盖层，仅保留草稿箱内的游戏模态
+        overlay.classList.remove('show');
+      }
+      // 显示草稿箱内的游戏模态并初始化
+      gameModal.classList.add('active');
+      initGame();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清小院 · 山林祈愿疗愈徒步体验</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8f4a;
+            --dark-green: #1a5c1a;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0, 68, 0) 100%);
+            color: #e8f5e8;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 60px 30px 100px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header-image {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: #d4f1d4;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a8d5a8;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            line-height: 1.8;
+            font-size: 1.1em;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(164, 213, 164, 0.2);
+            animation: fadeInUp 1s ease-out 0.3s both;
+            margin-bottom: 40px;
+        }
+
+        .greeting {
+            font-size: 1.2em;
+            color: #e8f5e8;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .info-card p {
+            margin-bottom: 25px;
+            text-align: justify;
+            color: #d4ead4;
+        }
+
+        .hiking-image {
+            width: 100%;
+            max-width: 700px;
+            height: auto;
+            border-radius: 15px;
+            margin: 30px auto;
+            display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(74, 143, 74, 0.3);
+        }
+
+        .highlight-section {
+            background: rgba(42, 82, 42, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #4a8f4a;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(164, 213, 164, 0.1);
+        }
+
+        .info-item h3 {
+            color: #b8e0b8;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .info-item p {
+            color: #d4ead4;
+            margin-bottom: 0;
+            font-size: 1em;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 30px;
+            animation: fadeIn 1.5s ease-out 0.6s both;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            font-size: 1.2em;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(135deg, #2d5f2d 0%, rgb(0, 68, 0) 100%);
+            border: 2px solid #4a8f4a;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 3px;
+            box-shadow: 0 10px 30px rgba(0, 68, 0, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 68, 0, 0.6);
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button:hover .arrow {
+            transform: translateX(-5px);
+        }
+
+        .back-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 68, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px 80px;
+            }
+
+            .title {
+                font-size: 2em;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .info-card {
+                padding: 30px 25px;
+                font-size: 1em;
+                line-height: 1.8;
+            }
+
+            .hiking-image {
+                max-width: 100%;
+                margin: 20px auto;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-button {
+                padding: 14px 35px;
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.6em;
+                letter-spacing: 2px;
+            }
+
+            .info-card {
+                padding: 25px 20px;
+                font-size: 0.95em;
+            }
+
+            .highlight-section {
+                padding: 20px;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a3a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2d5f2d 0%, rgb(0, 68, 0) 100%);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbar.js"></script>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">添清小院 · 山林祈愿疗愈徒步体验</h1>
+            <p class="subtitle">在自然里，寻回内心的平静</p>
+        </div>
+
+        <div class="info-card">
+            <p class="greeting">亲爱的住客：</p>
+            <p>若您想暂离喧嚣、放松身心，感受在山野林间冥想的静谧，您可以参与我们的山林祈愿疗愈徒步活动。</p>
+            
+            <div class="highlight-section">
+                <p>疗愈路线藏在累祈山余脉的浅林里，全程2.3公里，往返约1.5小时，难度低中，无需专业户外装备，每日早7点，用完早餐之后，在小院门口花园处集合，由向导讲解路线安全和简单的祈愿礼仪。</p>
+                
+                <!-- 添加的山林徒步图片 -->
+                <img src="image_forstwalk.png" alt="山林徒步，祈愿疗愈" class="hiking-image">
+                
+                <p>沿青石板路进山，终点在冥想点：望云台，那里可以免费领祈愿牌写下心愿，挂在祈愿木上。向导会播放冥想音乐帮大家进入冥想状态，之后原路返回。</p>
+            </div>
+            
+            <div class="info-grid">
+                <div class="info-item">
+                    <h3>集合地点</h3>
+                    <p>添清小院正门门前空地</p>
+                </div>
+                <div class="info-item">
+                    <h3>活动时间</h3>
+                    <p>每周周三早上7:00-8:30<br>（雨天暂停，可提前咨询前台）</p>
+                </div>
+                <div class="info-item">
+                    <h3>温馨提示</h3>
+                    <p>山间清晨微凉，建议穿舒适的运动鞋与薄外套；若有特殊身体状况，需提前告知向导。</p>
+                </div>
+            </div>
+        </div>
+
+        
+    </div>
+</body>
+</html>

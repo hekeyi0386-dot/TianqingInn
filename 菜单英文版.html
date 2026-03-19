@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tianqing Inn - Daily Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            background-color: #f9fbf8;
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* Top decoration */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: var(--light-green);
+            border-radius: 8px;
+        }
+        
+        /* Global search box style */
+        .global-search {
+            background-color: var(--light-green);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        /* Header area */
+        .menu-header {
+            background: url("https://images.unsplash.com/photo-1556911220-bff31c812dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=900&q=80") top center no-repeat;
+            background-size: 100% auto;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .menu-header h1 {
+            font-size: 2.5rem;
+            color: var(--dark-green);
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.8);
+        }
+        
+        .menu-header .subtitle {
+            font-size: 1rem;
+            color: var(--dark-green);
+            font-weight: 500;
+            letter-spacing: 1px;
+            background-color: rgba(255,255,255,0.7);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+        }
+        
+        /* Content area */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-green);
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: var(--accent-green);
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* Daily menu "date bar" */
+        .day-title {
+            background: var(--medium-green);
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            border-bottom: 2px solid var(--light-green);
+            font-weight: 700;
+            border-radius: 6px 6px 0 0;
+        }
+
+        /* Specific dish area */
+        .day-content {
+            padding: 20px;
+            line-height: 2;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background-color: #fafefa;
+        }
+
+        .day-content span {
+            color: var(--dark-green);
+            font-weight: 700;
+        }
+
+        .dish-item {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        /* Bottom decoration */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🌿 Tianqing Inn • Return to Nature's Essence 🌿";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: var(--dark-green);
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid var(--light-green);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .menu-header h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-header .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .day-title {
+                font-size: 1rem;
+            }
+
+            .day-content {
+                font-size: 1rem;
+                line-height: 1.8;
+                padding: 15px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Site-wide English headbar -->
+    <script defer src="headbarEN.js"></script>
+    
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <!-- Menu title area -->
+        <div class="menu-header">
+            <h1>Tianqing Inn Daily Menu</h1>
+            <p class="subtitle">Authentic Yunnan Flavors     More detailed dishes are available for selection at the inn</p>
+        </div>
+        
+        <section class="content-section">
+            <h2 class="section-title">Weekly Featured Dishes</h2>
+            
+            <!-- Monday -->
+            <div class="day-block">
+                <div class="day-title">Monday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Stir-Fried Wild Mushrooms with Boletus</p>
+                    <p class="dish-item">🥗 Side Dish: Sautéed Seasonal Vegetables (Spinach, Bean Sprouts)</p>
+                    <p class="dish-item">🍚 Staple Food: Mixed Grain Rice</p>
+                    <p class="dish-item">🍵 Daily Soup: Wolfberry Leaf and Lean Meat Soup</p>
+                </div>
+            </div>
+
+            <!-- Tuesday -->
+            <div class="day-block">
+                <div class="day-title">Tuesday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Xuanwei Stir-Fried Pork</p>
+                    <p class="dish-item">🥗 Side Dish: Cold Mixed Cucumber with Black Fungus</p>
+                    <p class="dish-item">🍚 Staple Food: White Rice</p>
+                    <p class="dish-item">🍵 Daily Soup: Corn, Carrot and Pork Rib Soup</p>
+                </div>
+            </div>
+
+            <!-- Wednesday -->
+            <div class="day-block">
+                <div class="day-title">Wednesday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Sour Papaya Braised Chicken</p>
+                    <p class="dish-item">🥗 Side Dish: Sautéed Broccoli</p>
+                    <p class="dish-item">🍚 Staple Food: Purple Sweet Potato Rice</p>
+                    <p class="dish-item">🍵 Daily Soup: Lotus Root and Pork Rib Soup</p>
+                </div>
+            </div>
+
+            <!-- Thursday -->
+            <div class="day-block">
+                <div class="day-title">Thursday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Cross-Bridge Rice Noodles (with fresh meat, quail eggs, bean curd skin, etc.)</p>
+                    <p class="dish-item">🥗 Side Dish: Cold Mixed Bean Sprouts with Vermicelli</p>
+                    <p class="dish-item">🍚 Staple Food: Rice Noodles (contains staple food itself, can be served with small steamed buns)</p>
+                    <p class="dish-item">🍵 Daily Soup: Tomato and Egg Soup (optional for rice noodle soup)</p>
+                </div>
+            </div>
+
+            <!-- Friday -->
+            <div class="day-block">
+                <div class="day-title">Friday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Steam Pot Chicken</p>
+                    <p class="dish-item">🥗 Side Dish: Sautéed Leaf Lettuce</p>
+                    <p class="dish-item">🍚 Staple Food: Pumpkin Rice</p>
+                    <p class="dish-item">🍵 Daily Soup: Shiitake Mushroom and Black-bone Chicken Soup (steam pot chicken soup can be served as soup)</p>
+                </div>
+            </div>
+
+            <!-- Saturday -->
+            <div class="day-block">
+                <div class="day-title">Saturday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Tengchong Dajiujia (Stir-Fried Rice Cakes with ham, eggs, etc.)</p>
+                    <p class="dish-item">🥗 Side Dish: Cold Shredded Potato</p>
+                    <p class="dish-item">🍚 Staple Food: Dajiujia (contains staple food itself, can be served with corn)</p>
+                    <p class="dish-item">🍵 Daily Soup: Chinese Cabbage and Tofu Soup</p>
+                </div>
+            </div>
+
+            <!-- Sunday -->
+            <div class="day-block">
+                <div class="day-title">Sunday</div>
+                <div class="day-content">
+                    <p>🌿 Featured Staple: <span>Protective Porridge</span></p>
+                    <p class="dish-item">🍲 Main Dish: Dai Flavor Lemongrass Grilled Fish</p>
+                    <p class="dish-item">🥗 Side Dish: Dai Flavor Cold Mixed Mashed Chicken Feet (adjustable according to taste)</p>
+                    <p class="dish-item">🍚 Staple Food: Pineapple Rice</p>
+                    <p class="dish-item">🍵 Daily Soup: Lemon Leaf Braised Pork Ribs (Dai style soup)</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="bottom-decoration"></div>
+    </div>
+</body>
+</html>

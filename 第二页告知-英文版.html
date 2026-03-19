@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page 2 Guide - Tian Qing Inn</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; background: linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0,68,0) 100%); color:#e8f5e8; min-height:100vh; }
+        .container { max-width:980px; margin:120px auto 90px; padding:0 34px; }
+        .page-title { font-size:42px; font-weight:300; letter-spacing:6px; text-align:center; margin-bottom:55px; color:#d4f1d4; text-shadow:0 3px 14px rgba(0,0,0,.5); }
+        .cards-grid { display:grid; gap:38px; grid-template-columns: 1fr; }
+        /* Desktop: stack sections vertically from top to bottom */
+        @media (min-width:900px){
+            .cards-grid { grid-template-columns: 1fr; justify-content: center; }
+            /* Set card width to 2× previous 2-column width */
+            .info-card { width: 100%; max-width: calc((min(980px, 100vw) - 68px - 38px) * 1); margin-left:auto; margin-right:auto; }
+        }
+        /* Single column enforced at all widths */
+        @media (max-width:640px){ .page-title { font-size:32px; letter-spacing:3px; } }
+        .info-card { position:relative; background:rgba(255,255,255,0.08); border:1px solid rgba(164,213,164,0.25); border-radius:26px; padding:34px 36px 40px; box-shadow:0 12px 45px rgba(0,0,0,.45); backdrop-filter:blur(10px); overflow:hidden; animation:fadeUp .9s ease; }
+        .info-card::before { content:""; position:absolute; inset:0; background:linear-gradient(140deg, rgba(45,95,45,0.35), rgba(0,68,0,0.15)); opacity:.85; pointer-events:none; }
+        .card-header { position:relative; margin:0 0 22px; font-size:24px; letter-spacing:2px; font-weight:600; color:#e4f7e4; display:flex; align-items:center; gap:14px; }
+        /* Use logo image instead of the green square */
+        .card-header::before { content:none; display:none; }
+        .card-icon { width:42px; height:42px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,.4); object-fit:contain; }
+        .info-card p, .info-card li { position:relative; line-height:1.85; font-size:15.5px; color:#d4ead4; }
+        .info-card p { margin-bottom:18px; text-align:justify; text-indent:2em; }
+        .bullet-list { list-style:none; padding:0; margin:0 0 4px 0; }
+        .bullet-list li { padding-left:1.4em; margin-bottom:10px; }
+        .bullet-list li::before { content:"•"; position:absolute; left:0.4em; color:#6abf69; font-size:18px; line-height:1; }
+        .flow-line { font-weight:600; letter-spacing:1px; color:#c9e9c9; margin-bottom:18px; }
+        .footer-action { text-align:center; margin-top:70px; }
+        .enter-btn { display:inline-flex; align-items:center; gap:14px; padding:20px 64px; font-size:20px; font-weight:600; letter-spacing:4px; color:#fff; background:linear-gradient(135deg,#2d5f2d,#004400); border:2px solid #4a8f4a; border-radius:55px; cursor:pointer; text-decoration:none; box-shadow:0 16px 50px rgba(0,0,0,.55), 0 0 0 6px rgba(45,95,45,.35); position:relative; overflow:hidden; transition:.35s; }
+        .enter-btn::after { content:"→"; font-size:24px; transition:.35s; }
+        .enter-btn:hover { transform:translateY(-4px); box-shadow:0 22px 60px rgba(0,0,0,.65), 0 0 0 6px rgba(74,143,74,.55); background:linear-gradient(135deg,#3d7f3d,#1a5c1a); }
+        .enter-btn:hover::after { transform:translateX(8px); }
+        .enter-btn:active { transform:translateY(-1px); }
+        /* Back button variant: show left arrow and remove right arrow */
+        .back-btn::after { content:""; }
+        .back-btn::before { content:"←"; font-size:24px; margin-right:10px; transition:.35s; }
+        .back-btn:hover::before { transform:translateX(-8px); }
+        /* spacing between adjacent buttons */
+        .footer-action .enter-btn + .enter-btn { margin-left:14px; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(34px); } to { opacity:1; transform:translateY(0); } }
+
+        /* Title decoration: emblem above and accent underline */
+        .page-title { position: relative; }
+        .page-title::before {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 5px;
+            background-image: url('logo_white.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            filter: drop-shadow(0 2px 10px rgba(0,0,0,.45));
+        }
+        .page-title::after {
+            content: "";
+            display: block;
+            width: 220px;
+            height: 8px;
+            margin: 18px auto 0;
+            background: linear-gradient(90deg, #2d5f2d, #6abf69, #2d5f2d);
+            border-radius: 999px;
+            box-shadow: 0 6px 18px rgba(0,0,0,.35);
+        }
+
+        /* Page sub-note styled as body text */
+        .page-subnote {
+            font-size: 15.5px;
+            color: #d4ead4;
+            line-height: 1.85;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbarEN.js"></script>
+    <div class="container">
+        <h1 class="page-title">Investigation Guide</h1>
+            <p class="page-subnote">Click the "White Mushroom" logo at the top to return to this page for review.</p>
+    
+        <div class="cards-grid">
+            <!-- Character Introduction -->
+            <section class="info-card" aria-labelledby="characters-title">
+                <h2 id="characters-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="Icon">Character Introduction</h2>
+                <p><strong>Yang Liqiang:</strong> The owner of Tian Qing Inn. He is enthusiastic and talkative. Having experienced multiple failed business ventures, he never gave up and finally achieved a career turnaround with the inn. He is a middle-aged man who persisted through real-world setbacks to achieve hard-earned success.</p>
+                <p><strong>Lei Chuan:</strong> A local of Leiqishan who lives long-term at Tian Qing Inn. Easygoing and enjoys chatting with guests, occasionally accompanying them on outings. An important figure connecting the inn to the outside world.</p>
+                <p><strong>Liu Jiangtao:</strong> Quiet and reserved, living year-round at the inn. Frequently travels alone to surrounding areas for investigations and visits. Keeps a low profile and seems to be secretly researching something unknown.</p>
+                <ul class="bullet-list">
+                    <li>Some character background information holds practical reference value for solving puzzles.</li>
+                    <li>All characters above have corresponding accounts in the Tian Qing Inn forum.</li>
+                </ul>
+            </section>
+            <!-- Game Objective -->
+            <section class="info-card" aria-labelledby="goal-title">
+                <h2 id="goal-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="Icon">Game Objective</h2>
+                <p>By browsing the Tian Qing Inn forum and related pages, you need to immerse yourself in fragmented information and narrative clues to piece together Xie Yingwen's true whereabouts and the secrets behind the inn's facade.</p>
+                <ul class="bullet-list">
+                    <li>Gather clues about the disappearance of your boyfriend, Xie Yingwen.</li>
+                    <li>Uncover the truth hidden behind the inn's "natural healing" facade.</li>
+                    <li>Find your missing boyfriend.</li>
+                </ul>
+            </section>
+            <!-- Gameplay -->
+            <section class="info-card" aria-labelledby="play-title">
+                <h2 id="play-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="Icon">Gameplay</h2>
+                <p>This is an exploration and interpretation game with no fixed path; entering correct keywords allows you to hack into hidden pages. While reading each regular page, pay attention to unusual word choices, eerie tones, or unnatural structures—they might all be "keywords."</p>
+                <ul class="bullet-list">
+                <li>You need to search for these keywords throughout the website and enter them in the top search box, or attempt to hack into forum users' profile pages to gradually uncover deeper content and the truth.</li>
+                <li>Clicking the "white mushroom pattern" on the official website returns you to this page to review the investigation guide.</li>
+                <li>You can click "Operation Log" on the homepage of the official website to backtrack and view all successfully hacked pages, as well as check your puzzle-solving progress. Pages discovered and collected closer to the total number mean you are closer to the truth.</li>
+                <li>Some pages may experience access abnormalities due to hacking attempts; you need to find ways to resolve these anomalies.</li>
+                <li>Average playtime is about 1-2 hours, can be done in segments according to your own pace.</li>
+                </ul>
+            </section>
+            <!-- Notes -->
+            <section class="info-card" aria-labelledby="notice-title">
+                <h2 id="notice-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="Icon">Important Notes</h2>
+                <p>The game should be played in fullscreen mode; otherwise, display issues may occur.</p>
+                <ul class="bullet-list" style="margin-bottom:4px;">
+                        <li>Not only unfamiliar proper nouns are clues. Pay attention to ordinary, repeated, or seemingly redundant words as well.</li>
+                    <li>No programming skills are required; most clues come from visible website content.</li>
+                    <li>If a piece of content seems logically disjointed, overly emotional, or excessively embellished, it might be a deliberately embedded implicit trigger.</li>
+                    <li>Computer use is recommended; tablets may experience display deviations or layout issues.</li>
+                    <li>Enter only 1 keyword at a time when searching (keywords support Chinese and English, but not multiple words, spaces, numbers, or special characters).</li>
+                    <li>The game does not contain jump scares or gory imagery.</li>
+                </ul>
+                            </section>
+        </div>
+        <div class="footer-action">
+            <a href="index.html" class="enter-btn back-btn" aria-label="Go Back">Go Back</a>
+            <a href="1.官网主页.html" class="enter-btn" aria-label="Enter Forum">Enter Forum</a>
+        </div>
+    </div>
+</body>
+</html>

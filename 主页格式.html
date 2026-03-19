@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <style>
+    /* 基础样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9; /* 保留浅绿色背景 */
+      font-family: "Microsoft YaHei", sans-serif;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /*（已移除本地搜索栏样式）*/
+
+    /* 个人信息头部区域（仅保留框架，无数据） */
+    .profile-header {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #f0f0f0;
+      flex-shrink: 0;
+      background-color: #f5f5f5; /* 头像占位背景 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .profile-desc {
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    .profile-stats {
+      display: none; /* 隐藏关注/粉丝等统计数据 */
+    }
+
+    /* 内容模块区域 - 两列布局 */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 25px;
+    }
+
+    /* 左侧主要内容区（仅保留空框架） */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .content-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      color: #999;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+      color: #333;
+    }
+
+    .empty-tip {
+      padding: 40px 0;
+      font-size: 1rem;
+    }
+
+    /* 帖子时间与正文样式 */
+    .post-time {
+      color: #000;
+      text-align: left;
+      margin: 6px 0 10px;
+      font-size: 0.95rem;
+    }
+    .post-body {
+      color: #000;
+      text-align: left;
+      line-height: 1.8;
+    }
+    .post-figure { margin-top: 12px; text-align: center; }
+    .post-figure img { width: 100%; height: 720px; object-fit: cover; border: 1px solid #eee; border-radius: 8px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .post-embed { margin-top: 12px; position: relative; }
+    .post-embed iframe { width: 100%; height: 720px; border: 1px solid #eee; border-radius: 8px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.06); }
+    .embed-note { position: absolute; top: 8px; left: 12px; z-index: 2; color: #d93025; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.92); border: 1px solid rgba(217,48,37,0.35); padding: 4px 8px; border-radius: 4px; pointer-events: none; }
+    .section-divider { height: 2px; background: #f0f0f0; border: 0; margin: 12px 0; }
+    @media (max-width: 520px){ .post-figure img, .post-embed iframe { height: 420px; } }
+
+    /* 右侧侧边栏（仅保留空框架） */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .sidebar-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-menu a {
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    .sidebar-menu a:hover {
+      color: #006600;
+    }
+
+    .tag-list, .follower-list {
+      display: none; /* 隐藏标签、关注列表 */
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+
+      /* 本地搜索栏已移除，无需适配 */
+    }
+  </style>
+</head>
+<body>
+  <script src="headbar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      setTimeout(function(){
+        if(!document.querySelector('.site-headbar')){
+          try{
+            var s = document.createElement('script');
+            s.src = 'headbar.js?v=' + Date.now();
+            document.body.appendChild(s);
+          }catch(e){}
+        }
+      }, 0);
+    });
+  </script>
+  <div class="container">
+    <!-- 统一使用站点 headbar，移除本地搜索栏 -->
+
+    <!-- 个人信息头部（无统计数据） -->
+    <div class="profile-header">
+      <div class="avatar">
+        <img src="某某头像.png" alt="某某的头像" loading="lazy">
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">某某</h1>
+        <p class="profile-desc">联系我在：adwejfjgw@mail.bhbu.edu.cn。</p>
+      </div>
+    </div>
+
+    <!-- 内容网格布局（空框架） -->
+    <div class="content-grid">
+      <!-- 左侧主要内容区（无帖子数据） -->
+      <div class="main-content">
+        <!-- 已发布帖子（空） -->
+        <div class="content-card">
+          <h2 class="card-title">已发布帖子</h2>
+          <p class="post-time">2018年8月20日 02:54</p>
+          <div class="post-body">老板酒醉后给我分享的“终极养身术法”。但是我感觉有一些内容太玄乎了，有点怪。趁他喝醉悄悄撕下他给我鉴赏的秘籍的一页。疑似是什么logo？还有一些看不懂的字体。后面的几段内容，是我一边听他说一边偷偷记下的，讲的是“养身”的整个过程……有没有了解过的家人来说道说道，这玩意儿到底是养身还是别的啥？</div>
+          <div class="post-figure">
+            <img src="邪教图腾.png" alt="相关图示" loading="lazy">
+          </div>
+          <div class="section-divider" aria-hidden="true"></div>
+          <p class="post-time">2018年8月20日 04:34</p>
+          <div class="post-embed">
+            <div class="embed-note">文件已损坏，无法正常查看</div>
+            <iframe src="书面.html" title="撕下的一页 - 书面内容" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <!-- 草稿箱（空） -->
+        <div class="content-card">
+          <h2 class="card-title">未发布帖子（草稿箱）</h2>
+          <div class="empty-tip">暂无草稿内容</div>
+        </div>
+      </div>
+
+      <!-- 右侧侧边栏（仅保留菜单，无其他数据） -->
+      <div class="sidebar">
+        <!-- 个人菜单 -->
+        <div class="sidebar-card">
+          <h3 class="card-title">个人中心</h3>
+          <ul class="sidebar-menu">
+            <li><a href="#">我的主页</a></li>
+            <li><a href="#">编辑资料</a></li>
+            <li><a href="#">发布新帖</a></li>
+            <li><a href="#">消息通知</a></li>
+            <li><a href="#">收藏夹</a></li>
+            <li><a href="#">设置</a></li>
+          </ul>
+        </div>
+
+        <!-- 常用标签（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">常用标签</h3>
+          <div class="empty-tip">暂无常用标签</div>
+        </div>
+
+        <!-- 关注的人（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">关注的人</h3>
+          <div class="empty-tip">暂无关注用户</div>
+        </div>
+
+        <!-- 活跃度统计（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">本月活跃度</h3>
+          <div class="empty-tip">暂无活跃度数据</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【Post-Disaster Documentary】The August 25, 2008 Major Landslide Disaster in Jiasa Town</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --dark-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--dark-shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* Top Decoration */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, #666, #999, #666);
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: #e8e8e8;
+            border-radius: 8px;
+        }
+        
+        /* Global Search Bar */
+        .global-search {
+            background-color: #e8e8e8;
+            padding: 20px 30px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: #666;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #444;
+        }
+        
+        /* Header */
+        header {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid #666;
+            filter: grayscale(80%);
+        }
+        
+        .header-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            color: white;
+            padding: 25px 30px;
+        }
+        
+        .header-title h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .header-title p {
+            font-size: 16px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title p::before {
+            content: "🕯️";
+            margin-right: 8px;
+        }
+        
+        /* Content Section */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #e8e8e8;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: #666;
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* Article Content */
+        .article-content {
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .article-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .article-source {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        /* Puzzle Section */
+        .puzzle-container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #ddd;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .puzzle-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 18px;
+        }
+        
+        .puzzle-area {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            margin: 0 auto;
+            border: 1px dashed #999;
+            background-color: #f9f9f9;
+        }
+        
+        .puzzle-piece {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            border: 1px solid #aaa;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            background-size: 600px 350px;
+            background-repeat: no-repeat;
+        }
+        
+        .puzzle-piece:hover {
+            transform: scale(1.02);
+            z-index: 10;
+        }
+        
+        .puzzle-piece.correct {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+        
+        .puzzle-complete-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+        }
+        
+        .puzzle-complete-message h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .puzzle-complete-message p {
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+        
+        .reveal-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .reveal-button:hover {
+            background-color: #45a049;
+        }
+        
+        /* Image Section */
+        .image-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .image-item {
+            flex: 1 1 100%;
+            max-width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--dark-shadow);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+        
+        .image-caption {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 10px;
+            font-style: italic;
+            padding: 0 10px;
+        }
+        
+        /* Comment Section */
+        .comment-section {
+            display: none;
+        }
+        
+        .comment {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-user {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-user::before {
+            content: "👤";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-content {
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        
+        .comment-reply {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 3px solid #666;
+        }
+        
+        .comment-reply-user {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-reply-user::before {
+            content: "💬";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-likes {
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .comment-likes::before {
+            content: "👍";
+            margin-right: 5px;
+            color: #666;
+        }
+        
+        .view-more {
+            color: #666;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px dashed #666;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .view-more:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .hot-comment-tag {
+            background-color: #666;
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        
+        /* Bottom Decoration */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, #666, #999, #666);
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🕯️ Remembering History • Rest in Peace 🕯️";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: #444;
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .header-title h1 {
+                font-size: 26px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .puzzle-area {
+                height: 300px;
+            }
+            
+            .puzzle-piece {
+                background-size: 500px 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dynamically load search bar -->
+    <script src="headbarEN.js" defer></script>
+    
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <header>
+            <!-- Use theme-appropriate image -->
+            <img src="新闻顶部背景图.png" alt="Landslide disaster site" class="header-image">
+            <div class="header-title">
+                <h1>【Post-Disaster Documentary】The August 25, 2008 Major Landslide Disaster in Jiasa Town</h1>
+                <p>Tianqing Courtyard Forum | Posted on 2008-09-10</p>
+            </div>
+        </header>
+        
+        <section class="content-section">
+            <h2 class="section-title">Disaster Documentary</h2>
+            
+            <div class="article-content">
+                <p>(News) On August 25, 2008, due to continuous heavy rainfall, a major landslide disaster occurred near Yaonan Village in Jiasa Town, causing 47 fatalities, destroying numerous houses and roads, with severe damage.</p>
+                <p>After the disaster occurred, various departments quickly organized rescue forces to the scene, racing against time to carry out life search and rescue, as well as disaster relief work. While clearing the core disaster area, rescue personnel, besides discovering the victims of this disaster, encountered a perplexing scene in a concealed, higher-elevation mountain col.</p>
+                <p>On-site rescue personnel described: "We discovered <strong>several bodies dressed in uniform 'white robes,' laid out side by side</strong>. The degrees of decomposition of these bodies varied greatly, clearly indicating they did not die at the same time, nor were they direct victims of this disaster. Their causes of death are highly suspicious."</p>
+                <p>Currently, the identities and causes of death of these bodies are under further investigation by the police. This newspaper will continue to follow the progress of the incident.</p>
+                
+                <div class="article-source">— Excerpted from the front-page report of "Yuxi Daily" on September 1, 2008</div>
+            </div>
+            
+            <h2 class="section-title">Shattered Truth</h2>
+            
+            <div class="puzzle-container">
+                <div class="puzzle-title">Assemble the image fragments to reveal the complete truth</div>
+                <div class="puzzle-area" id="puzzleArea">
+                    <!-- Puzzle pieces will be dynamically generated via JavaScript -->
+                </div>
+                <div class="puzzle-complete-message" id="completeMessage">
+                    <h3>Truth Revealed</h3>
+                    <p>You have successfully assembled all fragments, revealing the full content of this key photograph.</p>
+                    <button class="reveal-button" id="revealButton">View Full Report</button>
+                </div>
+            </div>
+            
+            <div class="image-container" id="completeImage">
+                <div class="image-item">
+                    <!-- Replace with local assembled image -->
+                    <img src="新闻顶部背景图.png" alt="Landslide disaster site">
+                    <div class="image-caption">Unidentified bodies discovered by rescue personnel at the disaster site; police have launched an investigation. (Image source: archival photo)</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="content-section comment-section" id="commentSection">
+            <h2 class="section-title">User Comments</h2>
+            
+            <div class="comment">
+                <div class="comment-user">@RememberingHistory</div>
+                <div class="comment-content">May the deceased rest in peace. It's always heartbreaking to see news from that year.</div>
+                <div class="comment-likes">22</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@TruthSeeker</div>
+                <div class="comment-content">What was the deal with those people in white robes? Was there ever a follow-up investigation? Was this case ever resolved?</div>
+                <div class="comment-likes">15</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@LocalPerson</div>
+                <div class="comment-content">No follow-up. There were many rumors back then, some said it was a cult, but then discussion wasn't allowed anymore. It was pretty eerie anyway.</div>
+                <div class="comment-reply">
+                    <div class="comment-reply-user">@AnonymousUser replies to @TruthSeeker:</div>
+                    <div class="comment-content">No follow-up. There were many rumors back then, some said it was a cult, but then discussion wasn't allowed anymore. It was pretty eerie anyway.</div>
+                </div>
+                <div class="comment-likes">38</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@Passerby</div>
+                <div class="comment-content">Natural disasters are merciless, but man-made disasters are even more terrifying. I hope the truth comes to light.</div>
+                <div class="comment-likes">10</div>
+            </div>
+            
+            <div class="view-more">View more comments...</div>
+        </section>
+        
+        <div class="page-footer">6/19</div>
+        
+        <div class="bottom-decoration"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Puzzle game implementation
+            const puzzleArea = document.getElementById('puzzleArea');
+            const completeMessage = document.getElementById('completeMessage');
+            const revealButton = document.getElementById('revealButton');
+            const completeImage = document.getElementById('completeImage');
+            const commentSection = document.getElementById('commentSection');
+            
+            // Puzzle configuration
+            const rows = 3;
+            const cols = 3;
+            const totalPieces = rows * cols;
+            const pieceWidth = 200;
+            const pieceHeight = 116.67;
+            
+            // Create puzzle pieces
+            function createPuzzlePieces() {
+                // Clear puzzle area
+                puzzleArea.innerHTML = '';
+                
+                // Create pieces
+                for (let i = 0; i < totalPieces; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'puzzle-piece';
+                    piece.dataset.index = i;
+                    
+                    // Calculate background position
+                    const row = Math.floor(i / cols);
+                    const col = i % cols;
+                    const bgX = -col * pieceWidth;
+                    const bgY = -row * pieceHeight;
+                    
+                    // Set styles
+                    piece.style.width = `${pieceWidth}px`;
+                    piece.style.height = `${pieceHeight}px`;
+                    // Use local puzzle image (please save as images/puzzle_reveal.jpg)
+                    piece.style.backgroundImage = 'url("images/puzzle_reveal.jpg")';
+                    piece.style.backgroundPosition = `${bgX}px ${bgY}px`;
+                    piece.style.filter = 'grayscale(100%)';
+                    
+                    // Random position
+                    const randomX = Math.random() * (puzzleArea.offsetWidth - pieceWidth);
+                    const randomY = Math.random() * (puzzleArea.offsetHeight - pieceHeight);
+                    piece.style.left = `${randomX}px`;
+                    piece.style.top = `${randomY}px`;
+                    
+                    // Add drag functionality
+                    makeDraggable(piece);
+                    
+                    // Add to puzzle area
+                    puzzleArea.appendChild(piece);
+                }
+            }
+            
+            // Make element draggable
+            function makeDraggable(element) {
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                
+                element.onmousedown = dragMouseDown;
+                
+                function dragMouseDown(e) {
+                    e.preventDefault();
+                    // Get initial mouse position
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    document.onmouseup = closeDragElement;
+                    document.onmousemove = elementDrag;
+                    element.style.zIndex = "100";
+                }
+                
+                function elementDrag(e) {
+                    e.preventDefault();
+                    // Calculate new position
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    // Set element's new position
+                    element.style.top = (element.offsetTop - pos2) + "px";
+                    element.style.left = (element.offsetLeft - pos1) + "px";
+                    
+                    // Check if in correct position
+                    checkPiecePosition(element);
+                }
+                
+                function closeDragElement() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                    element.style.zIndex = "1";
+                }
+            }
+            
+            // Check puzzle piece position
+            function checkPiecePosition(piece) {
+                const index = parseInt(piece.dataset.index);
+                const row = Math.floor(index / cols);
+                const col = index % cols;
+                
+                const correctX = col * pieceWidth;
+                const correctY = row * pieceHeight;
+                
+                const currentX = parseInt(piece.style.left);
+                const currentY = parseInt(piece.style.top);
+                
+                // If position is close to correct position, snap to correct position
+                if (Math.abs(currentX - correctX) < 30 && Math.abs(currentY - correctY) < 30) {
+                    piece.style.left = `${correctX}px`;
+                    piece.style.top = `${correctY}px`;
+                    piece.classList.add('correct');
+                    piece.style.cursor = 'default';
+                    piece.onmousedown = null; // Disable dragging
+                    
+                    // Check if all puzzles are complete
+                    checkPuzzleComplete();
+                }
+            }
+            
+            // Check if puzzle is complete
+            function checkPuzzleComplete() {
+                const pieces = document.querySelectorAll('.puzzle-piece');
+                let completed = true;
+                
+                pieces.forEach(piece => {
+                    if (!piece.classList.contains('correct')) {
+                        completed = false;
+                    }
+                });
+                
+                if (completed) {
+                    setTimeout(() => {
+                        completeMessage.style.display = 'flex';
+                    }, 500);
+                }
+            }
+            
+            // Show full report
+            revealButton.addEventListener('click', function() {
+                completeMessage.style.display = 'none';
+                completeImage.style.display = 'flex';
+                commentSection.style.display = 'block';
+                
+                // Add smooth scroll to comment section
+                commentSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Initialize puzzle
+            createPuzzlePieces();
+        });
+    </script>
+</body>
+</html>

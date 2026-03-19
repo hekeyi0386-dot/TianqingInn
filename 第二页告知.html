@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>第二页告知 - 添清小院</title>
+	<style>
+		* { margin:0; padding:0; box-sizing:border-box; }
+		body { font-family:"PingFang SC","Microsoft YaHei",sans-serif; background: linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0,68,0) 100%); color:#e8f5e8; min-height:100vh; }
+		.container { max-width:980px; margin:120px auto 90px; padding:0 34px; }
+		.page-title { font-size:42px; font-weight:300; letter-spacing:6px; text-align:center; margin-bottom:55px; color:#d4f1d4; text-shadow:0 3px 14px rgba(0,0,0,.5); }
+		.cards-grid { display:grid; gap:38px; grid-template-columns: 1fr; }
+		/* Desktop: stack sections vertically from top to bottom */
+		@media (min-width:900px){
+			.cards-grid { grid-template-columns: 1fr; justify-content: center; }
+			/* Set card width to 2× previous 2-column width */
+			.info-card { width: 100%; max-width: calc((min(980px, 100vw) - 68px - 38px) * 1); margin-left:auto; margin-right:auto; }
+		}
+		/* Single column enforced at all widths */
+		@media (max-width:640px){ .page-title { font-size:32px; letter-spacing:3px; } }
+		.info-card { position:relative; background:rgba(255,255,255,0.08); border:1px solid rgba(164,213,164,0.25); border-radius:26px; padding:34px 36px 40px; box-shadow:0 12px 45px rgba(0,0,0,.45); backdrop-filter:blur(10px); overflow:hidden; animation:fadeUp .9s ease; }
+		.info-card::before { content:""; position:absolute; inset:0; background:linear-gradient(140deg, rgba(45,95,45,0.35), rgba(0,68,0,0.15)); opacity:.85; pointer-events:none; }
+		.card-header { position:relative; margin:0 0 22px; font-size:24px; letter-spacing:2px; font-weight:600; color:#e4f7e4; display:flex; align-items:center; gap:14px; }
+		/* Use logo image instead of the green square */
+		.card-header::before { content:none; display:none; }
+		.card-icon { width:42px; height:42px; border-radius:14px; box-shadow:0 4px 12px rgba(0,0,0,.4); object-fit:contain; }
+		.info-card p, .info-card li { position:relative; line-height:1.85; font-size:15.5px; color:#d4ead4; }
+		.info-card p { margin-bottom:18px; text-align:justify; text-indent:2em; }
+		.bullet-list { list-style:none; padding:0; margin:0 0 4px 0; }
+		.bullet-list li { padding-left:1.4em; margin-bottom:10px; }
+		.bullet-list li::before { content:"•"; position:absolute; left:0.4em; color:#6abf69; font-size:18px; line-height:1; }
+		.flow-line { font-weight:600; letter-spacing:1px; color:#c9e9c9; margin-bottom:18px; }
+		.footer-action { text-align:center; margin-top:70px; }
+		.enter-btn { display:inline-flex; align-items:center; gap:14px; padding:20px 64px; font-size:20px; font-weight:600; letter-spacing:4px; color:#fff; background:linear-gradient(135deg,#2d5f2d,#004400); border:2px solid #4a8f4a; border-radius:55px; cursor:pointer; text-decoration:none; box-shadow:0 16px 50px rgba(0,0,0,.55), 0 0 0 6px rgba(45,95,45,.35); position:relative; overflow:hidden; transition:.35s; }
+		.enter-btn::after { content:"→"; font-size:24px; transition:.35s; }
+		.enter-btn:hover { transform:translateY(-4px); box-shadow:0 22px 60px rgba(0,0,0,.65), 0 0 0 6px rgba(74,143,74,.55); background:linear-gradient(135deg,#3d7f3d,#1a5c1a); }
+		.enter-btn:hover::after { transform:translateX(8px); }
+		.enter-btn:active { transform:translateY(-1px); }
+		/* Back button variant: show left arrow and remove right arrow */
+		.back-btn::after { content:""; }
+		.back-btn::before { content:"←"; font-size:24px; margin-right:10px; transition:.35s; }
+		.back-btn:hover::before { transform:translateX(-8px); }
+		/* spacing between adjacent buttons */
+		.footer-action .enter-btn + .enter-btn { margin-left:14px; }
+		@keyframes fadeUp { from { opacity:0; transform:translateY(34px); } to { opacity:1; transform:translateY(0); } }
+
+		/* Title decoration: emblem above and accent underline */
+		.page-title { position: relative; }
+		.page-title::before {
+			content: "";
+			display: block;
+			width: 100px;
+			height: 100px;
+			margin: 0 auto 5px;
+			background-image: url('logo_white.png');
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			filter: drop-shadow(0 2px 10px rgba(0,0,0,.45));
+		}
+		.page-title::after {
+			content: "";
+			display: block;
+			width: 220px;
+			height: 8px;
+			margin: 18px auto 0;
+			background: linear-gradient(90deg, #2d5f2d, #6abf69, #2d5f2d);
+			border-radius: 999px;
+			box-shadow: 0 6px 18px rgba(0,0,0,.35);
+		}
+
+		/* Page sub-note styled as body text */
+		.page-subnote {
+			font-size: 15.5px;
+			color: #d4ead4;
+			line-height: 1.85;
+			text-align: center;
+			margin-bottom: 32px;
+		}
+	</style>
+</head>
+<body>
+	<script defer src="headbar.js"></script>
+	<div class="container">
+		<h1 class="page-title">调查指引</h1>
+			<p class="page-subnote">点击顶部“白蘑菇”logo可返回此页再次查看</p>
+	
+		<div class="cards-grid">
+			<!-- 人物介绍 -->
+			<section class="info-card" aria-labelledby="characters-title">
+				<h2 id="characters-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="图标">人物介绍</h2>
+				<p>杨立强：添清小院的老板，性格热情健谈。曾多次创业失败，却始终没有放弃，最终凭借添清小院实现了事业上的转机，是一位在现实挫折中坚持下来、来之不易取得成功的中年人。</p>
+				<p>累川：累祈山本地人，长期居住在添清小院。性格随和，喜欢与住客聊天交流，偶尔也会陪同住客一同外出游玩，是连接客栈与外部世界的重要人物。</p>
+				<p>刘江涛：性格沉默寡言，常年居住在添清小院。经常独自前往周边地区进行调查和走访，行踪低调，似乎在暗中研究着某些不为人知的事情。</p>
+				<ul class="bullet-list">
+					<li>部分人物背景信息对解谜过程具有实际参考价值。</li>
+					<li>以上人物均在添清小院论坛中有对应账号。</li>
+				</ul>
+			</section>
+			<!-- 游戏目的 -->
+			<section class="info-card" aria-labelledby="goal-title">
+				<h2 id="goal-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="图标">游戏目的</h2>
+				<p>通过浏览添清小院论坛与相关页面，你需要沉浸在信息碎片与叙事线索中，逐步拼接谢应文的真实去向与客栈表象背后的秘密。</p>
+				<ul class="bullet-list">
+					<li>搜集男友谢应文失踪的线索</li>
+					<li>找出客栈“自然疗愈”表象下隐藏的真相</li>
+					<li>找回行迹不明的男友</li>
+				</ul>
+			</section>
+			<!-- 游戏玩法 -->
+			<section class="info-card" aria-labelledby="play-title">
+				<h2 id="play-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="图标">游戏玩法</h2>
+				<p>这是一款没有固定路线的探索解读类游戏；只要输入正确的关键词，即可黑进被隐藏的页面。阅读每个普通页面时，留意异常用词、诡异语气或不自然的结构，它们可能都是“关键词”。</p>
+				<ul class="bullet-list">
+				<li>你需要在网站各处寻找这些关键词，并在顶部搜索框中输入，或者尝试黑入论坛用户的主页，逐步挖掘更深层的内容与真相。</li>
+				<li>点击官网的“白蘑菇图案“可以回到此页面，再次阅览调查指引。</li>
+				<li>你可以点击官网首页的“操作记录”，回溯并查看已成功黑入的所有页面，也可在此查看解谜进度。发现并收集到的页面越接近总数量，意味着你离真相越近。</li>
+				<li>有些页面可能会因为黑客攻击而出现访问异常的问题，你需要想办法解决这些异常。</li>
+				<li>平均游戏时长约 1~2 小时，可依个人节奏分段进行。</li>
+				</ul>
+			</section>
+			<!-- 注意事项 -->
+			<section class="info-card" aria-labelledby="notice-title">
+				<h2 id="notice-title" class="card-header"><img class="card-icon" src="logo_white.png" alt="图标">注意事项</h2>
+				<p>游戏需要全屏游玩，不然可能有显示不全面的问题。</p>
+				<ul class="bullet-list" style="margin-bottom:4px;">
+						<li>并非只有陌生专有名词才是线索。普通、重复、或显得多余的词也要留意。</li>
+					<li>无需任何编程技术，大部分线索来自肉眼可见的网站内容。</li>
+					<li>若一段内容显得逻辑脱节、情绪过度或过度修饰，它可能是刻意嵌入的隐性触发点。</li>
+					<li>推荐使用电脑，平板可能出现显示偏差或排版问题。</li>
+					<li>搜索时一次仅输入 1 个关键词（关键词支持中英文，不支持多词、空格、数字及特殊符号）。</li>
+					<li>游戏不包含惊吓跳脸或血腥画面。</li>
+				</ul>
+							</section>
+		</div>
+		<div class="footer-action">
+			<a href="index.html" class="enter-btn back-btn" aria-label="返回">返回</a>
+			<a href="1.官网主页.html" class="enter-btn" aria-label="进入论坛">进入论坛</a>
+		</div>
+	</div>
+</body>
+</html>

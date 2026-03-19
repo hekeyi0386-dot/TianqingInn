@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Ending | Tianqing Inn</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8f4a;
+            --dark-green: #1a5c1a;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(to bottom, #f8fff8 0%, #e8f4e8 30%, #d0e8d0 70%, #a8d5a8 100%);
+            color: #2a4a2a;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px 100px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: #1a5c1a;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #4a8f4a;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        /* Good Ending 内容样式 */
+        .good-ending-content {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 40px;
+            background: linear-gradient(to bottom, #f8fff8 0%, #e8f4e8 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(74, 143, 74, 0.2);
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .good-ending-title {
+            font-size: 2.5em;
+            line-height: 1.3;
+            margin-bottom: 25px;
+            color: #1a5c1a;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 3px;
+            border-bottom: 2px solid rgba(74, 143, 74, 0.3);
+            padding-bottom: 20px;
+        }
+
+        .good-ending-subtitle {
+            font-size: 1.2em;
+            color: #4a8f4a;
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .good-ending-body {
+            margin-bottom: 40px;
+        }
+
+        .good-ending-body p {
+            margin-bottom: 25px;
+            text-align: justify;
+            color: #2a4a2a;
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-indent: 2em;
+        }
+
+        .good-ending-body p.lead {
+            font-weight: bold;
+            color: #1a5c1a;
+            text-indent: 0;
+            font-size: 1.2em;
+        }
+
+        .good-ending-dialogue {
+            background: rgba(232, 244, 232, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4a8f4a;
+            margin: 20px 0;
+            font-style: italic;
+            color: #3a6a3a;
+        }
+
+        .good-ending-highlight {
+            background: rgba(216, 240, 216, 0.7);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #6abf69;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 结局提示区域 */
+        .good-ending-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 2px solid rgba(106, 191, 105, 0.3);
+            padding: 40px 20px;
+            margin-top: 50px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .ending-title {
+            font-size: 2em;
+            color: #1a5c1a;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .ending-description {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            color: #3a5a3a;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        /* 返回选择按钮 */
+        .choice-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .good-ending-button {
+            padding: 18px 40px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 200px;
+            border: 2px solid transparent;
+            letter-spacing: 1px;
+        }
+
+        .good-ending-button.restart {
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            color: white;
+            border-color: #3a7f3a;
+        }
+
+        .good-ending-button.restart:hover {
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(74, 143, 74, 0.3);
+        }
+
+        /* 结局页跳转按钮（用于查看人物故事） */
+        .good-ending-button.link {
+            display: inline-block;
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 2px solid #3a7f3a;
+            font-weight: 600;
+        }
+
+        .good-ending-button.link:hover {
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(58, 127, 58, 0.18);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(74, 143, 74, 0.2);
+            color: #4a8f4a;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .good-ending-title {
+                font-size: 2em;
+            }
+            
+            .good-ending-button {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .choice-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .good-ending-title {
+                font-size: 1.6em;
+            }
+            
+            .good-ending-content {
+                padding: 20px;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="tianqing头图.png" alt="Tianqing Inn" class="header-image">
+            <h1 class="title">Truth Triumph</h1>
+            <p class="subtitle">Good Ending</p>
+        </div>
+
+    
+            <div class="good-ending-body">
+                <p class="lead">
+                    You clenched the mountain entry pass, its edges damp, your fingertips crumpling the paper corners—the words "<strong>Bǔ Tiān Sì</strong> Exclusive" were written in dark red ink, looking like congealed blood in the cold morning mist of Leiqishan.
+                </p>
+                
+                <div class="good-ending-dialogue">
+                    "Here?" The boss's voice suddenly came from behind. He wasn't wearing his usual cotton-linen shirt but had changed into a robe, the embroidery at the collar and cuffs a piercing, blood-red color.
+                </div>
+                
+                <p>When you turned back, you caught an unusual glint in his eyes—not the usual hospitable warmth, but the excitement of a hungry wolf eyeing its prey. Behind him followed two people in similar robes, their faces hidden in the mist, only half of their cold eyes visible, like ice spikes piercing you.</p>
+                
+                <div class="good-ending-dialogue">
+                    "Follow me." The boss turned and walked deeper into the forest, his footsteps making no sound on the decaying leaves.
+                </div>
+                
+                <p>You followed a few steps, suddenly noticing the path beneath your feet getting narrower, the branches of trees on either side intertwining as if to seal the way. A strange smell drifted in the air—somewhat like the scent from the "Protection Life Porridge," but stronger, more pungent; breathing it for too long made your temples throb.</p>
+                
+                <div class="good-ending-highlight">
+                    Rounding a bend, the sacrificial furnace suddenly came into view. It was a stone furnace about half a person's height, its mouth piled with dark brown ash, its body carved with the totem you'd seen on the website—distorted lines twisted into the shape of "Nüwa Mending the Heavens," but where the "Mending Stone" should be was a hollow, like a mouth ready to devour someone.
+                </div>
+                
+                <div class="good-ending-dialogue">
+                    "Don't stare." The boss's voice suddenly drew near. "Time to change clothes—'Pure Spirits' must wear clean robes to be worthy of 'Mending the Heavens.'"
+                </div>
+                
+                <div class="good-ending-dialogue">
+                    "What 'Mending the Heavens'? This isn't a healing activity at all!" You took a step back, your fingertips icy.
+                </div>
+                
+                <div class="good-ending-dialogue">
+                    "Healing? That was just a lure to get you here." The boss suddenly laughed at your words. "Leiqishan is the 'Descendant of Bù Zhōu Mountain,' the sky has a gap that must be filled with the lives of 'Pure Spirits'—you people who drank the Protection Life Porridge and passed the Wish Line, your minds are clean, easily connecting with the divine, perfect for being offerings."
+                </div>
+                
+                <p>He reached out to grab your arm; you instinctively dodged but bumped into the person behind—one of the two robed figures. Their hands clamped onto your wrists like iron tongs. Struggling, you looked up and saw a string of wish plaques hanging on a wooden frame beside the furnace; the bottommost one was in Xie Yingwen's handwriting: "I want to go home." The writing was blurred by moisture, its edges fuzzy, as if he had been trembling as he wrote.</p>
+                
+                <div class="good-ending-dialogue">
+                    "Let go of me!" you suddenly shouted, using all your strength to break free from the hands holding you, and ran in the opposite direction of the furnace.
+                </div>
+                
+                <p>The mist grew thicker; you couldn't see the path clearly, only charging toward where there was light, your phone still tucked in your pocket—thankfully you hadn't handed it over as required, having saved evidence and the police emergency number in advance.</p>
+                
+                <div class="good-ending-highlight">
+                    Just then, police sirens suddenly sounded in the distance, the sharp noise piercing through the dense fog like a beam of light splitting the darkness. Your pursuers paused in surprise; seizing the opportunity, you hid behind a large tree, dialed the emergency number, and shouted the location of the furnace into the phone, along with the boss's words, the names on the stone wall—each sentence spoken brought tears that fell, mixing with the cold sweat on your face, both cold and salty.
+                </div>
+                
+                <p>The sirens grew closer; you heard chaotic shouts behind you. After a while, someone tapped your shoulder—it was a police officer in uniform: "Don't be afraid, you're safe."</p>
+                
+                <div class="good-ending-highlight">
+                    Later, the police found Xie Yingwen—locked in a cave not far away, pale-faced but alive. When he saw you, tears suddenly fell: "I thought I'd never see you again... They said they were going to use me as an offering, I was so scared."
+                </div>
+                
+                <p>Later, you learned that the police had long noticed the anomalies at Tianqing Inn and had been investigating in secret; the so-called ghosts and gods were merely hallucinations produced by psychedelic mushroom powder affecting the human brain.</p>
+            </div>
+            
+            <!-- 结局提示区域 -->
+            <div class="good-ending-section">
+                <h2 class="ending-title">Good Ending: Truth Breaks Through the Fog</h2>
+                <p class="ending-description">
+                    As you descended the mountain, the mist slowly cleared, sunlight filtering through the branches and falling on the ruins of the sacrificial furnace. The wind no longer carried the scent of Protection Life Porridge, only the fresh fragrance of pine needles and earth.<br><br>
+                    The deception of Tianqing Inn was completely exposed, those who had been deceived gradually awakened, and Leiqishan was finally no longer shrouded in fog and lies. You glanced back at the depths of the forest, knowing those who had passed would not return, but at least the truth was not forever buried in the mist.
+                </p>
+                
+                <div class="choice-buttons">
+                    <button class="good-ending-button restart" id="good-return-button" onclick="window.history.back()">Return to Selection</button>
+                </div>
+                <div style="margin-top:12px">
+                    <a href="人物英文.html" class="good-ending-button link" role="button">View Character Stories</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Tianqing Inn Mystery · Good Ending Achieved</p>
+            <p>Your courage and wisdom saved lives and uncovered the truth</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 简单返回按钮功能
+            const returnButton = document.getElementById('good-return-button');
+            if (returnButton) {
+                returnButton.addEventListener('click', function() {
+                    window.history.back();
+                });
+            }
+            
+            // 添加键盘支持 - ESC返回
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    window.history.back();
+                }
+            });
+        });
+    </script>
+
+    <!-- 引入全站 head bar 脚本 -->
+    <script src="headbarEN.js"></script>
+</body>
+</html>

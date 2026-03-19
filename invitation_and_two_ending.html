@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清小院 · 补天祀专属邀请</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8f4a;
+            --dark-green: #1a5c1a;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0, 68, 0) 100%);
+            color: #e8f5e8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 30px 100px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+            margin-bottom: 30px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: #d4f1d4;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a8d5a8;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .invitation-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            line-height: 1.8;
+            font-size: 1.1em;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(164, 213, 164, 0.2);
+            animation: fadeInUp 1s ease-out 0.3s both;
+            margin-bottom: 40px;
+        }
+
+        .greeting {
+            font-size: 1.2em;
+            color: #e8f5e8;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        .invitation-card p {
+            margin-bottom: 25px;
+            text-align: justify;
+            color: #d4ead4;
+            text-indent: 2em;
+        }
+
+        .important-info {
+            background: rgba(42, 82, 42, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #4a8f4a;
+        }
+
+        .info-item {
+            margin-bottom: 20px;
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #b8e0b8;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .info-content {
+            color: #d4ead4;
+        }
+
+        .warning {
+            color: #ffcccc;
+            font-style: italic;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(102, 0, 0, 0.2);
+            margin: 25px 0;
+            border-left: 3px solid #ff6666;
+        }
+
+        /* 选择区域样式 */
+        .choice-container {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            animation: fadeIn 1.5s ease-out 0.6s both;
+        }
+
+        .question {
+            font-size: 1.3em;
+            color: #e8f5e8;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .choice-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .choice-button {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            padding: 25px 30px;
+            border-radius: 15px;
+            border: 2px solid rgba(164, 213, 164, 0.3);
+            background: rgba(42, 82, 42, 0.4);
+            color: #d4f1d4;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            letter-spacing: 1px;
+        }
+
+        .choice-button:hover {
+            transform: translateY(-5px);
+            background: rgba(42, 82, 42, 0.6);
+            border-color: #4a8f4a;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .choice-button.yes {
+            border-color: rgba(106, 191, 105, 0.4);
+            background: rgba(26, 92, 26, 0.4);
+        }
+
+        .choice-button.yes:hover {
+            border-color: #6abf69;
+            background: rgba(26, 92, 26, 0.6);
+        }
+
+        .choice-button.no {
+            border-color: rgba(191, 106, 105, 0.4);
+            background: rgba(92, 26, 26, 0.4);
+        }
+
+        .choice-button.no:hover {
+            border-color: #bf6a69;
+            background: rgba(92, 26, 26, 0.6);
+        }
+
+        .choice-icon {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .choice-text {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        .choice-desc {
+            font-size: 0.9em;
+            color: #a8d5a8;
+            opacity: 0.9;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            color: #a8d5a8;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* 新闻报道样式（隐藏状态） */
+        .news-article {
+            display: none;
+            max-width: 900px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .news-article.active {
+            display: block;
+        }
+
+        /* Good Ending 样式（隐藏状态） */
+        .good-ending {
+            display: none;
+            max-width: 900px;
+            margin: 40px auto 0;
+            padding: 0 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .good-ending.active {
+            display: block;
+        }
+
+        /* 法治新闻网站风格 - 简约白底黑字 */
+        .newspaper-header {
+            background-color: #f8f8f8;
+            border-bottom: 3px solid #b30000;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .newspaper-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .newspaper-title {
+            text-align: center;
+            font-size: 2.5em;
+            color: #b30000;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .newspaper-subtitle {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .newspaper-date {
+            text-align: center;
+            color: #888;
+            font-size: 0.95em;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        .news-content {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 0 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-title {
+            font-size: 2.2em;
+            line-height: 1.3;
+            margin-bottom: 25px;
+            color: #000;
+            font-weight: bold;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 15px;
+            padding-top: 30px;
+        }
+
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            color: #666;
+            font-size: 0.95em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .news-author {
+            font-weight: bold;
+        }
+
+        .news-source {
+            font-style: italic;
+        }
+
+        .news-body {
+            margin-bottom: 40px;
+            padding: 0 20px 20px;
+        }
+
+        .news-body p {
+            margin-bottom: 25px;
+            text-align: justify;
+            text-indent: 2em;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .news-body p.lead {
+            font-weight: bold;
+            color: #000;
+            font-size: 1.1em;
+            text-indent: 0;
+        }
+
+        .highlight-quote {
+            background-color: #f9f9f9;
+            border-left: 4px solid #b30000;
+            padding: 20px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #444;
+        }
+
+        .evidence-note {
+            background-color: #f0f8ff;
+            border: 1px solid #d0e0ff;
+            padding: 15px;
+            margin: 25px 0;
+            font-size: 0.95em;
+            color: #444;
+        }
+
+        /* Good Ending 内容样式 */
+        .good-ending-content {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 40px;
+            background: linear-gradient(to bottom, #f8fff8 0%, #e8f4e8 100%);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(74, 143, 74, 0.2);
+        }
+
+        .good-ending-title {
+            font-size: 2.5em;
+            line-height: 1.3;
+            margin-bottom: 25px;
+            color: #1a5c1a;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 3px;
+            border-bottom: 2px solid rgba(74, 143, 74, 0.3);
+            padding-bottom: 20px;
+        }
+
+        .good-ending-subtitle {
+            font-size: 1.2em;
+            color: #4a8f4a;
+            text-align: center;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .good-ending-body {
+            margin-bottom: 40px;
+        }
+
+        .good-ending-body p {
+            margin-bottom: 25px;
+            text-align: justify;
+            color: #2a4a2a;
+            font-size: 1.1em;
+            line-height: 1.8;
+            text-indent: 2em;
+        }
+
+        .good-ending-body p.lead {
+            font-weight: bold;
+            color: #1a5c1a;
+            text-indent: 0;
+            font-size: 1.2em;
+        }
+
+        .good-ending-dialogue {
+            background: rgba(232, 244, 232, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4a8f4a;
+            margin: 20px 0;
+            font-style: italic;
+            color: #3a6a3a;
+        }
+
+        .good-ending-highlight {
+            background: rgba(216, 240, 216, 0.7);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #6abf69;
+            margin: 30px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 结局提示区域 */
+        .ending-section {
+            background-color: #f9f9f9;
+            border-top: 2px solid #ddd;
+            padding: 40px 20px;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .good-ending-section {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-top: 2px solid rgba(106, 191, 105, 0.3);
+            padding: 40px 20px;
+            margin-top: 50px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .ending-title {
+            font-size: 1.8em;
+            color: #b30000;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .good-ending-title {
+            font-size: 2em;
+            color: #1a5c1a;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .ending-description {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            color: #444;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .good-ending-description {
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            color: #3a5a3a;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 返回选择按钮 */
+        .choice-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .news-choice-button {
+            padding: 15px 35px;
+            border-radius: 4px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 200px;
+            border: none;
+        }
+
+        .news-choice-button.restart {
+            background-color: #006600;
+            color: white;
+            border: 2px solid #004d00;
+        }
+
+        .news-choice-button.restart:hover {
+            background-color: #004d00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 77, 0, 0.2);
+        }
+
+        .good-ending-button {
+            padding: 18px 40px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 200px;
+            border: 2px solid transparent;
+            letter-spacing: 1px;
+        }
+
+        .good-ending-button.restart {
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            color: white;
+            border-color: #3a7f3a;
+        }
+
+        .good-ending-button.restart:hover {
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(74, 143, 74, 0.3);
+        }
+
+        /* 结局页跳转按钮（用于查看人物故事） */
+        .good-ending-button.link{
+            display:inline-block;
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            color: #ffffff;
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: 2px solid #3a7f3a;
+            font-weight: 600;
+        }
+        .good-ending-button.link:hover{
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(58,127,58,0.18);
+        }
+
+        /* 页脚 */
+        .footer {
+            background-color: #f8f8f8;
+            padding: 30px 0;
+            border-top: 1px solid #ddd;
+            margin-top: 60px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .good-ending-footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(74, 143, 74, 0.2);
+            color: #4a8f4a;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .newspaper-title {
+                font-size: 1.8em;
+            }
+            
+            .news-title {
+                font-size: 1.6em;
+            }
+            
+            .good-ending-title {
+                font-size: 2em;
+            }
+            
+            .news-meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .choice-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .news-choice-button, .good-ending-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .newspaper-title {
+                font-size: 1.5em;
+            }
+            
+            .news-title {
+                font-size: 1.4em;
+            }
+            
+            .good-ending-title {
+                font-size: 1.6em;
+            }
+            
+            .news-content, .good-ending-content {
+                padding: 0 15px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="invitation-container">
+        <div class="header">
+            <img src="tianqing头图.png" alt="添清小院" class="header-image">
+            <h1 class="title"><strong>补天祀</strong> · 专属邀请函</h1>
+            <p class="subtitle">最高阶疗愈活动 · 仅限2席珍贵名额</p>
+        </div>
+
+        <div class="invitation-card">
+            <p class="greeting">尊敬的小院挚友谢应文先生：</p>
+            <p>承蒙您对添清小院护生、祈愿系列活动的认可，现特奉上最高阶的疗愈活动——<strong>补天祀</strong>的专属参与资格。</p>
+            
+            <div class="important-info">
+                <div class="info-item">
+                    <div class="info-label">活动时间</div>
+                    <div class="info-content">10月18日辰时（7:00-9:00）启仪</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">活动地点</div>
+                    <div class="info-content">山林深处不周遗径祭炉台</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">参与名额</div>
+                    <div class="info-content">仅开放2席珍贵名额</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">活动领队</div>
+                    <div class="info-content">小院主理人亲领</div>
+                </div>
+            </div>
+            
+            <p>本次活动当日，将由小院主理人亲领，沿专属路线进山，亲历传统仪轨：沐雾泉净身、持愿木祈祝、观炉烟辨天兆，终得与自然合一的深层疗愈。</p>
+            
+            <p>此前参与过祈愿线疗愈的客人可优先报名，报名需于10月15日前联系前台登记，登记后将获取线下集合地点与专属进山凭证。</p>
+            
+            <div class="warning">
+                <strong>特别提示：</strong>本次活动为线下专属，需亲自到场参与；因选址在山林深处，需穿小院提供的统一服饰，且活动全程不可携带电子设备，以免影响磁场，望理解。
+            </div>
+        </div>
+
+        <div class="choice-container">
+            <div class="question">您是否愿意前往线下，亲赴<strong>补天祀</strong>之约？</div>
+            
+            <div class="choice-options">
+                <div class="choice-button yes" id="yes-button">
+                    <div class="choice-icon">✓</div>
+                    <div class="choice-text">确认报名，获取线下集合信息</div>
+                    <div class="choice-desc">接受邀请，参与<strong>补天祀</strong></div>
+                </div>
+                
+                <div class="choice-button no" id="no-button">
+                    <div class="choice-icon">✗</div>
+                    <div class="choice-text">暂不参与，保留后续活动资格</div>
+                    <div class="choice-desc">拒绝邀请，等待其他机会</div>
+                </div>
+            </div>
+            
+            <div class="footer-note">请慎重选择，您的决定将影响后续剧情发展</div>
+        </div>
+    </div>
+
+    <!-- 新闻报道（Bad Ending）内容 -->
+    <div class="news-article" id="news-article">
+        <!-- 报纸头部 -->
+        <div class="newspaper-header">
+            <div class="newspaper-container">
+                <h1 class="newspaper-title">云南法制日报</h1>
+                <div class="newspaper-subtitle">法治视角 · 权威报道</div>
+                <div class="newspaper-date">2025年10月25日 星期五 第A01版</div>
+            </div>
+        </div>
+
+        <!-- 新闻内容 -->
+        <div class="news-content">
+            <h1 class="news-title">累祈山"不周遗径"邪教献祭案告破 多名受害者身份曝光</h1>
+            
+            <div class="news-meta">
+                <div class="news-author">本报记者 李进</div>
+                <div class="news-source">发自云南法制日报</div>
+            </div>
+            
+            <div class="news-body">
+                <p class="lead">近日，备受关注的累祈山邪教献祭案成功告破，以"添清小院"为据点的邪教组织成员被全部抓获。警方在累祈山祭炉台附近发掘出多具往届祭品遗体，目前案件已进入进一步审理阶段。随着案件细节的逐步披露，两名核心受害者的遭遇令人痛心，其中一名受害者的女友因错失关键线索，陷入无尽的悔恨之中。</p>
+                
+                <p>据警方通报，"添清小院"表面以养生、祈愿为幌子，实则暗中运作邪教"<strong>补天祀</strong>"活动。该活动每年举办两次，组织者特意选择高压脊过境、雾气最浓的时段，利用致幻烟雾伪造"天灾"假象，对选中的"祭品"实施献祭。警方调查发现，受害者谢文、刘涛（化名）等人早已被邪教组织列入献祭名单，其中谢文已不幸被献祭，遗体处理完毕；刘涛因调查中发现异常，被邪教组织提前控制并杀害。</p>
+                
+                <div class="highlight-quote">
+                    "受害者"三个字如同重锤，让陈绪瞬间崩溃，手中的手机掉落在地，屏幕裂开一道缝隙，如同她当时破碎的情绪。
+                </div>
+                
+                <p>谢文的女友陈绪（化名）向记者讲述了事发前后的经过。据她回忆，此前她早已发现谢文失踪，她也有尝试寻找。陈绪曾在谢文失踪后的一个月中，每天刷新"添清小院"官网，均未发现新的活动预告，给谢文发送的消息也石沉大海，谢文的朋友圈停留在"在添清小院吃的第一顿饭"，配图中的餐桌二维码此后再也无法打开。</p>
+                
+                <p>一个月后的清晨，陈绪接到本地警方的电话，这个陌生号码带来了她最不愿听到的消息：警方在累祈山"不周遗径"祭炉台附近发现一具男性遗体，经身份核实为其男友谢文，尸检和现场调查确认，谢文系"添清小院""<strong>补天祀</strong>"邪教献祭的受害者。"受害者"三个字如同重锤，让陈绪瞬间崩溃，手中的手机掉落在地，屏幕裂开一道缝隙，如同她当时破碎的情绪。她赶到警局时，天空正下着雨，雨点砸在玻璃上的"哒哒"声，在她听来格外刺耳。</p>
+                
+                <div class="evidence-note">
+                    <strong>警方证据摘要：</strong>笔者在警方提供的笔记本复印件上看到，谢文以清晰的字迹记录了调查"添清小院"的全过程：初次前往小院时，喝了老板提供的护生粥后感觉头晕。原来所谓的"护生粥"根本不是养生佳品，而是邪教组织让"祭品"乖乖听话的毒药。
+                </div>
+                
+                <p>警方提供的涉案人员供词进一步证实了这些线索的关联性。供词显示，刘涛因在调查中察觉异常，被邪教组织"提前控制"并杀害；谢文则"献祭成功，炉灰已处理"。在供词附带的名单最后一页，贴着祭炉台的全景照片：炉口堆着黑灰，旁边挂着一串祈愿牌，最上方的那一块正是刘涛所写，字里行间满是对生活的希望，却永远没能等到实现的那天。</p>
+                
+                <p>走出警局时，雨仍未停歇。陈绪表示，所有的遗憾都已无法弥补。</p>
+                
+                <p>据悉，"添清小院"邪教组织成员已全部落网，警方在现场发掘出多具往届祭品遗体，案件细节仍在进一步核查中。</p>
+                
+                <p>这场因邪教引发的悲剧，不仅夺走了多条鲜活的生命，更在被害者亲属心中留下了难以愈合的创伤，也为社会敲响了警惕邪教渗透的警钟。</p>
+            </div>
+            
+            <!-- 结局提示区域 -->
+            <div class="ending-section">
+                <h2 class="ending-title">Bad Ending: 错失的线索</h2>
+                <p class="ending-description">
+                    由于你选择了"暂不参与"，错过了调查"添清小院"真相的最佳时机。<br>
+                    <span id="xie-wechat-link" style="cursor:pointer; text-decoration:underline; color:#4a8f4a; transition:transform 0.2s; display:inline-block;">谢应文的微信朋友圈</span>，最终停留在那张图片。<br>
+                </p>
+                
+                <div class="choice-buttons">
+                    <a href="javascript:void(0);" class="good-ending-button link" id="bad-return-button" role="button">返回重新选择</a>
+                </div>
+                <div style="margin-top:12px">
+                    <a href="人物.html" class="good-ending-button link" role="button">查看人物故事</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <div class="newspaper-container">
+                <p>云南法制日报 版权所有 © 2025 滇ICP备05000001号</p>
+                <p>本报道基于真实案件改编，为保护相关人士，文中人物均为化名</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Good Ending 内容 -->
+    <div class="good-ending" id="good-ending">
+        <div class="good-ending-content">
+            <h1 class="good-ending-title">雾锁祭台，真相破笼</h1>
+            <div class="good-ending-subtitle">选择"是"的结局 · 勇气与真相的胜利</div>
+            
+            <div class="good-ending-body">
+                <p class="lead">
+                    你攥着那张边缘泛潮的进山凭证，指尖把纸角捏得发皱——凭证上"<strong>补天祀</strong>专属"四个字用暗红墨水写就，在累祈山清晨的冷雾里，像极了凝固的血。
+                </p>
+                
+                <div class="good-ending-dialogue">
+                    "来了？"身后突然传来老板杨立强的声音，他没穿平时的棉麻衬衫，换了件长袍，领口袖口的纹路是血一般红的刺眼的颜色。
+                </div>
+                
+                <p>你回头时，正好看见他眼底闪过一丝异样的亮——不是平时待客的温和，是饿狼盯着猎物的兴奋。他身后跟着两个穿同款长袍的人，脸藏在雾里，只露出半双没什么温度的眼睛，像两根冰锥扎在你身上。</p>
+                
+                <div class="good-ending-dialogue">
+                    "跟我来。"老板转身往山林更深处走，脚步踩在腐叶上没什么声响。
+                </div>
+                
+                <p>你跟着走了几步，忽然发现脚下的路越来越窄，两旁的树木枝桠交叉，像要把路封死，空气里飘着一股奇怪的味道——有点像护生粥里的香气，却更浓、更冲，闻得久了，太阳穴开始突突地跳。</p>
+                
+                <div class="good-ending-highlight">
+                    转过一道弯，祭炉台突然撞进眼里。那是个半人高的石炉，炉口积着黑褐色的灰，炉身上刻着你在添清小院官网里见过的图腾——扭曲的线条缠成人向上托举着什么补天的形状，却在补天石的位置刻了个空洞，像一张要吞人的嘴。
+                </div>
+                
+                <div class="good-ending-dialogue">
+                    "别盯着看了。"一道陌生的男声突然近了，"该换衣服了——'清灵者'得穿干净的衣袍，才配补天。"
+                </div>
+                
+                <div class="good-ending-dialogue">
+                    "什么补天？这根本不是疗愈的活动啊！"你后退一步，指尖冰凉。转头看去，刚才接近你的人，是著名的旅游博主小川，也就是累川
+                </div>
+                
+                <div class="good-ending-dialogue">
+                    "疗愈？那是骗你们来的幌子。"听到你的话，累川突然笑了，"累祈山是不周遗脉，天有缺口，得用清灵者的命去填——你们这些喝了护身粥、走过山林祈愿徒步的人，脑子干净、容易通神，最适合当祭品。"
+                </div>
+                
+                <p>他伸手要抓你的胳膊，你本能地躲开，却撞到了身后的人——是那两个穿长袍的，他们的手像铁钳一样扣住你的手腕。你挣扎着抬头，看见祭炉旁的木架上，挂着一串祈愿牌，最下面那个，是谢应文的笔迹："我想回家。"字迹被水汽晕开，边缘泛着毛边，像他写的时候在发抖。</p>
+                
+                <div class="good-ending-dialogue">
+                    "放开我！"你突然大喊，用尽全身力气挣脱扣着你的手，往祭炉反方向跑。
+                </div>
+                
+                <p>雾更浓了，你看不清路，只能凭着感觉往有光的地方冲，怀里还揣着手机——幸好你没按要求上交，提前存了证据和报警电话。</p>
+                
+                <div class="good-ending-highlight">
+                    就在这时，远处突然传来警笛声，尖锐的声音刺破浓雾，像一道光劈开黑暗。追你的人愣了一下，你趁机躲到一棵大树后，拨通了报警电话，对着手机喊出祭炉台的位置，还有老板的话、石壁上的名字——每说一句，眼泪就掉一滴，混着脸上的冷汗，又冷又咸。
+                </div>
+                
+                <p>警笛声越来越近，你听见身后传来混乱的叫喊。过了一会儿，有人拍你的肩膀，是穿警服的民警："别怕，安全了。"</p>
+                
+                <div class="good-ending-highlight">
+                    警员后来找到了谢应文——他被关在不远处的山洞里，脸色苍白，却还活着。他看见你时，眼泪突然掉下来："我以为再也见不到你了……他们说要把我当祭品，我好怕。"
+                </div>
+                
+                <p>后来你才知道，警方早就注意到添清小院的异常，一直在暗中监视这个邪教组织的一举一动，以累川为首，杨立强等一众信众为首的邪教团体终于被抓获。
+                    
+                <p>累川的作案动机，随着审讯细节的披露变得清晰。据累川供述，他自小听闻祖辈关于“累祈山山神庇佑”的传说，便将家乡的富足与神山绑定，坚信只有通过“献祭祈福”才能维系累祈山的繁茂和村民的安稳生活。为了践行这份扭曲的执念，他从祖辈遗留的记载中找到致幻蘑菇的相关信息，将其研磨成粉混入护身粥、利用裸盖菇素对人体神经系统的干扰作用，让参与者产生时空扭曲、色彩幻视等幻觉，以此伪造“山神显灵”的假象。</p>
+                    
+                <p>然而，累川的执念与事实严重相悖。警方联合当地政府开展的调查显示，累祈山周边村民近五年的小康生活，与所谓的“山神供奉”毫无关联，而是得益于县域农商文旅融合发展战略的推进。据累祈山县文旅局负责人介绍，当地依托累祈山独特的山水风光和民俗文化，打造特色文旅项目，才逐渐改变了村民的经济情况。</p>
+
+                <p>而累川为了巩固自己的“权威”，刻意隐瞒文旅发展的真相，不断向村民灌输“生活安稳全靠山神庇佑，皆因我家世代献祭祈福”的谎言。他还利用部分村民对传统习俗的敬畏心理，将添清小院打造成“祈福圣地”，通过收取“功德费”“祈愿牌工本费”等名目敛财，累计非法获利超百万元，这与那些借封建迷信巧立名目掏空群众钱包的会道门组织套路如出一辙.</p>     
+
+                <p>警方在案件侦破过程中，不仅抓获了累川及其核心团伙成员，还联合文旅、农业等部门，向村民全面普及致幻蘑菇的危害和文旅发展的真实成效。通过展示监控录像中“幻觉制造”的全过程、解读裸盖菇素的中毒机理，结合村民实实在在的收入增长数据，彻底打破了累川编织的迷信谎言。不少曾受蒙蔽的村民恍然大悟，主动销毁家中的“祈福道具”，积极参与到文旅产业发展中。</p>
+            </div>
+            
+            <!-- 结局提示区域 -->
+            <div class="good-ending-section">
+                <h2 class="good-ending-title">Good Ending: 真相破雾</h2>
+                <p class="good-ending-description">
+                    下山时，雾慢慢散了，阳光透过树枝洒下来，落在祭炉台的废墟上。风里没有了什么护身粥的味道，只有松针和泥土的清香。<br><br>
+                    添清小院的骗局被彻底曝光，那些被迷惑的人慢慢清醒，累祈山终于不再被雾和谎言笼罩。你回头望了一眼山林深处，知道那些逝去的人不会回来，但至少，真相没有被永远埋在雾里。
+                </p>
+                
+                <div class="choice-buttons">
+                    <button class="good-ending-button restart" id="good-return-button">返回重新选择</button>
+                </div>
+                <div style="margin-top:12px">
+                    <a href="人物.html" class="good-ending-button link" role="button">查看人物故事</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="good-ending-footer">
+            <p>添清小院之谜 · Good Ending 达成</p>
+            <p>你的勇气与智慧拯救了生命，揭露了真相</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 悬浮放大+点击跳转“谢应文的微信朋友圈”
+            var xieWechat = document.getElementById('xie-wechat-link');
+            if (xieWechat) {
+                xieWechat.addEventListener('mouseenter', function () {
+                    xieWechat.style.transform = 'scale(1.18)';
+                });
+                xieWechat.addEventListener('mouseleave', function () {
+                    xieWechat.style.transform = 'scale(1)';
+                });
+                xieWechat.addEventListener('click', function () {
+                    window.location.href = 'index copy.html';
+                });
+                xieWechat.title = '点击跳转到朋友圈页面';
+            }
+            // 获取DOM元素
+            const invitationContainer = document.getElementById('invitation-container');
+            const newsArticle = document.getElementById('news-article');
+            const goodEnding = document.getElementById('good-ending');
+            const yesButton = document.getElementById('yes-button');
+            const noButton = document.getElementById('no-button');
+            const badReturnButton = document.getElementById('bad-return-button');
+            const goodReturnButton = document.getElementById('good-return-button');
+            
+            // 确认选择函数
+            function confirmChoice(choice) {
+                if (choice === 'yes') {
+                    if (confirm('您确认要报名参加补天祀活动吗？此选择将引导您前往活动详情页面。')) {
+                        // 显示Good Ending
+                        showGoodEnding();
+                    }
+                } else if (choice === 'no') {
+                    if (confirm('您确认暂不参加补天祀活动吗？此选择将关系到事件结局。')) {
+                        // 显示新闻报道（Bad Ending）
+                        showNewsArticle();
+                    }
+                }
+            }
+            
+            // 显示新闻报道（Bad Ending）
+            function showNewsArticle() {
+                invitationContainer.style.display = 'none';
+                newsArticle.classList.add('active');
+                goodEnding.classList.remove('active');
+                document.body.style.background = '#ffffff';
+                document.body.style.color = '#333333';
+                document.body.style.overflowY = 'auto';
+                
+                // 滚动到顶部
+                window.scrollTo(0, 0);
+            }
+            
+            // 显示Good Ending
+            function showGoodEnding() {
+                invitationContainer.style.display = 'none';
+                goodEnding.classList.add('active');
+                newsArticle.classList.remove('active');
+                document.body.style.background = 'linear-gradient(to bottom, #f8fff8 0%, #e8f4e8 30%, #d0e8d0 70%, #a8d5a8 100%)';
+                document.body.style.color = '#2a4a2a';
+                document.body.style.overflowY = 'auto';
+                
+                // 滚动到顶部
+                window.scrollTo(0, 0);
+            }
+            
+            // 返回邀请函页面
+            function returnToInvitation() {
+                invitationContainer.style.display = 'block';
+                newsArticle.classList.remove('active');
+                goodEnding.classList.remove('active');
+                document.body.style.background = 'linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0, 68, 0) 100%)';
+                document.body.style.color = '#e8f5e8';
+                
+                // 滚动到顶部
+                window.scrollTo(0, 0);
+            }
+            
+            // 添加点击事件
+            yesButton.addEventListener('click', function () {
+                confirmChoice('yes');
+            });
+            
+            noButton.addEventListener('click', function () {
+                confirmChoice('no');
+            });
+            
+            badReturnButton.addEventListener('click', returnToInvitation);
+            goodReturnButton.addEventListener('click', returnToInvitation);
+            
+            // 添加键盘支持
+            document.addEventListener('keydown', function (e) {
+                // 仅在邀请函页面显示时有效
+                if (invitationContainer.style.display !== 'none') {
+                    if (e.key === 'y' || e.key === 'Y' || e.key === '1') {
+                        confirmChoice('yes');
+                    } else if (e.key === 'n' || e.key === 'N' || e.key === '2') {
+                        confirmChoice('no');
+                    }
+                }
+                
+                // 在结局页面时，按ESC返回
+                if ((newsArticle.classList.contains('active') || goodEnding.classList.contains('active')) && e.key === 'Escape') {
+                    returnToInvitation();
+                }
+            });
+            
+            // 为按钮添加键盘导航支持
+            yesButton.setAttribute('tabindex', '0');
+            noButton.setAttribute('tabindex', '0');
+            
+            yesButton.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    confirmChoice('yes');
+                }
+            });
+            
+            noButton.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    confirmChoice('no');
+                }
+            });
+
+            // 根据 URL 哈希直接进入结局页
+            try {
+                var hash = (window.location.hash || '').toLowerCase();
+                if (hash === '#bad' || hash === '#news' || hash === '#bad-ending') {
+                    showNewsArticle();
+                } else if (hash === '#good' || hash === '#good-ending') {
+                    showGoodEnding();
+                }
+            } catch (e) {}
+        });
+    </script>
+
+    <!-- 引入全站 head bar 脚本 -->
+    <script src="headbar.js"></script>
+</body>
+</html>

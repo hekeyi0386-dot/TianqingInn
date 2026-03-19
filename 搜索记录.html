@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>操作记录</title>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; font-family: "PingFang SC","Microsoft YaHei",sans-serif; }
+
+		:root {
+			--primary-white: #ffffff;
+			--light-green: #e8f4e8;
+			--medium-green: #4a8c5c;
+			--dark-green: #2d5a3d;
+			--accent-green: #6abf69;
+			--text-dark: #333333;
+			--text-light: #666666;
+			--border-light: #e0e0e0;
+			--shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+		}
+
+		body { background-color: #e9f8e9; color: var(--text-dark); line-height: 1.6; padding: 20px 0; }
+
+		.container {
+			max-width: 900px;
+			margin: 0 auto;
+			background-color: var(--primary-white);
+			box-shadow: var(--shadow);
+			border-radius: 8px;
+			overflow: hidden;
+			margin-top: 20px;
+			margin-bottom: 40px;
+		}
+
+		/* 顶部装饰，与天气页一致 */
+		.top-decoration { height: 8px; background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green)); position: relative; }
+		.top-decoration::after { content: ""; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 80%; height: 16px; background-color: var(--light-green); border-radius: 8px; }
+
+		/* 内容区，与天气页的 content-section 对齐 */
+		.content-section { padding: 25px 30px; }
+
+		/* 标题采用天气页的 section-title 风格 */
+		.title {
+			font-size: 22px;
+			margin-bottom: 20px;
+			color: var(--dark-green);
+			display: flex;
+			align-items: center;
+			border-bottom: 2px solid var(--light-green);
+			padding-bottom: 10px;
+			font-weight: 700;
+		}
+		.title::before { content: ""; display: inline-block; width: 6px; height: 22px; background-color: var(--accent-green); margin-right: 10px; border-radius: 3px; }
+
+		.desc { color: var(--text-dark); margin-bottom: 16px; }
+		.clear-link { font-size: 12px; color: var(--text-light); text-decoration: underline; cursor: pointer; display: inline-block; margin-bottom: 10px; }
+
+		.search-history { border: 1px solid var(--medium-green); border-radius:8px; overflow:hidden; background:#fafefa; }
+		.history-item { padding: 10px 16px; border-bottom:1px solid #eee; cursor:pointer; }
+		.history-item:hover { background:#f2fff2; }
+		.history-empty { padding: 10px 16px; color: var(--text-light); }
+
+		/* 响应式与天气页一致 */
+		@media (max-width: 768px) {
+			.container { margin: 10px; border-radius: 0; }
+			.content-section { padding: 20px; }
+			.title { font-size: 20px; }
+			.desc { font-size: 14px; }
+		}
+	</style>
+</head>
+<body>
+	<script defer src="headbar.js"></script>
+	<div class="container">
+		<div class="top-decoration"></div>
+		<div class="content-section">
+			<div class="title">操作记录</div>
+			<div class="desc">您的调查进度：<span id="progressCount">0</span>/13。</div>
+			<div class="desc">已搜索的关键词会显示在下方，点击可快速跳转到对应页面。</div>
+			<div id="clearHistory" class="clear-link">清除历史纪录</div>
+			<div id="records" class="search-history"></div>
+		</div>
+	</div>
+
+	<script>
+		(function(){
+			function load(){ try { return JSON.parse(localStorage.getItem('searchHistory')||'[]'); } catch(e){ return []; } }
+			function computeTargetForEmail(){
+				var target = 'nature刘江涛paper.html';
+				try { if (location.pathname.indexOf('/账号/') !== -1) target = '../' + target; } catch(e){}
+				return target;
+			}
+			// 登录帐号集合，用于显示“主页”标签
+			var loginIds = ['yoyoqiekenao','moumou','adwejfjgw','yangliqiang','zhouzhou','tianqingmanager'];
+			function getDisplayLabel(v){
+				try { if (loginIds.indexOf(v) !== -1) return v + '主页'; } catch(e){}
+				return v;
+			}
+			function getTargetForKeyword(v){
+				try {
+					if (v === 'adwejfjgw@mail.bhbu.edu.cn') { return computeTargetForEmail(); }
+					else if (v === '戛洒镇') { return '跳转.html'; }
+					else if (v === '补天祀仪式') { return 'a_leval.html'; }
+					else if (v === '山林祈愿线') { return 'forstwalk.html'; }
+					else if (v === '护身粥') { return '种草贴.html'; }
+					else if (v === '杨立强') { return '4.老板视频 带搜索框.html'; }
+				  else if (v === '清灵之人') { return 'invitation_and_two_ending.html'; }
+            // 账号登录映射（与登录页一致）
+            else if (v === 'yoyoqiekenao') { return '谢应文主页.html'; }
+            else if (v === 'moumou') { return '主页格式.html'; }
+            else if (v === 'adwejfjgw') { return '刘江涛的小号.html'; }
+            else if (v === 'yangliqiang') { return '老板账号主页(1).html'; }
+            else if (v === 'zhouzhou') { return 'leichuan.html'; }
+					else if (v === 'tianqingmanager') { return '老板账号主页(1) 登陆后.html'; }
+				} catch(e){}
+				return null;
+			}
+			var box = document.getElementById('records');
+			var clearBtn = document.getElementById('clearHistory');
+			var progressEl = document.getElementById('progressCount');
+			function renderList(){
+				box.innerHTML = '';
+				var list = load();
+				var mapped = [];
+				(list||[]).forEach(function(q){ var t = getTargetForKeyword(q); if (t) mapped.push({ q:q, href:t }); });
+				if (progressEl) { try { progressEl.textContent = String(mapped.length); } catch(e){} }
+				if (!mapped || mapped.length===0){ var empty=document.createElement('div'); empty.className='history-empty'; empty.textContent='暂无可跳转记录'; box.appendChild(empty); return; }
+				mapped.forEach(function(item){ var row=document.createElement('div'); row.className='history-item'; row.textContent=getDisplayLabel(item.q); row.addEventListener('click', function(){ window.location.href = item.href; }); box.appendChild(row); });
+			}
+			if (clearBtn){
+				clearBtn.addEventListener('click', function(){ try { localStorage.setItem('searchHistory', JSON.stringify([])); } catch(e){} renderList(); });
+			}
+			// 实时监听其他页面对 searchHistory 的更改
+			window.addEventListener('storage', function(e){ if (e && e.key === 'searchHistory') { renderList(); } });
+			renderList();
+		})();
+	</script>
+</body>
+</html>

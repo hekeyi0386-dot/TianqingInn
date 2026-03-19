@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Uature | 学术论文页面</title>
+	<meta name="description" content="仿 Nature 风格的学术论文详情页模板" />
+	<style>
+		:root{
+			--brand:#b21e2b; /* 品牌主红 */
+			--brand-dark:#8e1822;
+			--ink:#1a1a1a;
+			--muted:#666;
+			--line:#e6e6e6;
+			--bg:#ffffff;
+			--code-bg:#f7f7f7;
+			--link:#0a66c2;
+			--accent:#0f766e;
+			--container:1180px;
+		}
+		*{box-sizing:border-box}
+		html,body{margin:0;padding:0}
+		body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,"Noto Sans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:var(--ink);background:#fafafa;}
+
+		/* 顶部品牌条 */
+		.masthead{background:var(--brand);color:#fff;}
+		.masthead-inner{max-width:var(--container);margin:0 auto;display:flex;align-items:center;gap:18px;padding:14px 20px;}
+		.brand{font-family:Georgia,"Times New Roman",Times,serif;font-size:28px;font-weight:700;letter-spacing:0.5px}
+		.brand small{font-size:12px;opacity:.9;margin-left:10px;font-weight:400}
+		.mast-actions{margin-left:auto;display:flex;gap:10px}
+		.mast-actions a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.35);padding:6px 10px;border-radius:4px;font-size:13px}
+		.mast-actions a:hover{background:rgba(0,0,0,.08)}
+
+		/* 面包屑 */
+		.breadcrumb{max-width:var(--container);margin:0 auto;padding:14px 20px;font-size:13px;color:#333}
+		.breadcrumb a{color:var(--muted);text-decoration:none}
+		.breadcrumb a:hover{color:var(--ink);text-decoration:underline}
+		.breadcrumb .sep{margin:0 6px;color:#999}
+
+		/* 页面布局 */
+		.container{max-width:var(--container);margin:0 auto;display:grid;grid-template-columns: minmax(0, 3fr) minmax(260px, 1fr);gap:26px;padding:0 20px 60px}
+		@media (max-width: 980px){.container{grid-template-columns:1fr}}
+
+		/* 文章头部 */
+		.article-head{background:var(--bg);border:1px solid var(--line);padding:26px;border-radius:8px}
+		.article-type{display:inline-block;color:#fff;background:var(--accent);padding:2px 8px;border-radius:3px;font-size:12px;margin-bottom:10px}
+		h1.title{font-size:34px;line-height:1.25;margin:8px 0 14px;font-weight:700}
+		.authors{color:var(--ink);font-size:15px;line-height:1.7}
+		.authors a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #bbb}
+		.authors sup{font-size:11px;color:#a55}
+		.meta-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;color:#555;font-size:13px}
+		.meta-row .meta{display:flex;align-items:center;gap:6px}
+		.meta .label{color:#888}
+
+		/* 侧边操作 */
+		.sidebar .card{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:16px 16px 14px;margin-bottom:18px}
+		.btn{display:inline-flex;align-items:center;gap:8px;border-radius:6px;border:1px solid var(--brand);background:var(--brand);color:#fff;text-decoration:none;padding:10px 14px;font-weight:600}
+		.btn:hover{background:var(--brand-dark);border-color:var(--brand-dark)}
+		.btn.secondary{background:#fff;color:var(--brand)}
+
+		.toc{position:sticky;top:16px}
+		.toc h3{margin:0 0 8px;font-size:14px}
+		.toc ul{list-style:none;margin:0;padding:0}
+		.toc li{margin:6px 0}
+		.toc a{font-size:14px;color:#333;text-decoration:none}
+		.toc a:hover{color:var(--brand)}
+
+		/* 主体内容 */
+		.article{display:flex;flex-direction:column;gap:18px}
+		.section{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:22px}
+		.section h2{margin:0 0 10px 0;font-size:22px}
+		.section h3{margin:10px 0 8px;font-size:18px}
+		.abstract p{color:#333}
+		.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+		.kw span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:3px 8px;background:#fbfbfb}
+		.figure{margin:10px 0 6px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+		.figure img{width:100%;display:block;max-height:420px;object-fit:cover;background:#f2f2f2}
+		.caption{font-size:13px;color:#555;padding:10px 12px;background:#fcfcfc;border-top:1px solid var(--line)}
+		.note{font-size:13px;color:#666;background:#fff7f7;border:1px solid #ffdede;padding:10px 12px;border-radius:6px}
+		.code{background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:12px;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:13px;overflow:auto}
+		.ref-list{padding-left:18px}
+		.ref-list li{margin:8px 0;color:#333}
+		.ref-list a{color:var(--link);text-decoration:none}
+		.ref-list a:hover{text-decoration:underline}
+
+		/* 页脚 */
+		footer{border-top:1px solid var(--line);color:#777;font-size:13px;padding:18px 20px;margin-top:30px}
+		footer .inner{max-width:var(--container);margin:0 auto}
+
+		/* 回到顶部 */
+		.to-top{position:fixed;right:18px;bottom:18px;background:#fff;border:1px solid var(--line);border-radius:999px;box-shadow:0 4px 18px rgba(0,0,0,.07);padding:10px 12px;font-size:13px;color:#333;text-decoration:none}
+		.to-top:hover{background:#f7f7f7}
+
+		/* Toast 提示 */
+		.toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.98);opacity:0;z-index:10000;pointer-events:none;transition:opacity .18s ease, transform .18s ease;background:#111;color:#fff;font-size:14px;border-radius:10px;padding:14px 16px;box-shadow:0 12px 30px rgba(0,0,0,.22)}
+		.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+
+		/* 引用弹窗 */
+		.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998;display:none}
+		.modal-mask.show{display:block}
+		.modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:9999;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.15);width:min(680px,92vw);max-height:80vh;display:none}
+		.modal.show{display:block}
+		.modal .modal-header{padding:12px 16px;border-bottom:1px solid var(--line);font-weight:700}
+		.modal .modal-body{padding:14px 16px;font-size:14px;line-height:1.7;word-break:break-word}
+		.modal .modal-footer{display:flex;justify-content:flex-end;gap:10px;padding:12px 16px;border-top:1px solid var(--line)}
+		.btn.small{padding:8px 12px;font-weight:600;font-size:13px}
+
+		/* 居中 CTA */
+		.cta-center{display:flex;justify-content:center}
+
+	
+	</style>
+</head>
+<body>
+	<header class="masthead" role="banner" aria-label="站点头部">
+		<div class="masthead-inner">
+			<div class="brand">Uature</div>
+			<nav class="mast-actions" aria-label="站点操作">
+				<a href="#">期刊目录</a>
+				<a href="#">最新发表</a>
+				<a href="#">投稿指南</a>
+			</nav>
+		</div>
+	</header>
+
+	<div class="breadcrumb" aria-label="面包屑">
+		<a href="#">Uature</a>
+		<span class="sep">›</span>
+		<a href="#">Articles</a>
+		<span class="sep">›</span>
+		2025
+	</div>
+
+	<main class="container" role="main">
+		<!-- 主内容列 -->
+		<article class="article" aria-label="论文正文">
+			<section class="article-head" aria-label="文章头部">
+				<div class="article-type" aria-label="文章类型">Article</div>
+				<h1 class="title">以自然灵感提升复杂系统的稳健性：一种多尺度自适应策略</h1>
+				<div class="authors">
+					刘江涛<sup>1,✉</sup>
+				</div>
+				<div class="meta-row">
+					<div class="meta"><span class="label">收稿：</span><span>2022-03-02</span></div>
+					<div class="meta"><span class="label">接受：</span><span>2022-07-18</span></div>
+					<div class="meta"><span class="label">在线发表：</span><span>2025-12-10</span></div>
+					<div class="meta"><span class="label">DOI：</span><span>10.0000/nm.2025.56789</span></div>
+				</div>
+				<div class="meta-row" style="margin-top:6px">
+					<div class="meta"><span class="label">通讯作者：</span><span>📧 adwejfjgw@mail.bhbu.edu.cn</span></div>
+					<div class="meta"><span class="label">单位：</span><span><sup>1</sup> 生物科学系，BHBU</span></div>
+				</div>
+			</section>
+
+			<section id="abstract" class="section abstract" aria-labelledby="abstract-h">
+				<h2 id="abstract-h">摘要</h2>
+				<p>
+					本研究在中国云南累祈山地区发现一种罕见真菌，其所含特定生物碱表现出显著的神经致幻效应。实验观察显示，该物质可诱发方向性极强的感知改变，包括“与自然合一”及“脱离身体体验”等现象，并伴随暗示敏感性增强与潜在心理依赖风险。我们将产生上述效应的关键成分命名为 Qiyann 因子（Qiyann Factor）。该发现为理解真菌类天然产物的神经活性特性与人类意识改变机制提供了新的研究路径。
+				</p>
+				<div class="kw" aria-label="关键词">
+					<span>真菌生物碱</span><span>神经致幻</span><span>哀牢山</span><span>Qiyann 因子</span><span>感知改变</span><span>天然产物神经活性</span>
+				</div>
+			</section>
+
+			<section id="access" class="section" aria-label="访问限制">
+				<div class="cta-center">
+					<a id="btn-access" href="#" class="btn" role="button" aria-label="通过组织访问">请通过您的组织访问</a>
+				</div>
+			</section>
+		</article>
+
+		<!-- 侧栏 -->
+		<aside class="sidebar" aria-label="侧边栏">
+			<div class="card">
+				<a id="btn-back" class="btn secondary" href="../主页格式.html" role="button" aria-label="返回上一级页面">← 返回上级</a>
+				<div style="height:8px"></div>
+				<a id="btn-pdf" class="btn" href="#" role="button" aria-label="下载PDF">下载 PDF</a>
+				<div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+					<a id="btn-cite" class="btn secondary" href="#" role="button" aria-label="引用本文">引用本文</a>
+				</div>
+			</div>
+
+			<div class="card toc" aria-label="目录">
+				<h3>文章目录</h3>
+				<ul>
+					<li><a href="#abstract">摘要</a></li>
+				</ul>
+			</div>
+
+			<!-- 已按要求移除“相关文章”模块 -->
+		</aside>
+	</main>
+
+	<!-- 覆盖层提示已按要求移除 -->
+
+	<!-- Toast 和 引用弹窗 -->
+	<div id="toast" class="toast" role="status" aria-live="polite"></div>
+	<div id="modal-mask" class="modal-mask" hidden></div>
+	<div id="cite-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cite-title" hidden>
+		<div class="modal-header" id="cite-title">APA 7 引用</div>
+		<div class="modal-body">
+			<p id="cite-text" style="margin:0"></p>
+		</div>
+		<div class="modal-footer">
+			<button id="cite-close" class="btn small secondary" type="button">关闭</button>
+		</div>
+	</div>
+
+	<a class="to-top" href="#top" aria-label="回到顶部">↑ 顶部</a>
+
+	<footer role="contentinfo">
+		<div class="inner"></div>
+	</footer>
+
+	<script>
+		(function(){
+			const overlay = document.getElementById('human-check-overlay');
+			const sentinel = document.getElementById('intro-bottom-sentinel');
+			if(!overlay || !sentinel) return;
+			let triggered = false;
+			function showOverlay(){
+				if(triggered) return;
+				triggered = true;
+				overlay.classList.add('active');
+				// 可选：锁定页面滚动
+				document.documentElement.style.overflow = 'hidden';
+				document.body.style.overflow = 'hidden';
+			}
+			if('IntersectionObserver' in window){
+				const io = new IntersectionObserver((entries)=>{
+					for(const e of entries){
+						if(e.isIntersecting){
+							showOverlay();
+							io.disconnect();
+							break;
+						}
+					}
+				}, { root: null, threshold: 1.0 });
+				io.observe(sentinel);
+			}else{
+				function onScroll(){
+					const rect = sentinel.getBoundingClientRect();
+					const vpH = window.innerHeight || document.documentElement.clientHeight;
+					if(rect.bottom <= vpH){
+						showOverlay();
+						window.removeEventListener('scroll', onScroll);
+					}
+				}
+				window.addEventListener('scroll', onScroll, { passive: true });
+				onScroll();
+			}
+		})();
+
+		// 交互：下载 PDF -> 弹出失败提示；引用 -> 展示 APA7 引用
+		(function(){
+			const $ = (sel)=>document.querySelector(sel);
+			const btnPdf = $('#btn-pdf');
+			const btnCite = $('#btn-cite');
+			const btnAccess = $('#btn-access');
+			const toast = $('#toast');
+			const modal = $('#cite-modal');
+			const mask = $('#modal-mask');
+			const citeText = $('#cite-text');
+			const citeClose = $('#cite-close');
+
+			function showToast(msg){
+				if(!toast) return;
+				toast.textContent = msg;
+				toast.classList.add('show');
+				setTimeout(()=>{ toast.classList.remove('show'); }, 2000);
+			}
+
+			function openModal(){
+				if(mask) { mask.hidden = false; mask.classList.add('show'); }
+				if(modal){ modal.hidden = false; modal.classList.add('show'); }
+			}
+			function closeModal(){
+				if(mask) { mask.classList.remove('show'); mask.hidden = true; }
+				if(modal){ modal.classList.remove('show'); modal.hidden = true; }
+			}
+
+			function getText(el){ return el ? (el.textContent || '').trim() : ''; }
+			function extractYear(){
+				const metas = Array.from(document.querySelectorAll('.meta-row .meta'));
+				const online = metas.find(m=>getText(m.querySelector('.label')).includes('在线发表'));
+				const date = online ? getText(online.querySelector('span:last-child')) : '';
+				const y = (date.match(/^(\d{4})/)||[])[1];
+				return y || new Date().getFullYear();
+			}
+			function extractDOI(){
+				const metas = Array.from(document.querySelectorAll('.meta-row .meta'));
+				const doiM = metas.find(m=>getText(m.querySelector('.label')).includes('DOI'));
+				let doi = doiM ? getText(doiM.querySelector('span:last-child')) : '';
+				if(doi && !/^https?:\/\//.test(doi)) doi = 'https://doi.org/' + doi;
+				return doi;
+			}
+			function extractAuthors(){
+				const raw = getText(document.querySelector('.authors'));
+				// 去除脚注/符号，例如 1,✉
+				const cleaned = raw.replace(/[\d✉\s]+$/,'').replace(/\s+/g,'').replace(/<.*?>/g,'');
+				// 按常见中文分隔符拆分
+				const list = cleaned.split(/[，、,]\s*/).filter(Boolean);
+				return list;
+			}
+			function buildAPA(){
+				const authors = extractAuthors();
+				const year = extractYear();
+				const title = getText(document.querySelector('h1.title'));
+				const doi = extractDOI();
+				const journal = 'Uature';
+				const pubNote = 'Advance online publication';
+				const authorStr = authors.length ? (authors.join('，') + '.') : '';
+				return `${authorStr} (${year}). ${title}. ${journal}. ${pubNote}. ${doi}`.trim();
+			}
+
+			btnPdf && btnPdf.addEventListener('click', function(e){
+				e.preventDefault();
+				showToast('下载失败');
+			});
+
+			btnCite && btnCite.addEventListener('click', function(e){
+				e.preventDefault();
+				citeText && (citeText.textContent = buildAPA());
+				openModal();
+			});
+
+			btnAccess && btnAccess.addEventListener('click', function(e){
+				e.preventDefault();
+				showToast('网络连接失败');
+			});
+
+			citeClose && citeClose.addEventListener('click', function(){ closeModal(); });
+			mask && mask.addEventListener('click', function(){ closeModal(); });
+			window.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeModal(); });
+		})();
+	</script>
+
+</body>
+</html>

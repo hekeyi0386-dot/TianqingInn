@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>论坛帐号密码设置规则公告</title>
+  <style>
+    /* 基础重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9; /* 保持浅绿色背景 */
+      font-family: "Microsoft YaHei", sans-serif;
+      padding: 20px;
+      color: #333;
+    }
+
+    /* 容器限制最大宽度，避免宽屏显示过宽 */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* 搜索栏保持原有样式 */
+    .search-container {
+      width: 100%;
+      margin-bottom: 25px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border-radius: 25px;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .search-bar button {
+      border: none;
+      background-color: #006600;
+      color: #fff;
+      padding: 10px 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #004d00;
+    }
+
+    /* 公告主体样式 */
+    .announcement {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      line-height: 1.8;
+    }
+
+    /* 公告标题 */
+    .announcement-title {
+      font-size: 1.5rem;
+      color: #006600; /* 绿色标题突出重要性 */
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    /* 引言样式 */
+    .announcement-intro {
+      margin-bottom: 25px;
+      font-size: 1.05rem;
+    }
+
+    /* 规则章节样式 */
+    .rule-section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      color: #333;
+      margin: 15px 0 10px;
+      font-weight: bold;
+    }
+
+    /* 条款列表样式 */
+    .rule-list {
+      padding-left: 20px;
+      margin-bottom: 15px;
+    }
+
+    .rule-list li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 5px;
+    }
+
+    /* 重要提醒样式 */
+    .important {
+      background-color: #f9fdf9; /* 浅绿背景突出重要性 */
+      padding: 15px;
+      border-left: 3px solid #006600;
+      margin-top: 20px;
+      border-radius: 0 4px 4px 0;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 500px) {
+      .announcement {
+        padding: 20px 15px;
+      }
+
+      .announcement-title {
+        font-size: 1.3rem;
+      }
+
+      .section-title {
+        font-size: 1.1rem;
+      }
+
+      .search-bar input {
+        font-size: 0.9rem;
+      }
+
+      .search-bar button {
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <script defer src="headbar.js"></script>
+  <div class="container">
+    <!-- 公告内容区域 -->
+    <div class="announcement">
+      <h1 class="announcement-title">论坛帐号密码设置规则公告</h1>
+      
+      <p class="announcement-intro">尊敬的论坛用户：</p>
+      
+      <p class="announcement-intro">为保障您的帐号安全及正常使用论坛服务，现将帐号密码设置及相关使用规则明确如下，请务必仔细阅读并遵守：</p>
+      
+      <!-- 核心前提要求 -->
+      <div class="rule-section">
+        <h2 class="section-title">一、账号注册要求</h2>
+        <ol class="rule-list">
+          <li>游客被视为非小院住客，无法注册论坛账号发布内容，仅能浏览。</li>
+          <li>住客的账号在入住后由老板发放。</li>
+        </ol>
+      </div>
+      
+      <!-- 密码设置规范 -->
+      <div class="rule-section">
+        <h2 class="section-title">二、用户名密码设置规范</h2>
+        <ol class="rule-list" start="3">
+            <li>论坛ID 统一使用用户名的拼音形式。</li>
+          <li>密码长度需在 8-20 位之间。</li>
+          <li>老板发放账号后，请立即登录帐号修改初始密码，初始密码为12345678。</li>
+        </ol>
+      </div>
+      
+      <!-- 安全操作提示 -->
+      <div class="rule-section">
+        <h2 class="section-title">三、安全操作提示</h2>
+        <ol class="rule-list" start="5">
+          <li>若忘记密码，请直接找添清小院老板</li>
+        </ol>
+      </div>
+      
+      <!-- 重要提醒 -->
+      <div class="rule-section">
+        <h2 class="section-title">四、重要提醒</h2>
+        <div class="important">
+          <p>论坛 ID 及密码是您使用论坛服务的唯一合法凭证，您需对通过该 ID 及密码进行的所有操作承担相应责任。请务必提高安全意识，妥善保管论坛 ID 及密码，切勿向他人泄露，谨防帐号被盗。</p>
+          <p>感谢您的理解与配合，祝您使用愉快！</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

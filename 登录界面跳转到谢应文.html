@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>论坛登录</title>
+  <style>
+    /* 基础样式 - 保留浅绿色背景 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9; /* 保留原有浅绿色背景 */
+      font-family: "Microsoft YaHei", sans-serif;
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    /* 容器居中 */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* 搜索栏 - 保留原有样式 */
+    .search-container {
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border-radius: 25px;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 12px 20px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .search-bar button {
+      border: none;
+      background-color: #006600;
+      color: #fff;
+      padding: 12px 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #004d00;
+    }
+
+    /* 登录卡片样式 */
+    .login-card {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 40px 30px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-title {
+      font-size: 1.8rem;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    /* 表单样式 */
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 1rem;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .form-input {
+      padding: 12px 15px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #006600;
+      box-shadow: 0 0 0 2px rgba(0, 102, 0, 0.1);
+    }
+
+    /* 登录按钮 */
+    .login-btn {
+      padding: 12px;
+      background-color: #006600;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .login-btn:hover {
+      background-color: #004d00;
+    }
+
+    /* 错误提示样式 */
+    .error-tip {
+      color: #e53935;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 500px) {
+      .login-card {
+        padding: 30px 20px;
+      }
+
+      .login-title {
+        font-size: 1.5rem;
+      }
+
+      .search-bar {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 登录界面 -->
+    <div class="login-card">
+      <h1 class="login-title">论坛登录</h1>
+      <form class="login-form" id="loginForm">
+        <!-- 论坛ID输入框 -->
+        <div class="form-group">
+          <label class="form-label" for="forum-id">论坛ID</label>
+          <input 
+            type="text" 
+            class="form-input" 
+            id="forum-id" 
+            placeholder="请输入您的论坛ID（用户名拼音）"
+            required
+          >
+        </div>
+
+        <!-- 密码输入框 -->
+        <div class="form-group">
+          <label class="form-label" for="password">密码</label>
+          <input 
+            type="password" 
+            class="form-input" 
+            id="password" 
+            placeholder="请输入您的密码"
+            required
+          >
+        </div>
+
+        <!-- 登录按钮 -->
+        <button type="submit" class="login-btn">登录</button>
+        
+        <!-- 错误提示 -->
+        <div class="error-tip" id="errorTip">账号或密码错误，请重新输入！</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // 获取表单和元素
+    const loginForm = document.getElementById('loginForm');
+    const forumIdInput = document.getElementById('forum-id');
+    const passwordInput = document.getElementById('password');
+    const errorTip = document.getElementById('errorTip');
+
+    // 账号和密码对应关系映射
+    const loginMap = {
+      'yoyoqiekenao': {
+        password: 'yingwen22458!',
+        url: '谢应文主页.html'
+      },
+      'moumou': {
+        password: '12345678',
+        url: '主页格式.html'
+      },
+      'adwejfjgw': {
+        password: 'adwejfjgw',
+        url: '刘江涛的小号.html'
+      },
+      'yangliqiang': {
+        password: '12345678',
+        url: '老板账号主页(1).html'
+      },
+      'zhouzhou':{
+        password:'woshileichuan',
+        url:'leichuan.html'
+      }
+    };
+
+    // 表单提交事件
+    loginForm.addEventListener('submit', function(e) {
+      // 阻止表单默认提交行为
+      e.preventDefault();
+      
+      // 获取输入的账号和密码
+      const forumId = forumIdInput.value.trim();
+      const password = passwordInput.value.trim();
+      
+      // 验证账号和密码
+      if (loginMap[forumId] && loginMap[forumId].password === password) {
+        // 记录到搜索历史（用于操作记录页展示）
+        try {
+          const list = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+          if (!list.includes(forumId)) {
+            list.push(forumId);
+            localStorage.setItem('searchHistory', JSON.stringify(list));
+          }
+        } catch (err) {}
+        // 验证通过，跳转到对应页面
+        window.location.href = loginMap[forumId].url;
+      } 
+
+      else {
+        // 验证失败，显示错误提示
+        errorTip.style.display = 'block';
+        
+        // 3秒后隐藏错误提示
+        setTimeout(() => {
+          errorTip.style.display = 'none';
+        }, 3000);
+      }
+    });
+  </script>
+  <script defer src="headbar.js"></script>
+</body>
+</html>

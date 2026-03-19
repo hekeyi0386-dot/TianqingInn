@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VIP深度一对一疗愈参与名单</title>
+  <script defer src="../headbar_laoban.js"></script>
+  <style>
+    /* 基础重置 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9;
+      font-family: "Microsoft YaHei", sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      transition: background-color 0.5s ease; /* 背景过渡动画 */
+    }
+
+    /* 恐怖文字容器 - 初始隐藏 */
+    .horror-text {
+      position: fixed;
+      top: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      z-index: 9999;
+      display: none;
+      transition: opacity 0.5s ease-out; /* 消失时的渐变动画 */
+    }
+
+    .horror-char {
+      font-size: 8vw; /* 响应式大字体 */
+      font-weight: bold;
+      color: #000;
+      text-shadow: 
+        0 0 10px #ff0000,
+        0 0 20px #ff0000,
+        0 0 30px #ff0000,
+        0 0 40px #000000,
+        0 0 70px #000000,
+        0 0 80px #000000,
+        0 0 100px #000000,
+        0 0 150px #000000;
+      letter-spacing: 50px;
+      margin-left: 25px; /* 抵消最后一个字符间距 */
+      animation: horrorEffect 3s infinite alternate, shakeSlow 5s infinite;
+      font-family: "SimHei", "黑体", serif;
+    }
+
+    /* 恐怖闪烁动画 */
+    @keyframes horrorEffect {
+      0% { opacity: 0.8; color: #000; }
+      50% { opacity: 1; color: #ff0000; }
+      100% { opacity: 0.7; color: #000; }
+    }
+
+    /* 缓慢抖动动画 */
+    @keyframes shakeSlow {
+      0% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(-5px) rotate(-2deg); }
+      50% { transform: translateX(5px) rotate(1deg); }
+      75% { transform: translateX(-3px) rotate(2deg); }
+      100% { transform: translateX(2px) rotate(-1deg); }
+    }
+
+    /* 搜索栏样式 */
+    .search-container {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 30px;
+      margin-top: 120px; /* 为顶部恐怖文字预留空间 */
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      border-radius: 25px;
+      overflow: hidden;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .search-bar button {
+      border: none;
+      background-color: #006600;
+      color: #fff;
+      padding: 10px 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-bar button:hover {
+      background-color: #004d00;
+    }
+
+    /* 成语解谜容器 */
+    .idiom-game {
+      width: 100%;
+      max-width: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      display: none; /* 初始隐藏 */
+    }
+
+    .idiom-display {
+      font-size: 1.8rem;
+      letter-spacing: 8px;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .blank-char {
+      color: #e53935;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .input-area {
+      margin-bottom: 20px;
+    }
+
+    .answer-input {
+      padding: 10px 15px;
+      font-size: 1.2rem;
+      width: 80px;
+      text-align: center;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      outline: none;
+      margin-right: 15px;
+    }
+
+    .answer-input:focus {
+      border-color: #006600;
+    }
+
+    .submit-btn {
+      padding: 10px 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #006600;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #004d00;
+    }
+
+    .submit-btn:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .game-tips {
+      font-size: 1rem;
+      color: #666;
+      margin-top: 15px;
+      min-height: 20px;
+    }
+
+    .success-tips {
+      color: #006600;
+      font-weight: bold;
+    }
+
+    .error-tips {
+      color: #e53935;
+      font-weight: bold;
+    }
+
+    /* 名单标题样式 */
+    .list-title {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 20px;
+      text-align: center;
+      transition: color 0.5s ease;
+    }
+
+    /* 名单列表容器 */
+    .list-container {
+      width: 100%;
+      max-width: 500px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px 40px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      color: #000;
+      transition: all 0.5s ease;
+      position: relative; /* 使遮罩可绝对定位覆盖此容器 */
+    }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    /* 已确认项样式（谢应文） */
+    .confirmed {
+      color: #000;
+      position: relative;
+    }
+
+    .confirmed::before {
+      content: "✔";
+      color: #e53935;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    /* 谢应文红色文字样式 */
+    .red-name {
+      color: #ff0000 !important; /* 强制红色 */
+      font-weight: bold;
+    }
+
+    /* 解密前隐藏谢应文的样式 */
+    .hidden-name {
+      color: #ccc;
+      background-color: #f0f0f0;
+      padding: 2px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* 手机端适配 */
+    @media (max-width: 500px) {
+      .horror-char {
+        font-size: 12vw;
+        letter-spacing: 20px;
+        margin-left: 10px;
+      }
+
+      .search-container {
+        margin-top: 80px;
+      }
+
+      .search-bar input {
+        font-size: 0.9rem;
+      }
+
+      .search-bar button {
+        padding: 10px 20px;
+      }
+
+      .list-title {
+        font-size: 1.5rem;
+      }
+
+      .idiom-game {
+        padding: 20px;
+      }
+
+      .idiom-display {
+        font-size: 1.5rem;
+        letter-spacing: 5px;
+      }
+
+      .answer-input {
+        width: 70px;
+        font-size: 1rem;
+      }
+
+      .submit-btn {
+        padding: 8px 20px;
+        font-size: 0.9rem;
+      }
+
+      .list-container {
+        padding: 20px;
+      }
+
+      .list-item {
+        font-size: 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+    }
+
+    /* 重新解谜按钮样式 */
+    .reset-container {
+      width: 100%;
+      max-width: 500px;
+      display: none; /* 初始隐藏：仅完成后显示 */
+      justify-content: center;
+      margin: 10px 0 20px;
+    }
+
+    .reset-container.show {
+      display: flex;
+    }
+
+    .reset-btn {
+      padding: 10px 25px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #006600;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .reset-btn:hover {
+      background-color: #004d00;
+    }
+
+    /* 覆盖名单的白色半透明遮罩 */
+    .list-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 5;
+      display: none; /* 默认隐藏，由JS控制显示 */
+    }
+
+    .list-overlay.show {
+      display: block;
+    }
+
+    /* 成语解谜区域的包裹与弹框遮挡 */
+    .idiom-section {
+      width: 100%;
+      max-width: 500px;
+      position: relative; /* 让覆盖层相对该容器定位 */
+    }
+
+    .idiom-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.8);
+      display: none;
+      z-index: 10;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .idiom-overlay.show {
+      display: flex;
+    }
+
+    .idiom-modal {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      padding: 20px 24px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    .idiom-modal h3 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      color: #000;
+    }
+
+    .idiom-modal p {
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .fix-btn {
+      padding: 10px 22px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 6px;
+      background-color: #006600;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .fix-btn:hover {
+      background-color: #004d00;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 恐怖文字容器 - 初始隐藏 -->
+  <div class="horror-text">
+    <div class="horror-char">走进雾里</div>
+  </div>
+
+
+
+  <!-- 名单标题 -->
+  <h2 class="list-title">VIP深度一对一疗愈参与名单</h2>
+
+  <!-- 成语解谜区域（移动至名单标题下方） -->
+  <div class="idiom-section">
+    <!-- 覆盖成语解谜的弹框 -->
+    <div class="idiom-overlay">
+      <div class="idiom-modal">
+        <h3>系统提示</h3>
+        <p>系统出现故障，无法完全显示内容。</p>
+        <button class="fix-btn" onclick="dismissIdiomOverlay()">修复</button>
+      </div>
+    </div>
+
+    <div class="idiom-game" id="game1">
+      <div class="idiom-display"><span class="blank-char">？</span>投无路</div>
+      <div class="input-area">
+        <input type="text" class="answer-input" id="input1" maxlength="1" placeholder="填字">
+        <button class="submit-btn" onclick="checkAnswer(1)">提交答案</button>
+      </div>
+      <div class="game-tips" id="tips1"></div>
+    </div>
+
+    <div class="idiom-game" id="game2">
+      <div class="idiom-display"><span class="blank-char">？</span>退两难</div>
+      <div class="input-area">
+        <input type="text" class="answer-input" id="input2" maxlength="1" placeholder="填字">
+        <button class="submit-btn" onclick="checkAnswer(2)">提交答案</button>
+      </div>
+      <div class="game-tips" id="tips2"></div>
+    </div>
+
+    <div class="idiom-game" id="game3">
+      <div class="idiom-display">云开<span class="blank-char">？</span>散</div>
+      <div class="input-area">
+        <input type="text" class="answer-input" id="input3" maxlength="1" placeholder="填字">
+        <button class="submit-btn" onclick="checkAnswer(3)">提交答案</button>
+      </div>
+      <div class="game-tips" id="tips3"></div>
+    </div>
+
+    <div class="idiom-game" id="game4">
+      <div class="idiom-display">花<span class="blank-char">？</span>胡哨</div>
+      <div class="input-area">
+        <input type="text" class="answer-input" id="input4" maxlength="1" placeholder="填字">
+        <button class="submit-btn" onclick="checkAnswer(4)">提交答案</button>
+      </div>
+      <div class="game-tips" id="tips4"></div>
+    </div>
+
+    <!-- 重新解谜按钮（仍位于解谜区下方，完成后显示） -->
+    <div class="reset-container">
+      <button class="reset-btn" onclick="restartPuzzle()">重新解谜</button>
+    </div>
+  </div>
+
+  <!-- 名单列表容器 -->
+  <div class="list-container">
+    <!-- 白色遮罩：由JS控制显示隐藏 -->
+    <div class="list-overlay"></div>
+    <div class="list-item">李梅 <span>2016.10.03</span></div>
+    <div class="list-item">张远 <span>2016.10.17</span></div>
+    <div class="list-item">王玥 <span>2017.10.29</span></div>
+    <div class="list-item">陈浩 <span>2017.11.05</span></div>
+    <div class="list-item">刘佳 <span>2018.11.26</span></div>
+    <div class="list-item confirmed">
+      <span id="hidden-name" class="hidden-name">系统出现故障，暂时无法显示。</span>
+      <span>2018.12.09</span>
+    </div>
+  </div>
+
+  <script>
+    // 成语谜题配置
+    const idiomConfig = {
+      1: { answer: '走', nextGame: 'game2' }, // 走投无路（缺走）
+      2: { answer: '进', nextGame: 'game3' }, // 进退两难（缺进）
+      3: { answer: '雾', nextGame: 'game4' }, // 云开雾散（缺雾）
+      4: { answer: '里', nextGame: '' }      // 花里胡哨（缺里）
+    };
+
+    // 检查是否已完成解谜（从localStorage读取状态）
+    const isPuzzleCompleted = localStorage.getItem('puzzleCompleted') === 'true';
+
+    // 页面加载逻辑
+    window.onload = function() {
+      if (isPuzzleCompleted) {
+        // 第二次进入：直接显示最终效果
+        showFinalResult();
+      } else {
+        // 第一次进入：显示第一个解谜框
+        document.getElementById('game1').style.display = 'block';
+      }
+      // 未完成时显示遮罩，完成后在showFinalResult中移除
+      const listOverlay = document.querySelector('.list-overlay');
+      if (listOverlay && !isPuzzleCompleted) {
+        listOverlay.classList.add('show');
+      }
+      // 未完成时显示成语解谜区域弹框
+      const idiomOverlay = document.querySelector('.idiom-overlay');
+      if (idiomOverlay && !isPuzzleCompleted) {
+        idiomOverlay.classList.add('show');
+      }
+    };
+
+    // 显示最终解谜完成效果的函数
+    function showFinalResult() {
+      // 隐藏所有解谜容器
+      document.getElementById('game1').style.display = 'none';
+      document.getElementById('game2').style.display = 'none';
+      document.getElementById('game3').style.display = 'none';
+      document.getElementById('game4').style.display = 'none';
+
+      // 解锁谢应文为红色
+      const hiddenName = document.getElementById('hidden-name');
+      hiddenName.textContent = '谢应文';
+      hiddenName.classList.remove('hidden-name');
+      hiddenName.classList.add('red-name');
+
+      // 页面背景变暗
+      document.body.style.backgroundColor = '#222';
+      document.querySelector('.list-container').style.backgroundColor = '#333';
+      document.querySelector('.list-container').style.color = '#fff';
+      document.querySelector('.list-title').style.color = '#fff';
+
+      // 显示恐怖文字并5秒后消失
+      const horrorText = document.querySelector('.horror-text');
+      horrorText.style.display = 'block';
+      // 清理旧的计时器，避免与重置冲突
+      if (window.__horrorTimeoutId) { clearTimeout(window.__horrorTimeoutId); window.__horrorTimeoutId = null; }
+      if (window.__horrorFadeId) { clearTimeout(window.__horrorFadeId); window.__horrorFadeId = null; }
+      // 5秒后渐隐并隐藏
+      window.__horrorTimeoutId = setTimeout(() => {
+        horrorText.style.opacity = '0';
+        window.__horrorFadeId = setTimeout(() => {
+          horrorText.style.display = 'none';
+          horrorText.style.opacity = '1';
+          window.__horrorFadeId = null;
+        }, 500);
+      }, 5000);
+
+      // 显示“重新解谜”按钮（仅在完成后）
+      const resetContainer = document.querySelector('.reset-container');
+      if (resetContainer) {
+        resetContainer.classList.add('show');
+      }
+
+      // 移除名单遮罩，显示名单内容
+      const listOverlay = document.querySelector('.list-overlay');
+      if (listOverlay) {
+        listOverlay.classList.remove('show');
+      }
+
+      // 完成后移除成语解谜弹框
+      const idiomOverlay = document.querySelector('.idiom-overlay');
+      if (idiomOverlay) {
+        idiomOverlay.classList.remove('show');
+      }
+    }
+
+    // 检查答案函数
+    function checkAnswer(gameNum) {
+      const inputEle = document.getElementById(`input${gameNum}`);
+      const tipsEle = document.getElementById(`tips${gameNum}`);
+      const userAnswer = inputEle.value.trim();
+      const correctAnswer = idiomConfig[gameNum].answer;
+
+      // 清空输入框焦点
+      inputEle.blur();
+
+      // 判断答案是否正确
+      if (userAnswer === correctAnswer) {
+        // 答案正确
+        tipsEle.textContent = gameNum < 4 ? '✅ 回答正确！即将进入下一题' : '✅ 全部谜题完成！';
+        tipsEle.className = 'game-tips success-tips';
+        
+        // 禁用当前题的输入和按钮
+        inputEle.disabled = true;
+        inputEle.nextElementSibling.disabled = true;
+
+        if (gameNum < 4) {
+          // 延迟1秒跳转到下一题
+          setTimeout(() => {
+            document.getElementById(`game${gameNum}`).style.display = 'none';
+            document.getElementById(idiomConfig[gameNum].nextGame).style.display = 'block';
+          }, 1000);
+        } else {
+          // 全部谜题完成：存储状态+显示最终效果
+          localStorage.setItem('puzzleCompleted', 'true'); // 标记解谜完成
+          setTimeout(() => {
+            showFinalResult();
+          }, 1000);
+        }
+      } else {
+        // 答案错误
+        tipsEle.textContent = '❌ 回答错误！请重新填写';
+        tipsEle.className = 'game-tips error-tips';
+        
+        // 输入框抖动效果
+        inputEle.style.animation = 'shake 0.3s ease';
+        setTimeout(() => {
+          inputEle.style.animation = '';
+        }, 300);
+        
+        // 清空输入框
+        inputEle.value = '';
+      }
+    }
+
+    // 添加输入框抖动动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        50% { transform: translateX(5px); }
+        75% { transform: translateX(-3px); }
+        100% { transform: translateX(2px); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 关闭成语解谜弹框
+    function dismissIdiomOverlay() {
+      const idiomOverlay = document.querySelector('.idiom-overlay');
+      if (idiomOverlay) {
+        idiomOverlay.classList.remove('show');
+      }
+      // 将视图聚焦到第一题区域
+      const firstGame = document.getElementById('game1');
+      if (firstGame) {
+        firstGame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // 重新解谜：重置界面与状态并回到第一题
+    function restartPuzzle() {
+      // 清除完成标记
+      try { localStorage.removeItem('puzzleCompleted'); } catch (e) {}
+
+      // 清理可能仍在运行的计时器
+      if (window.__horrorTimeoutId) { clearTimeout(window.__horrorTimeoutId); window.__horrorTimeoutId = null; }
+      if (window.__horrorFadeId) { clearTimeout(window.__horrorFadeId); window.__horrorFadeId = null; }
+
+      // 恢复页面主题样式
+      document.body.style.backgroundColor = '#e9f8e9';
+      const listContainer = document.querySelector('.list-container');
+      if (listContainer) {
+        listContainer.style.backgroundColor = '#fff';
+        listContainer.style.color = '#000';
+      }
+      const listTitle = document.querySelector('.list-title');
+      if (listTitle) {
+        listTitle.style.color = '#000';
+      }
+
+      // 隐藏恐怖文字并恢复透明度
+      const horrorText = document.querySelector('.horror-text');
+      if (horrorText) {
+        horrorText.style.display = 'none';
+        horrorText.style.opacity = '1';
+      }
+
+      // 恢复姓名为未解锁状态
+      const hiddenName = document.getElementById('hidden-name');
+      if (hiddenName) {
+        hiddenName.textContent = '完成成语解谜解锁';
+        hiddenName.classList.remove('red-name');
+        if (!hiddenName.classList.contains('hidden-name')) {
+          hiddenName.classList.add('hidden-name');
+        }
+      }
+
+      // 重置四个题目的展示、输入与提示
+      for (let i = 1; i <= 4; i++) {
+        const game = document.getElementById(`game${i}`);
+        if (game) game.style.display = i === 1 ? 'block' : 'none';
+
+        const input = document.getElementById(`input${i}`);
+        if (input) {
+          input.disabled = false;
+          input.value = '';
+        }
+        if (input && input.nextElementSibling) {
+          input.nextElementSibling.disabled = false;
+        }
+
+        const tips = document.getElementById(`tips${i}`);
+        if (tips) {
+          tips.textContent = '';
+          tips.className = 'game-tips';
+        }
+      }
+
+      // 清空搜索栏输入以回到初始视觉状态
+      const searchInput = document.querySelector('.search-bar input');
+      if (searchInput) searchInput.value = '';
+
+      // 隐藏“重新解谜”按钮，回到初始流程
+      const resetContainer = document.querySelector('.reset-container');
+      if (resetContainer) {
+        resetContainer.classList.remove('show');
+      }
+
+      // 再次显示名单遮罩，直至完成解谜
+      const listOverlay = document.querySelector('.list-overlay');
+      if (listOverlay) {
+        listOverlay.classList.add('show');
+      }
+
+      // 再次显示成语解谜弹框
+      const idiomOverlay = document.querySelector('.idiom-overlay');
+      if (idiomOverlay) {
+        idiomOverlay.classList.add('show');
+      }
+
+      // 平滑滚动到第一题区域
+      const firstGame = document.getElementById('game1');
+      if (firstGame) {
+        firstGame.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  </script>
+</body>
+</html>

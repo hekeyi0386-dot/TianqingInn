@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人物介绍 | 添清小院</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7f6;
+            color: #2d3e40;
+            line-height: 1.8;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: linear-gradient(to bottom, #f5f7f6 0%, #e4ebe8 100%);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        /* 返回按钮样式 */
+        .return-bar {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid #eaeaea;
+            background: linear-gradient(135deg, #f8fff8 0%, #e8f4e8 100%);
+        }
+        .return-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px 20px;
+            border-top: 1px solid #eaeaea;
+            background: linear-gradient(135deg, #f8fff8 0%, #e8f4e8 100%);
+        }
+        .return-btn {
+            appearance: none;
+            border: 2px solid #3a7f3a;
+            background: linear-gradient(135deg, #4a8f4a 0%, #2d5f2d 100%);
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+        .return-btn:hover {
+            background: linear-gradient(135deg, #5fa85f 0%, #3d7f3d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(74, 143, 74, 0.25);
+        }
+        
+        .content-wrapper {
+            display: flex;
+            min-height: 700px;
+        }
+        
+        .photo-section {
+            flex: 1;
+            background: linear-gradient(135deg, #3a6351 0%, #2d4940 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            border-right: 1px solid #eaeaea;
+        }
+        
+        .photo-frame {
+            width: 100%;
+            max-width: 420px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 显示图片的原始尺寸；如果图片过大，会限制最大宽/高以避免破坏布局 */
+        .photo-frame img.photo-img {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 520px;
+        }
+        
+        .photo-hint {
+            font-size: 14px;
+            color: #b8d8c8;
+            margin-top: 20px;
+            text-align: center;
+            padding: 10px 20px;
+            background-color: rgba(0, 0, 0, 0.15);
+            border-radius: 20px;
+            max-width: 300px;
+        }
+        
+        .story-section {
+            flex: 1.5;
+            padding: 60px 50px;
+            overflow-y: auto;
+            max-height: 800px;
+        }
+        
+        .story-title {
+            font-size: 32px;
+            color: #3a6351;
+            margin-bottom: 35px;
+            padding-bottom: 18px;
+            border-bottom: 3px solid #eaeaea;
+            position: relative;
+        }
+        
+        .story-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background-color: #e09f3e;
+        }
+        
+        .story-content {
+            font-size: 18px;
+            color: #444;
+        }
+        
+        .story-content p {
+            margin-bottom: 28px;
+            text-align: justify;
+            text-indent: 2em;
+        }
+        
+        .quote-block {
+            background-color: #f9f9f9;
+            padding: 28px 30px;
+            margin: 35px 0;
+            border-left: 5px solid #7f8c8d;
+            font-style: italic;
+            color: #555;
+            line-height: 1.8;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+        
+        .quote-block::before {
+            content: '"';
+            font-size: 60px;
+            color: #d0d0d0;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-family: Georgia, serif;
+        }
+        
+        .photo-img {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            cursor: pointer;
+        }
+        
+        .photo-img.anim-out {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 1000px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            .photo-section {
+                border-right: none;
+                border-bottom: 1px solid #eaeaea;
+                padding: 35px 20px;
+                min-height: 500px;
+            }
+            
+            .photo-frame {
+                max-width: 380px;
+            }
+            
+            .story-section {
+                padding: 40px 35px;
+                max-height: none;
+            }
+            
+            .story-title {
+                font-size: 28px;
+            }
+            
+            .story-content {
+                font-size: 17px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .story-section {
+                padding: 30px 25px;
+            }
+            
+            .story-title {
+                font-size: 26px;
+                margin-bottom: 25px;
+            }
+            
+            .story-content {
+                font-size: 16px;
+            }
+            
+            .quote-block {
+                padding: 20px;
+                margin: 25px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbar.js"></script>
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="photo-section">
+                <div class="photo-frame">
+                    <img src="photoofxieyinwen.png" alt="谢应文照片" class="photo-img">
+                </div>
+                <div class="photo-hint">点击照片切换人物</div>
+            </div>
+            
+            <div class="story-section">
+                <h1 class="story-title">谢应文</h1>
+                
+                <div class="story-content">
+                    <p>谢应文的脚步落在添清小院青石板路上时，鞋底沾着的城市尘埃，像是终于找到了可以卸下的归处。风里裹着草木的湿润气息，漫过他紧绷了太久的肩颈，让他下意识地松了口气——这是在字节蹦动的产品研发岗上，从未有过的松弛感。</p>
+                    
+                    <p>他还能想起被裁员那天，HR温和却不容置疑的语气，桌上摊着的项目失误报告，密密麻麻的批注像针一样扎进眼里。那些日子，他把自己焊在工位上，盯着屏幕上跳动的数据和不断更新的需求，连闭眼都是产品迭代的流程图。压力像潮水般漫上来，先是失眠，后是整夜整夜的心悸，直到最后那个关键环节的疏漏，成了压垮他的最后一根稻草。被裁不是意外，他心里清楚，是透支的身体和麻木的神经，早就撑不起那份曾经热爱的研发工作了。</p>
+                    
+                    <p>离开写字楼的那天，他把手机调成了静音，塞进背包最深处。曾经赖以生存的电子产品，此刻却像一个个催命符，提醒着他那些被KPI填满、失去自我的日子。他只想找个地方，能安安静静地呼吸，能听见自己心跳的声音，能把那些被工作磨灭的本心，一点点找回来</p>
+                    
+                    <p>添清小院的门是虚掩着的，推开时发出轻微的"吱呀"声。院角的月季开得正好，墙根下有几只小鸡慢悠悠地踱着步，院主从屋里探出头，笑着问他是不是来住店的，语气热络得像家人。谢应文点点头，喉结动了动，竟一时说不出话来——太久没有感受过这样不带功利、纯粹的善意了。</p>
+                    
+                    <p>他选了一间靠里的房间，窗外就是一片树林。放下背包的第一件事，他就把手机拿了出来，关机，然后塞进了行李箱的夹层。做完这一切，他靠在窗边，看着阳光透过竹叶的缝隙洒在地上，形成斑驳的光影，心里忽然就踏实了。</p>
+                    
+                    <p>或许在这里，他能好好睡一觉，不用再被凌晨的工作消息惊醒；或许在这里，他能学着侍弄花草，感受生命生长的力量；或许在这里，他能重新捡起曾经喜欢的文字，写下那些被工作耽误的心情。他不求能立刻找回人生的方向，只求能在这份宁静里，与自己和解，找回那个不被压力裹挟、真诚热烈的自己。</p>
+                </div>
+            </div>
+        </div>
+        <div class="return-footer">
+            <button id="return-btn" class="return-btn" aria-label="返回">← 返回</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            const img = document.querySelector('.photo-img');
+            const story = document.querySelector('.story-content');
+            const titleEl = document.querySelector('.story-title');
+            const returnBtn = document.getElementById('return-btn');
+            
+            if(!img || !story || !titleEl) return;
+            
+            // 人物数据
+            const characters = [
+                {
+                    id: 'xie',
+                    src: 'photoofxieyinwen.png',
+                    title: '谢应文',
+                    content: `
+                        <p>谢应文的脚步落在添清小院青石板路上时，鞋底沾着的城市尘埃，像是终于找到了可以卸下的归处。风里裹着草木的湿润气息，漫过他紧绷了太久的肩颈，让他下意识地松了口气——这是在字节蹦动的产品研发岗上，从未有过的松弛感。</p>
+                        
+                        <p>他还能想起被裁员那天，HR温和却不容置疑的语气，桌上摊着的项目失误报告，密密麻麻的批注像针一样扎进眼里。那些日子，他把自己焊在工位上，盯着屏幕上跳动的数据和不断更新的需求，连闭眼都是产品迭代的流程图。压力像潮水般漫上来，先是失眠，后是整夜整夜的心悸，直到最后那个关键环节的疏漏，成了压垮他的最后一根稻草。被裁不是意外，他心里清楚，是透支的身体和麻木的神经，早就撑不起那份曾经热爱的研发工作了。</p>
+                        
+                        <p>离开写字楼的那天，他把手机调成了静音，塞进背包最深处。曾经赖以生存的电子产品，此刻却像一个个催命符，提醒着他那些被KPI填满、失去自我的日子。他只想找个地方，能安安静静地呼吸，能听见自己心跳的声音，能把那些被工作磨灭的本心，一点点找回来。
+                  
+                        <p>添清小院的门是虚掩着的，推开时发出轻微的"吱呀"声。院角的月季开得正好，墙根下有几只小鸡慢悠悠地踱着步，院主从屋里探出头，笑着问他是不是来住店的，语气热络得像家人。谢应文点点头，喉结动了动，竟一时说不出话来——太久没有感受过这样不带功利、纯粹的善意了。</p>
+                        
+                        <p>他选了一间靠里的房间，窗外就是一片树林。放下背包的第一件事，他就把手机拿了出来，关机，然后塞进了行李箱的夹层。做完这一切，他靠在窗边，看着阳光透过竹叶的缝隙洒在地上，形成斑驳的光影，心里忽然就踏实了。</p>
+                        
+                        <p>或许在这里，他能好好睡一觉，不用再被凌晨的工作消息惊醒；或许在这里，他能学着侍弄花草，感受生命生长的力量；或许在这里，他能重新捡起曾经喜欢的文字，写下那些被工作耽误的心情。他不求能立刻找回人生的方向，只求能在这份宁静里，与自己和解，找回那个不被压力裹挟、真诚热烈的自己。</p>
+                    `
+                },
+                {
+                    id: 'lei',
+                    src: 'photoofleichuan.png',
+                    title: '累川',
+                    content: `
+                        <p>添清小院的竹椅暖烘烘的，累川蜷在上面，手机屏暗着，停留在"小川爱旅游"的后台——最新攻略点赞寥寥。他自嘲勾了勾唇，将手机翻面。没人知道，旅游博主账号是他筛选猎物的工具，添清小院早已是他布好的猎场。</p>
+                        
+                        <p>为维持旅游博主人设，他常年奔波拍素材、剪视频，实则在涉及累祈山旅游的攻略里建议网友入驻添清小院，暗中筛选献祭给累祈山山神的祭品。上月，他借视频播放量暴跌顺势"退隐"，住进自己掌控的添清小院，一边休整，一边为新一轮狩猎做准备。</p>
+
+                        <p>这一个月，他跟着雇来撑场面的村民杨立强打理小院，营造岁月静好的假象。偶尔拍几张小院光影发社交平台维系人设，悄悄筛选渴望疗愈的猎物，还备好添清小院疗愈课程当诱饵。</p>
+
+                        <p>院门口"吱呀"一声，一个满眼疲惫的男人站在门口。杨立强迎上去询问，男人点头不语。累川不动声色打量，眼底掠过冷光又覆上笑意——又一个即将落入累祈山囚笼的猎物。</p>
+                        
+                        <p>这是他让杨立强留意的长住客人。累川起身温和招呼："你好，我也是小院的住客，叫我小川就行。"男人淡淡回笑。累川懂得城市打工族对于自然环境的向往，这正是突破口，美好的自然环境不过是让猎物放松警惕的第一步。</p>
+                        
+                        <p>看着男人跟着杨立强进房，累川嘴角勾起隐晦弧度。小院宁静是假象，杨立强是棋子。他早料到男人会主动隔绝手机，被这疗愈乌托邦俘获。</p>
+                    `
+                },
+                {
+                    id: 'liu',
+                        src: 'photoofliu.png',
+                    title: '刘江涛',
+                    content: `
+                        <p>添清小院的客房钥匙，刘江涛很少随身携带。多数时候，他清晨背着帆布包出门，直到暮色漫过戛洒镇的街巷才回来，帆布包里塞着了笔记本、录音笔和电脑，还有村民塞给他的野生菌、自家种的柚子。</p>
+                        
+                        <p>作为一名外地来的民族志学者，他沉默寡言，极少主动和小院里的人搭话。累川偶尔会笑着和他打招呼，说几句"今天又去调查啦"之类的客套话，他也只是点头应一声，脚步不停，径直走进自己的房间，关上门，就像把外界的一切都隔绝在了门外。</p>
+
+                        <p>他来戛洒镇，是为了研究当地的民族文化。每天天不亮，他就跟着村民上山，记录他们的农耕方式、民间传说；午后坐在村口的老槐树下，听老人唱古老的歌谣，手在笔记本电脑上飞速游走。村民们都喜欢这个话不多却踏实的学者，愿意把家里的故事讲给他听，甚至会留他吃一顿简单的家常菜。
+                        
+                        <p>谢应文住进小院那天，刘江涛刚从村里回来。他背着帆布包，站在院门口，看着那个眉眼疲惫的男人跟着杨立强走进客房，只是淡淡扫了一眼，便抬脚走进自己的房间，没有多余的表情。对他而言，小院里的住客来来去去，都是短暂的过客，只有他手中的研究，才是不变的重心。</p>
+                        
+                        <p>他很少待在小院里，即便偶尔在院中坐一会儿，也只是戴着耳机，翻看笔记本上的记录，或者整理录音笔里的内容，对周围的一切都漠不关心。累川曾试着和他聊起"小院疗愈课程"，他只是抬了抬眼，沉默地摇了摇头，便起身回了房间，那疏离的态度，让累川再也没提过此事。</p>
+                        
+                        <p>没人知道，这个沉默寡言的学者，背包里除了研究资料，还藏着一本厚厚的日记。夜深人静时，他会在日记里写下戛洒镇的风土人情，也会记下小院里每个人的异样——比如累川过分热情的伪装，比如谢应文眼底化不开的疲惫。他只是沉默地观察着，像一个局外人，把一切都藏在心里，等着合适的时机，揭开这小院里的秘密。</p>
+                    `
+                },
+                {
+                    id: 'yang',
+                    src: 'photoofyanginfinal.png',
+                    title: '杨立强',
+                    content: `
+                        <p>晨光刚漫过添清小院的土墙，杨立强就起身开了院门。他把添清小院的门前空地打扫的干干净净。这是他每天的第一件事——作为这家民宿的经营者，体面和气是本分，至少表面上得是这样。</p>
+                        
+                        <p>院角的月季该浇了，杨立强拎着水桶慢慢走过去，眼角的余光却没放过院门口的动静。累川昨晚跟他说，今天会来个长住的客人，让他多上点心，别露了破绽。他应着"放心"，心里却没什么波澜，这种事他熟得很，热情、大方、热心肠，这些标签早就刻在了他脸上。</p>
+                        
+                        <p>刚浇完花，院门口就传来了脚步声。一个背着黑背包的男人站在那里，身形单薄，眉眼间全是化不开的疲惫，一看就是被生活压垮的打工人，和之前那些来寻求"疗愈"的人没两样。杨立强立刻堆起笑迎上去："您好，您是之前预约来住店的吧？请进！"一边说着，一边主动帮男人提起行李箱，语气热络得像招待朋友，"我叫杨立强，这小院我打理。你住的房间靠里，安静，窗外就是竹林，保证你睡得踏实。等会儿我给你拿份戛洒镇的攻略，周边好玩的、好吃的都写着呢。"
+                        
+                        <p>男人愣了愣，缓缓点了点头。这时累川从竹椅上站起身，笑着走过来打招呼，语气温和地说自己也是来休整的。杨立强看在眼里，心里清楚，这是累川惯用的套路，先以"同是天涯沦落人"的身份拉近距离，再慢慢抛出"疗愈课程"的诱饵。他识趣地没多嘴，引着男人往客房走，把该介绍的都介绍到位，全程笑脸没断。</p>
+                        
+                        <p>安置好客人，杨立强回到院里，从屋里拿出一本佛经坐在门槛上翻。阳光透过树叶洒在书页上，他指尖划过经文，表情虔诚得很。这是累川特意交代的，让他多装装信佛的样子，显得小院更清净、更让人安心。其实他根本看不懂这些文字，他信的从来不是佛，是教主，是累川带给他的"救赎"——只要好好配合累川，把这些客人稳住，等着他们被"疗愈课程"吸引，最后送进累祈山，他就能得到应有的"福报"。</p>
+                        
+                        <p>不一会儿，刘江涛背着帆布包回来了，包里鼓鼓囊囊的，想必又是从村里搜罗了不少研究资料。这个沉默寡言的学者，每天早出晚归，很少在小院待着，也不爱跟人说话。杨立强对他也没什么兴趣，只要他不碍事儿，爱怎么研究就怎么研究。</p>
+                        
+                        <p>中午给客人准备午饭时，杨立强特意多做了一道戛洒镇的特色菜酸角鸡。端到那个黑背包男人房间时，男人正在窗边发呆，看着外面的竹林出神。他把菜放在桌上，笑着说："您可以尝尝，本地特色，开胃。要是有什么需要，随时喊我。"男人转过头，说了句"谢谢"，声音沙哑得厉害。杨立强笑着摆摆手退了出来，关上门的瞬间，脸上的笑容就淡了下去。</p>
+                        
+                        <p>院门外的风带着草木的味道吹进来，杨立强靠在门框上，摸了摸口袋里的佛珠——这是教主赐的，说是能保他平安。他知道，这小院里的每一份宁静都是假的，他的热情、他的虔诚，也全是假的。他们都在等，等这些渴望救赎的人，一步步走进他们布好的陷阱，走向累祈山那个最终的归宿。而他要做的，就是守好这个小院，当好这个"热心肠"的经营者，把这场戏演到底。</p>
+                    `
+                }
+            ];
+            
+            let currentIndex = 0;
+            
+            img.addEventListener('click', function(){
+                img.classList.add('anim-out');
+                
+                img.addEventListener('transitionend', function handler(){
+                    img.removeEventListener('transitionend', handler);
+                    
+                    // 切换到下一个角色
+                    currentIndex = (currentIndex + 1) % characters.length;
+                    const nextChar = characters[currentIndex];
+                    
+                    img.setAttribute('src', nextChar.src);
+                    img.setAttribute('alt', nextChar.title + '照片');
+                    titleEl.textContent = nextChar.title;
+                    story.innerHTML = nextChar.content;
+                    
+                    requestAnimationFrame(function(){ 
+                        img.classList.remove('anim-out'); 
+                    });
+                }, {once: true});
+            });
+
+            // 返回上一界面（好/坏结局）
+            if (returnBtn) {
+                const ref = document.referrer || '';
+                const cameFromInvitation = ref.indexOf('invitation_and_two_ending.html') !== -1;
+                returnBtn.addEventListener('click', function(){
+                    if (window.history.length > 1 && cameFromInvitation) {
+                        history.back();
+                    } else if (cameFromInvitation) {
+                        window.location.href = 'invitation_and_two_ending.html';
+                    } else if (window.history.length > 1) {
+                        history.back();
+                    } else {
+                        // 兜底返回到首页或邀请页
+                        if (document.referrer) {
+                            window.location.href = document.referrer;
+                        } else {
+                            window.location.href = 'invitation_and_two_ending.html';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清小院 - 戛洒镇天气预报</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            background-color: #e9f8e9; /* 保持浅绿色背景 */
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* 顶部装饰 */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: var(--light-green);
+            border-radius: 8px;
+        }
+        
+        /* 全局搜索框样式 */
+        .global-search {
+            background-color: var(--light-green);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        /* 头部区域 */
+        .menu-header {
+            background: url("新闻顶部背景图.png") top center no-repeat;
+            background-size: cover;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .menu-header h1 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+        }
+        
+        .menu-header .subtitle {
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: 1px;
+            background-color: transparent;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+        }
+
+        /* 再次还原按钮样式 */
+        .replay-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 18px;
+            background: linear-gradient(135deg, #8BC34A, #4CAF50);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            transition: transform .2s ease, box-shadow .2s ease;
+            display: block;
+            width: max-content;
+            margin: 12px auto 0;
+        }
+        .replay-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        
+        /* 内容区域 */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-green);
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: var(--accent-green);
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* 每日菜单的“日期栏” */
+        .day-title {
+            background: var(--medium-green);
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            border-bottom: 2px solid var(--light-green);
+            font-weight: 700;
+            border-radius: 6px 6px 0 0;
+        }
+
+        /* 具体菜品区 */
+        .day-content {
+            padding: 20px;
+            line-height: 2;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background-color: #fafefa;
+        }
+
+        .day-content span {
+            color: var(--dark-green);
+            font-weight: 700;
+        }
+
+        .dish-item {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        /* 底部装饰 */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🌿 添清小院 • 回归自然本真 🌿";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: var(--dark-green);
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid var(--light-green);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .menu-header h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-header .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .day-title {
+                font-size: 1rem;
+            }
+
+            .day-content {
+                font-size: 1rem;
+                line-height: 1.8;
+                padding: 15px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbar.js"></script>
+
+    
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <!-- 菜谱标题区 -->
+        <div class="menu-header">
+            <h1>戛洒镇天气预报</h1>
+            <div id="alertText" class="subtitle">页面出现异常。天气预报被打乱了，请消除天气图标以恢复页面。</div>
+            <div id="tipText" class="subtitle" style="margin-top:8px;">提示：点击图标，与上下左右交换位置，连成三枚或以上相同天气即可消除</div>
+            <button id="replayWeatherBtn" class="replay-btn" style="display:none; margin: 12px auto 0;">再次还原天气预报</button>
+        </div>
+    
+    <!-- 天气预报图片 + 6×4 消消乐覆盖层 -->
+    <div style="text-align:center; padding: 20px;">
+        <div id="weatherContainer" style="position: relative; display: inline-block; max-width: 90%;">
+            <img id="weatherImage" src="天气预报.png" alt="嘎洒镇天气预报图片" style="width: 100%; height: auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-radius: 8px; display: block;" />
+
+            <!-- 80% 白色遮盖层：非全部消失时显示 -->
+            <div id="maskOverlay" style="position: absolute; inset: 0; background: rgba(255,255,255,0.9); border-radius: 8px; pointer-events: none;"></div>
+
+            
+
+            <!-- 匹配消消乐棋盘层 -->
+            <div id="match3Board" style="position: absolute; inset: 0; display: grid; gap: 5px; padding: 8px; border-radius: 8px;">
+                <!-- JS 生成 6×4 格子 -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // 6×4 匹配消消乐：点击一个图，再点击其上下左右相邻图可交换；三连相同则消失；非全消时显示 50% 遮盖层，全消则隐藏遮盖层
+    (function(){
+        const ROWS = 4; // 行数
+        const COLS = 6; // 列数
+        const TOTAL = ROWS * COLS; // 24
+
+        const boardEl = document.getElementById('match3Board');
+        const maskEl = document.getElementById('maskOverlay');
+        const bottomImg = document.getElementById('weatherImage');
+        const IMG_PATHS = ['天气1.png','天气2.png','天气3.png','天气4.png'];
+        const tipTextEl = document.getElementById('tipText');
+        const alertTextEl = document.getElementById('alertText');
+        const replayBtnEl = document.getElementById('replayWeatherBtn');
+        const STORAGE_KEY = 'weatherMatchPlayed';
+        let isReplay = false;
+        let gameActive = false;
+
+        let grid = []; // 每格：{ type: 0..3, cleared: boolean }
+        let selected = null; // { index }
+        let tileW = 0, tileH = 0, imgW = 0, imgH = 0;
+        
+        // 预设上方储备堆：每列一个栈，提供多轮下落（3×总块数）
+        const RESERVE_FACTOR = 3;
+        let reserveCols = Array.from({ length: COLS }, () => []); // 每列: 顶部在数组前端（shift 弹出）
+
+        function idx(r,c){ return r*COLS + c; }
+        function rc(i){ return { r: Math.floor(i/COLS), c: i%COLS }; }
+        function adjacent(i,j){ const a=rc(i), b=rc(j); return Math.abs(a.r-b.r)+Math.abs(a.c-b.c)===1; }
+
+        function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+        function computeSizes(){
+            imgW = bottomImg.clientWidth; imgH = bottomImg.clientHeight;
+            tileW = Math.floor(imgW / COLS); tileH = Math.floor(imgH / ROWS);
+            boardEl.style.gridTemplateColumns = `repeat(${COLS}, ${tileW}px)`;
+            boardEl.style.gridTemplateRows = `repeat(${ROWS}, ${tileH}px)`;
+        }
+
+        function hasInitialMatches(){
+            const m = findMatches();
+            return m.size > 0;
+        }
+
+        function initGrid(){
+            // 重置储备堆，确保每次重开都是新局
+            reserveCols = Array.from({ length: COLS }, () => []);
+            grid = new Array(TOTAL).fill(0).map(()=>({ type: Math.floor(Math.random()*IMG_PATHS.length), cleared: false }));
+            // 避免初始就有三连
+            let safety=0; while(hasInitialMatches() && safety<100){
+                shuffle(grid);
+                safety++;
+            }
+            // 初始化储备堆（等宽堆积在上方，每列均分，多出的从左到右分配）
+                // 储备数量减少30%：即在3倍基础上乘以0.7 ≈ 2.1倍
+                const reserveCount = Math.floor(TOTAL * RESERVE_FACTOR * 0.7);
+            const perCol = Math.floor(reserveCount / COLS);
+            let rem = reserveCount % COLS;
+            for (let c = 0; c < COLS; c++) {
+                const count = perCol + (rem > 0 ? 1 : 0);
+                if (rem > 0) rem--;
+                const arr = reserveCols[c];
+                for (let k = 0; k < count; k++) {
+                    arr.push({ type: Math.floor(Math.random()*IMG_PATHS.length), cleared: false });
+                }
+            }
+        }
+
+        function render(){
+            computeSizes();
+            boardEl.innerHTML = '';
+            let remaining = 0;
+            for(let i=0;i<TOTAL;i++){
+                const cell = document.createElement('div');
+                cell.dataset.index = i;
+                cell.style.cssText = `width:${tileW}px;height:${tileH}px;border:2px solid #fff;border-radius:6px;`+
+                    `display:flex;align-items:center;justify-content:center;transition:all .2s ease;`+
+                    `box-shadow:0 2px 5px rgba(0,0,0,0.15);cursor:pointer;overflow:hidden;background:#f0f4f0;`;
+                if(!grid[i].cleared){
+                    remaining++;
+                    cell.style.backgroundImage = `url(${IMG_PATHS[grid[i].type]})`;
+                    cell.style.backgroundSize = `${tileW}px ${tileH}px`; // 拉伸填满小格
+                    cell.style.backgroundRepeat = 'no-repeat';
+                    cell.style.backgroundPosition = 'center';
+                    cell.addEventListener('click', ()=>onTileClick(i));
+                    cell.addEventListener('mouseenter', function(){ this.style.transform='scale(1.03)'; });
+                    cell.addEventListener('mouseleave', function(){ if(selected?.index!==i) this.style.transform='scale(1)'; });
+                } else {
+                    cell.style.opacity = '0';
+                    cell.style.pointerEvents = 'none';
+                }
+                // 选中高亮
+                if(selected?.index===i){ cell.style.border='3px solid #2d5a3d'; }
+                boardEl.appendChild(cell);
+            }
+            // 遮盖层：剩余未消除则可见；全部消除隐藏
+            maskEl.style.display = isReplay ? 'none' : (remaining>0 ? 'block' : 'none');
+        }
+
+        function onTileClick(i){
+            if(!gameActive) return;
+            if(grid[i].cleared) return;
+            if(!selected){ selected = { index:i }; render(); return; }
+            const j = selected.index;
+            if(i===j){ selected=null; render(); return; }
+            if(!adjacent(i,j)){ selected={ index:i }; render(); return; }
+            // 执行交换
+            swap(i,j);
+            const matched = findMatches();
+              if(matched.size===0){ // 不产生匹配，交换还原
+                  swap(i,j);
+                  // 一次交换后强制向下与向右堆叠，避免悬空/中空行
+                  enforceStacking();
+                  selected = null;
+                  render();
+                  // 保证一次操作后，若场上已有三连，自动清除；否则继续进度检测
+                  setTimeout(()=>{ if(!sweepAutoClear()) checkNextProgress(); }, 0);
+                  return;
+              }
+            selected = null;
+            // 清除匹配并下落，直到不能再消除
+            resolveMatchesLoop(matched);
+        }
+
+        function swap(i,j){ const tmp=grid[i]; grid[i]=grid[j]; grid[j]=tmp; }
+
+        function findMatches(){
+            const matched = new Set();
+            // 横向
+            for(let r=0;r<ROWS;r++){
+                let c=0; while(c<COLS){
+                    const i0 = idx(r,c), type = grid[i0].type, cleared = grid[i0].cleared;
+                    if(cleared){ c++; continue; }
+                    let len=1; let cc=c+1;
+                    while(cc<COLS){
+                        const ii=idx(r,cc);
+                        if(!grid[ii].cleared && grid[ii].type===type) { len++; cc++; } else break;
+                    }
+                    if(len>=3){ for(let k=0;k<len;k++) matched.add(idx(r,c+k)); }
+                    c = cc;
+                }
+            }
+            // 纵向
+            for(let c=0;c<COLS;c++){
+                let r=0; while(r<ROWS){
+                    const i0 = idx(r,c), type = grid[i0].type, cleared = grid[i0].cleared;
+                    if(cleared){ r++; continue; }
+                    let len=1; let rr=r+1;
+                    while(rr<ROWS){
+                        const ii=idx(rr,c);
+                        if(!grid[ii].cleared && grid[ii].type===type) { len++; rr++; } else break;
+                    }
+                    if(len>=3){ for(let k=0;k<len;k++) matched.add(idx(r+k,c)); }
+                    r = rr;
+                }
+            }
+            return matched;
+        }
+
+        function clearMatches(matched){ matched.forEach(i=> grid[i].cleared = true); }
+
+        function collapse(){
+            // 每列下落：保持剩余顺序，从底部填充
+            for(let c=0;c<COLS;c++){
+                const col = [];
+                for(let r=ROWS-1;r>=0;r--){ const i=idx(r,c); if(!grid[i].cleared) col.push(grid[i]); }
+                // 写回：底部到顶部填充，顶部补空（cleared）
+                let r=ROWS-1; for(const cell of col){ grid[idx(r,c)] = cell; r--; }
+                for(; r>=0; r--){ grid[idx(r,c)] = { type: 0, cleared: true }; }
+            }
+        }
+
+        function hasReserve(){
+            for (let c = 0; c < COLS; c++) { if (reserveCols[c].length > 0) return true; }
+            return false;
+        }
+
+        // 从上方储备为顶部空位补充新块，模拟从上向下掉落
+        function refillFromReserve(){
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const i = idx(r,c);
+                    if (grid[i].cleared && reserveCols[c].length > 0) {
+                        const next = reserveCols[c].shift();
+                        grid[i] = { type: next.type, cleared: false };
+                    }
+                }
+            }
+        }
+
+        // 将行内非空元素向右堆积（在 collapse 下落之后），空位置为 cleared
+        function pileRight(){
+            for(let r=0;r<ROWS;r++){
+                const row = [];
+                for(let c=0;c<COLS;c++){
+                    const i = idx(r,c);
+                    if(!grid[i].cleared) row.push(grid[i]);
+                }
+                let c = COLS-1;
+                for(const cell of row.reverse()){ grid[idx(r,c)] = cell; c--; }
+                for(; c>=0; c--){ grid[idx(r,c)] = { type: 0, cleared: true }; }
+            }
+        }
+
+        // 统一强制堆叠：先下落，再向右堆积，再次下落，确保无悬空/中空行
+        function enforceStacking(){
+            collapse();
+            pileRight();
+            collapse();
+        }
+
+        // 统计剩余未清除的块数量
+        function countRemaining(){
+            let n=0; for(let i=0;i<TOTAL;i++){ if(!grid[i].cleared) n++; } return n;
+        }
+
+        // 是否存在通过一次相邻交换可以产生匹配
+        function canMakeMatchBySwap(){
+            for(let i=0;i<TOTAL;i++){
+                if(grid[i].cleared) continue;
+                const a = rc(i);
+                const neigh = [];
+                if(a.r>0) neigh.push(idx(a.r-1,a.c));
+                if(a.r<ROWS-1) neigh.push(idx(a.r+1,a.c));
+                if(a.c>0) neigh.push(idx(a.r,a.c-1));
+                if(a.c<COLS-1) neigh.push(idx(a.r,a.c+1));
+                for(const j of neigh){
+                    if(grid[j].cleared) continue;
+                    // 临时交换并检查
+                    const t1 = grid[i], t2 = grid[j];
+                    grid[i] = t2; grid[j] = t1;
+                    const m = findMatches();
+                    // 还原
+                    grid[i] = t1; grid[j] = t2;
+                    if(m.size>0) return true;
+                }
+            }
+            return false;
+        }
+
+        // 强制制造一个可消除的三连；返回是否成功
+        function forceOneMatch(){
+            if(countRemaining() < 3) return false;
+            // 选择底行，尽量使用最右侧连续的非空块
+            for(let r=ROWS-1; r>=0; r--){
+                let run = [];
+                for(let c=COLS-1; c>=0; c--){
+                    const i = idx(r,c);
+                    if(!grid[i].cleared) run.push(i);
+                    else if(run.length>=3) break; else run = [];
+                    if(run.length>=3) break;
+                }
+                if(run.length>=3){
+                    // 将这三个设为同一种类型，制造三连
+                    const baseType = grid[run[0]].type;
+                    grid[run[1]].type = baseType;
+                    grid[run[2]].type = baseType;
+                    // 执行一次消除流程
+                    const m = findMatches();
+                    if(m.size>0){ resolveMatchesLoop(m); return true; }
+                }
+            }
+            // 若无法在底行制造，尝试在最右列制造竖三连
+            for(let c=COLS-1; c>=0; c--){
+                let run = [];
+                for(let r=ROWS-1; r>=0; r--){
+                    const i = idx(r,c);
+                    if(!grid[i].cleared) run.push(i);
+                    else if(run.length>=3) break; else run = [];
+                    if(run.length>=3) break;
+                }
+                if(run.length>=3){
+                    const baseType = grid[run[0]].type;
+                    grid[run[1]].type = baseType;
+                    grid[run[2]].type = baseType;
+                    const m = findMatches();
+                    if(m.size>0){ resolveMatchesLoop(m); return true; }
+                }
+            }
+            return false;
+        }
+
+        function clearAll(){ for(let i=0;i<TOTAL;i++){ grid[i].cleared = true; } render(); }
+
+        // 在不可继续时进行堆积、尝试制造三连；不可制造则清空
+        function checkNextProgress(){
+            if(countRemaining() === 0){
+                render();
+                enterReplayUi();
+                return;
+            }
+            // 先进行一次自动扫描，确保存在的三连会被消除
+            if (sweepAutoClear()) return;
+            if(canMakeMatchBySwap()){ render(); return; }
+            // 先下落，再右堆积，尽量集中到右下
+            collapse();
+            pileRight();
+            // 堆积后再进行一次自动扫描
+            if (sweepAutoClear()) return;
+            if(canMakeMatchBySwap()) { render(); return; }
+            if(forceOneMatch()) { return; }
+            // 无法继续，直接清空
+            clearAll();
+        }
+
+        function resolveMatchesLoop(matched){
+            clearMatches(matched);
+            render();
+            setTimeout(()=>{
+                collapse();
+                // 使用储备进行补充以继续游戏（若有）
+                refillFromReserve();
+                // 补充后统一强制堆叠，保证向下/向右规则
+                enforceStacking();
+                const next = findMatches();
+                if(next.size>0){ resolveMatchesLoop(next); } else { checkNextProgress(); }
+            }, 220);
+        }
+            // 一轮自动扫描：若场上存在三连则自动消除
+            function sweepAutoClear(){
+                const m = findMatches();
+                if (m.size > 0){
+                    resolveMatchesLoop(m);
+                    return true;
+                }
+                return false;
+            }
+
+        function start(){
+            initGrid();
+            gameActive = true;
+            render();
+        }
+
+        function enterReplayUi(){
+            isReplay = true;
+            gameActive = false;
+            updateUiForPlayed(true);
+            if(maskEl) maskEl.style.display = 'none';
+            if(alertTextEl) alertTextEl.style.display = 'none';
+            try { localStorage.setItem(STORAGE_KEY, 'true'); } catch(e) {}
+        }
+
+        let resizeListenerAdded = false;
+        const onResize = ()=>{ render(); };
+
+        function startWhenReady(){
+            if(bottomImg.complete && bottomImg.naturalWidth>0) start();
+            else bottomImg.addEventListener('load', start, { once:true });
+            if(!resizeListenerAdded){
+                window.addEventListener('resize', onResize);
+                resizeListenerAdded = true;
+            }
+        }
+
+        // UI 切换：根据是否玩过，显示提示或“再次还原”按钮
+        function updateUiForPlayed(played){
+            if(!tipTextEl || !replayBtnEl) return;
+            if(played){
+                tipTextEl.style.display = 'none';
+                replayBtnEl.style.display = 'block';
+                if(alertTextEl) alertTextEl.style.display = 'none';
+            } else {
+                tipTextEl.style.display = 'inline-block';
+                replayBtnEl.style.display = 'none';
+                if(alertTextEl) alertTextEl.style.display = 'inline-block';
+            }
+        }
+
+        // 初始化：若已玩过，不自动开始；否则自动开始并显示提示
+        function initPage(){
+            let played = false;
+            try { played = localStorage.getItem(STORAGE_KEY) === 'true'; } catch(e) {}
+            updateUiForPlayed(played);
+            if(played){
+                // 不主动开始游戏，隐藏遮罩与异常提示
+                gameActive = false;
+                if(maskEl) maskEl.style.display = 'none';
+                if(alertTextEl) alertTextEl.style.display = 'none';
+            } else {
+                // 自动开始一次
+                startWhenReady();
+            }
+            if(replayBtnEl){
+                replayBtnEl.addEventListener('click', function(){
+                    // 显示提示并开始游戏
+                    isReplay = true;
+                    updateUiForPlayed(false);
+                    if(maskEl) maskEl.style.display = 'none';
+                    if(alertTextEl) alertTextEl.style.display = 'none';
+                    startWhenReady();
+                });
+            }
+        }
+
+        if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initPage);
+        else initPage();
+    })();
+    </script>
+    
+</body>
+</html>

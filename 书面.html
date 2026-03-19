@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手电筒效果</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background-color: #000;
+            cursor: none;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #canvas {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        
+        // 手电筒参数
+        const flashlightRadius = 150; // 手电筒半径
+        const brightness = 1; // 亮区亮度 (1 = 正常)
+        const darkness = 0.1; // 暗区亮度 (0-1, 越小越暗)
+
+        let mouseX = 0;
+        let mouseY = 0;
+        let imgWidth = 0;
+        let imgHeight = 0;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        img.onload = function() {
+            // 设置canvas尺寸以适应图片
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const imgRatio = img.width / img.height;
+            const windowRatio = windowWidth / windowHeight;
+
+            if (imgRatio > windowRatio) {
+                // 图片更宽
+                imgWidth = windowWidth;
+                imgHeight = windowWidth / imgRatio;
+            } else {
+                // 图片更高
+                imgHeight = windowHeight;
+                imgWidth = windowHeight * imgRatio;
+            }
+
+            canvas.width = imgWidth;
+            canvas.height = imgHeight;
+            
+            // 计算偏移量用于鼠标坐标转换
+            offsetX = (windowWidth - imgWidth) / 2;
+            offsetY = (windowHeight - imgHeight) / 2;
+
+            // 初始鼠标位置设为中心
+            mouseX = imgWidth / 2;
+            mouseY = imgHeight / 2;
+
+            draw();
+        };
+
+        img.src = '书面.jpg';
+
+        function draw() {
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 绘制暗化的图片
+            ctx.globalAlpha = darkness;
+            ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
+
+            // 创建手电筒效果的遮罩
+            ctx.globalAlpha = 1;
+            ctx.save();
+            
+            // 创建圆形路径作为裁剪区域
+            ctx.beginPath();
+            ctx.arc(mouseX, mouseY, flashlightRadius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.clip();
+
+            // 在裁剪区域内绘制亮的图片
+            ctx.globalAlpha = brightness;
+            ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
+
+            // 添加渐变边缘效果，使过渡更自然
+            const gradient = ctx.createRadialGradient(
+                mouseX, mouseY, flashlightRadius * 0.6,
+                mouseX, mouseY, flashlightRadius
+            );
+            gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
+            gradient.addColorStop(1, `rgba(0, 0, 0, ${1 - darkness})`);
+            
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(mouseX, mouseY, flashlightRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // 鼠标移动事件
+        canvas.addEventListener('mousemove', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+            draw();
+        });
+
+        // 窗口大小改变时重新调整
+        window.addEventListener('resize', function() {
+            if (img.complete) {
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                const imgRatio = img.width / img.height;
+                const windowRatio = windowWidth / windowHeight;
+
+                if (imgRatio > windowRatio) {
+                    imgWidth = windowWidth;
+                    imgHeight = windowWidth / imgRatio;
+                } else {
+                    imgHeight = windowHeight;
+                    imgWidth = windowHeight * imgRatio;
+                }
+
+                canvas.width = imgWidth;
+                canvas.height = imgHeight;
+                
+                offsetX = (windowWidth - imgWidth) / 2;
+                offsetY = (windowHeight - imgHeight) / 2;
+
+                draw();
+            }
+        });
+
+        // 鼠标离开画布时隐藏手电筒效果
+        canvas.addEventListener('mouseleave', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = darkness;
+            ctx.drawImage(img, 0, 0, imgWidth, imgHeight);
+        });
+
+        // 鼠标进入画布时恢复效果
+        canvas.addEventListener('mouseenter', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            mouseY = e.clientY - rect.top;
+            draw();
+        });
+    </script>
+</body>
+</html>

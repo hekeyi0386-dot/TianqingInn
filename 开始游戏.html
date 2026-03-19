@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>开始游戏</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+		<style>
+			html, body { height: 100%; margin: 0; }
+			body {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background: linear-gradient(135deg, #2d5f2d, #004400);
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+				position: relative;
+			}
+			body::before {
+				content: "";
+				position: fixed;
+				inset: 0;
+				background: url('tianqing头图.png') center / cover no-repeat;
+				opacity: 0.5; /* 50% transparency */
+				pointer-events: none;
+				z-index: 0;
+			}
+			.start-wrap {
+				text-align: center;
+				padding: 24px;
+				position: relative;
+				z-index: 1;
+			}
+			.start-title {
+				font-size: 58px;
+				line-height: 1.15;
+				font-weight: 400;
+				letter-spacing: 0;
+				margin: 0 0 16px;
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+				/* Green neon horror effect */
+				background:  linear-gradient(180deg, #b8ffc2 0%, #78ff98 50%, #30d968 100%);
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: transparent;
+				-webkit-text-stroke: 1px rgba(40, 180, 90, 0.35);
+				text-shadow:
+					0 0 4px rgba(60, 220, 110, 0.55),
+					0 0 10px rgba(60, 220, 110, 0.45),
+					0 0 18px rgba(40, 180, 90, 0.35),
+					0 2px 8px rgba(0, 0, 0, 0.35);
+				animation: neonPulse 3.6s ease-in-out infinite, flicker 7s infinite;
+			}
+			@keyframes neonPulse {
+				0% { text-shadow: 0 0 3px rgba(60,220,110,.45), 0 0 8px rgba(60,220,110,.35), 0 0 14px rgba(40,180,90,.3), 0 2px 6px rgba(0,0,0,.32); transform: scale(1); }
+				50% { text-shadow: 0 0 6px rgba(80,255,140,.7), 0 0 14px rgba(80,255,140,.55), 0 0 24px rgba(46,255,138,.5), 0 2px 10px rgba(0,0,0,.38); transform: scale(1.02); }
+				100% { text-shadow: 0 0 3px rgba(60,220,110,.45), 0 0 8px rgba(60,220,110,.35), 0 0 14px rgba(40,180,90,.3), 0 2px 6px rgba(0,0,0,.32); transform: scale(1); }
+			}
+			@keyframes flicker {
+				0%, 19%, 22%, 24%, 55%, 100% { opacity: 1; }
+				20%, 23% { opacity: 0.92; }
+				70% { opacity: 0.98; }
+			}
+			@media (max-width: 640px) {
+				.start-title { font-size: 48px; }
+			}
+			.start-logo { max-width: 720px; width: 80%; height: auto; border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.25); margin: 0 auto 24px; display: block; }
+			.start-btn {
+				padding: 20px 44px;
+				border: none;
+				border-radius: 56px;
+				background: linear-gradient(135deg, #3d7f3d, #1a5c1a);
+				color: #e8f5e8;
+				font-size: 24px;
+				font-weight: 700;
+				letter-spacing: 1.2px;
+				cursor: pointer;
+				min-width: 260px;
+				box-shadow: 0 8px 20px rgba(0,0,0,0.28);
+				transition: transform .2s ease, filter .2s ease;
+			}
+			@media (max-width: 640px) {
+				.start-btn { font-size: 22px; padding: 18px 36px; min-width: 240px; }
+			}
+			.start-btn:hover { filter: brightness(1.05); }
+			.start-btn:active { transform: scale(0.98); }
+		</style>
+	</head>
+	<body>
+		<main class="start-wrap" role="main" aria-label="开始游戏界面">
+			<button id="startBtn" class="start-btn" aria-label="开始游戏">开始游戏</button>
+		</main>
+
+		<script>
+			(function() {
+				var btn = document.getElementById('startBtn');
+				if (!btn) return;
+				function go() { window.location.href = 'index.html'; }
+				btn.addEventListener('click', go);
+				// 支持按下 Enter 键开始
+				document.addEventListener('keydown', function(e){
+					if (e.key === 'Enter') go();
+				});
+			})();
+		</script>
+	</body>
+</html>

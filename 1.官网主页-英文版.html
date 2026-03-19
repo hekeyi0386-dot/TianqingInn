@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Tianqing Cottage - Official Website</title>
+	<style>
+		* { margin:0; padding:0; box-sizing:border-box; }
+		body { font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background:linear-gradient(to bottom,#1a3a1a 0%,#0d2b0d 50%,rgb(0,68,0) 100%); color:#e8f5e8; min-height:100vh; }
+		.hero { max-width:1200px; margin:120px auto 60px; padding:0 50px; display:grid; gap:60px; align-items:center; }
+		@media (min-width:960px){ .hero { grid-template-columns: 1.05fr 0.95fr; } }
+		.hero-text { animation:fadeIn .9s ease; }
+		.tag { display:inline-block; font-size:13px; letter-spacing:2px; padding:6px 18px; border:1px solid rgba(164,213,164,.35); border-radius:40px; background:rgba(255,255,255,.06); backdrop-filter:blur(6px); margin-bottom:26px; color:#c9e9c9; }
+		.hero-title { font-size:44px; font-weight:300; letter-spacing:3px; line-height:1.3; margin:0 0 22px; color:#d4f1d4; text-shadow:0 4px 18px rgba(0,0,0,.55); }
+		.hero-sub { font-size:16px; letter-spacing:1.5px; color:#b8d9b8; margin-bottom:30px; line-height:1.5; }
+		.slogan { margin:6px 0 42px; line-height:1.8; font-size:15px; letter-spacing:0.8px; color:#d4ead4; animation:fadeIn .9s ease .1s both; }
+		.slogan p { margin:8px 0; }
+		.slogan-accent { margin:24px 0 0; font-size:14px; color:#6abf69; letter-spacing:2px; text-align:center; }
+		@media (max-width:520px){ .slogan { font-size:14px; } .slogan-accent { font-size:13px; } }
+		.cta-row { display:flex; gap:22px; flex-wrap:wrap; }
+		.cta-btn { position:relative; display:inline-flex; align-items:center; gap:10px; padding:16px 42px; font-size:15px; font-weight:500; letter-spacing:2.5px; color:#fff; background:linear-gradient(135deg,#2d5f2d,#004400); border:2px solid #4a8f4a; border-radius:48px; text-decoration:none; box-shadow:0 12px 38px rgba(0,0,0,.55); transition:.35s; overflow:hidden; }
+		.cta-btn::after { content:"→"; font-size:18px; transition:.35s; }
+		.cta-btn:hover { transform:translateY(-4px); box-shadow:0 20px 54px rgba(0,0,0,.65); background:linear-gradient(135deg,#3d7f3d,#1a5c1a); }
+		.cta-btn:hover::after { transform:translateX(6px); }
+		.cta-btn:active { transform:translateY(-1px); }
+		.hero-image-wrap { position:relative; animation:fadeIn .9s ease .15s both; }
+		.hero-image { width:100%; border-radius:28px; box-shadow:0 20px 60px rgba(0,0,0,.65); border:2px solid rgba(164,213,164,.25); display:block; }
+		.overlay-fog { position:absolute; inset:0; background:radial-gradient(circle at 30% 40%, rgba(255,255,255,.18), transparent 60%); mix-blend-mode:screen; pointer-events:none; }
+		.story-section { max-width:1100px; margin:10px auto 120px; padding:0 50px 40px; }
+		.story-card { background:rgba(255,255,255,.07); backdrop-filter:blur(10px); border:1px solid rgba(164,213,164,.28); border-radius:30px; padding:46px 50px 54px; box-shadow:0 14px 50px rgba(0,0,0,.5); position:relative; overflow:hidden; }
+		.story-card::before { content:""; position:absolute; inset:0; background:linear-gradient(150deg,rgba(45,95,45,.38),rgba(0,68,0,.18)); pointer-events:none; }
+
+		/* Layout: Owner's story text and photo side by side (stacked on mobile) */
+		.story-body { display:flex; gap:28px; align-items:flex-start; }
+		.story-text { flex:1; }
+		.owner-photo { width:300px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+		.owner-photo img { width:100%; height:auto; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,0.6); border:3px solid rgba(106,191,105,0.18); }
+		@media (max-width:820px){ .story-body { flex-direction:column; } .owner-photo { width:160px; margin:0 auto; } }
+		.section-heading { font-size:28px; font-weight:500; letter-spacing:2.5px; margin:0 0 32px; color:#e4f7e4; position:relative; }
+		.section-heading span { position:relative; display:inline-block; padding-left:14px; }
+		.section-heading span::before { content:""; position:absolute; left:0; top:50%; transform:translateY(-50%); width:6px; height:70%; background:#6abf69; border-radius:4px; box-shadow:0 0 0 4px rgba(106,191,105,.2); }
+		.owner-quote { position:relative; font-size:15px; line-height:1.9; color:#d4ead4; margin:0 0 30px; }
+		.owner-quote + .owner-quote { margin-top:4px; }
+		.quote-block { margin-top:40px; padding:30px 34px; background:rgba(255,255,255,.08); border:1px solid rgba(164,213,164,.3); border-radius:24px; font-size:15px; line-height:1.8; color:#e2f5e2; box-shadow:0 10px 34px rgba(0,0,0,.5); position:relative; }
+		.quote-block::before { content:"\""; position:absolute; top:14px; left:18px; font-size:50px; line-height:1; color:#6abf69; opacity:.45; }
+		.quote-sig { margin-top:24px; font-size:14px; letter-spacing:2px; color:#b9d9b9; text-align:right; }
+		footer { text-align:center; font-size:12px; letter-spacing:2px; color:#8aa98a; padding:20px 0 90px; }
+		@media (max-width:820px){ .hero { margin-top:140px; padding:0 26px; } .hero-title { font-size:34px; } .story-section { padding:0 26px 40px; } .story-card { padding:40px 38px 50px; } }
+		@media (max-width:520px){ 
+			.hero-title { font-size:28px; letter-spacing:2px; } 
+			.hero-sub { font-size:14px; } 
+			.quote-block { font-size:14px; } 
+			.owner-quote { font-size:14px; line-height:1.8; }
+			.section-heading { font-size:24px; }
+			.cta-btn { padding:14px 36px; font-size:14px; }
+		}
+		@keyframes fadeIn { from { opacity:0; transform:translateY(30px);} to { opacity:1; transform:translateY(0);} }
+	</style>
+	<style>
+		.hero-image-wrap { padding-bottom:54px; }
+		/* 修复核心标语显示 - 确保在一行显示 */
+		.slogan-accent { 
+			position:absolute; 
+			bottom:-10px; 
+			left:50%; 
+			transform:translateX(-50%); 
+			margin:0; 
+			font-size:13px; 
+			color:#6abf69; 
+			letter-spacing:2px; 
+			text-align:center; 
+			background:rgba(0,68,0,.55); 
+			padding:6px 16px 5px; 
+			border-radius:28px; 
+			border:1px solid rgba(106,191,105,.35); 
+			backdrop-filter:blur(6px); 
+			box-shadow:0 6px 20px rgba(0,0,0,.45); 
+			white-space: nowrap; /* 关键属性：防止换行 */
+			width: auto; /* 确保宽度自适应 */
+			max-width: 90%; /* 防止在小屏幕上过长 */
+			box-sizing: content-box; /* 确保padding正常 */
+		}
+		@media (max-width:520px){ 
+			.slogan-accent { 
+				font-size:12px; 
+				bottom:-12px; 
+				padding:5px 14px 4px; 
+				letter-spacing:1.5px;
+			} 
+		}
+		@media (max-width:400px){ 
+			.slogan-accent { 
+				font-size:11px; 
+				padding:4px 12px 3px;
+			} 
+		}
+        /* Experience Section */
+        .experiences-section { margin-top: 40px; animation: fadeIn .9s ease both; }
+        .experiences-section h2 { font-size:28px; font-weight:500; letter-spacing:2.5px; margin:0 0 34px; text-align:center; color:#d4f1d4; text-shadow:0 3px 14px rgba(0,0,0,.5); }
+        .exp-grid { display:grid; gap:34px; }
+        @media (min-width:960px){ .exp-grid { grid-template-columns:repeat(3,1fr); } }
+        @media (max-width:959px){ .exp-grid { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); } }
+        .exp-card { position:relative; background:rgba(255,255,255,.06); border:1px solid rgba(164,213,164,.25); border-radius:22px; overflow:hidden; min-height:250px; box-shadow:0 12px 40px rgba(0,0,0,.5); transition:.5s; }
+        .exp-card:hover { transform:translateY(-6px); box-shadow:0 20px 60px rgba(0,0,0,.55); }
+        .exp-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.82); transition:.7s; }
+        .exp-card:hover .exp-img { filter:brightness(.65); }
+        .exp-layer { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:26px 26px 24px; }
+        .exp-front { position:relative; z-index:2; transition:opacity .45s ease; }
+        .exp-front::before { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,.08)); z-index:-1; }
+        .exp-title { font-size:18px; letter-spacing:2.5px; font-weight:500; color:#e8f5e8; margin:0; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+        .exp-detail { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:flex-end; padding:22px 24px 24px; opacity:0; transform:translateY(18px); transition:opacity .45s ease, transform .45s ease; }
+        .exp-detail::before { content:''; position:absolute; inset:0; background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,.15)); border-radius:22px; z-index:-1; }
+        .exp-text { font-size:12.5px; line-height:1.7; letter-spacing:0.8px; color:#d4ead4; text-align:justify; }
+        .exp-card:hover .exp-detail, .exp-card:focus-within .exp-detail { opacity:1; transform:translateY(0); }
+        .exp-card:hover .exp-front, .exp-card:focus-within .exp-front { opacity:0; }
+        @media (max-width:520px){ 
+			.exp-title { font-size:16px; letter-spacing:2px; } 
+			.exp-text { font-size:12px; }
+			.experiences-section h2 { font-size:24px; }
+		}
+	</style>
+</head>
+
+
+<body>
+	<script defer src="headbarEN.js"></script>
+	<script>
+	  // Homepage-specific search redirect: adwejfjgw -> account/Liu_Jiangtao_Alt.html
+	  document.addEventListener('DOMContentLoaded', function(){
+	    var form = document.querySelector('.head-search-form');
+	    var input = document.querySelector('.head-search-input');
+	    if(!form || !input) return;
+	    form.addEventListener('submit', function(ev){
+	      var q = (input.value || '').trim();
+	      if(q === 'adwejfjgw'){
+	        ev.preventDefault();
+	        window.location.href = 'account/Liu_Jiangtao_Alt.html';
+	      }
+	    });
+	    // Remove "Home" headbar link on homepage
+	    var homeLink = document.querySelector('.headbar-home');
+	    if (homeLink) homeLink.remove();
+	  });
+	  
+	</script>
+	<section class="hero" aria-label="Tianqing Cottage story introduction">
+		<div class="hero-text">
+			<span class="tag">Tianqing Story</span>
+			<h1 class="hero-title">Find Life's Order<br>in the Mist of Leqi Mountain</h1>
+			<p class="hero-sub">We offer you the warmth of home and the most authentic Gasa travel guides.</p>
+			<div class="slogan" aria-label="Cottage motto">
+				<p>Seek solace in the mountains, view flowers through the mist</p>
+				<p>Arrive to quiet your mind, forget the noise and rush</p>
+				<p>Rise the cooking smoke, let mushroom fragrance fill your home</p>
+				<p>A natural sanctuary, healing the passing years</p>
+			</div>
+		</div>
+		<div class="hero-image-wrap">
+			<img src="tianqing头图.png" alt="Tianqing Cottage environment photo" class="hero-image" loading="lazy">
+			<div class="overlay-fog" aria-hidden="true"></div>
+			<div class="slogan-accent" aria-label="Core positioning slogan">Focus & Calm · Rest & Recover</div>
+		</div>
+	</section>
+	<section class="story-section" aria-labelledby="story-heading">
+		<div class="story-card">
+			<h2 id="story-heading" class="section-heading"><span>The Owner's Story</span></h2>
+			<div class="story-body">
+				<div class="story-text">
+					<p class="owner-quote">I am Yang Liqiang, a native of Gasa. I've watched the mists of Leqi Mountain rise and fall for decades. When I traveled and worked outside, my heart was never at peace. It was this landscape that called me back. Opening this cottage, I had no other intention than to provide a place for friends who, like I once was, are tired and in need of complete relaxation. Life in the mountains is slow, and the heart becomes calm. Light the cooking fire, listen to the birdsong—it feels like time itself has stopped. I follow Buddhism, believing in inner peace. The mountain legends are just stories to hear; we make no promises of any "effects." No matter how big your troubles, nothing beats a good night's sleep and a bowl of hot soup.</p>
+					<div class="quote-sig">— Yang Liqiang</div>
+				</div>
+				<div class="owner-photo">
+					<img src="laoban照片.png" alt="Owner Yang Liqiang photo" loading="lazy">
+				</div>
+			</div>
+		</div>
+	</section>
+	<section class="experiences-section" aria-labelledby="exp-heading">
+		<h2 id="exp-heading">Immerse in Mountain Mists, Experience Slow Living</h2>
+		<div class="exp-grid">
+			<div class="exp-card" tabindex="0" aria-label="Mushroom Food Workshop">
+				<img src="活动1.png" alt="Mushroom Food Workshop experience image" class="exp-img" loading="lazy">
+				<div class="exp-layer">
+					<div class="exp-front"><h3 class="exp-title">Mushroom Cuisine</h3></div>
+					<div class="exp-detail"><p class="exp-text">Taste seasonal mountain delicacies by the window while learning about edible varieties and foraging etiquette. Listen to our mountain tales, but we don't promise any "healing effects"—all experiences prioritize safety and cultural understanding.</p></div>
+				</div>
+			</div>
+			<div class="exp-card" tabindex="0" aria-label="Mist Ridge Walk">
+				<img src="活动2.png" alt="Mist Ridge Walk experience image" class="exp-img" loading="lazy">
+				<div class="exp-layer">
+					<div class="exp-front"><h3 class="exp-title">Forest Healing</h3></div>
+					<div class="exp-detail"><p class="exp-text">Embark on daytime hikes with light gear, enjoy mountain vistas, and experience forest therapy sessions. You may also have the opportunity to make wishes, letting the mountain spirits hear your hopes.</p></div>
+				</div>
+			</div>
+			<div class="exp-card" tabindex="0" aria-label="Forest Healing">
+				<img src="活动3.png" alt="Forest Healing experience image" class="exp-img" loading="lazy">
+				<div class="exp-layer">
+					<div class="exp-front"><h3 class="exp-title">Village Life</h3></div>
+					<div class="exp-detail"><p class="exp-text">Participate in village tea gatherings and handicrafts, explore Gasa Town's small markets, and experience the revitalized charm of authentic rural living.</p></div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer>© Tianqing Cottage · The Mist and Slow Life of Leqi Mountain</footer>
+</body>
+
+</html>

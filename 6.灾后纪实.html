@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【灾后纪实】2008年戛洒镇8.25特大山体滑坡灾害</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --dark-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        body {
+            background-color: #e9f8e9;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--dark-shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* 顶部装饰 */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, #666, #999, #666);
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: #e8e8e8;
+            border-radius: 8px;
+        }
+        
+        /* 全局搜索框样式 */
+        .global-search {
+            background-color: #e8e8e8;
+            padding: 20px 30px;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: #666;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: #444;
+        }
+        
+        /* 头部区域 */
+        header {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid #666;
+            filter: grayscale(80%);
+        }
+        
+        .header-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.85));
+            color: white;
+            padding: 25px 30px;
+        }
+        
+        .header-title h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .header-title p {
+            font-size: 16px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title p::before {
+            content: "🕯️";
+            margin-right: 8px;
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: #444;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid #e8e8e8;
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: #666;
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* 文章内容 */
+        .article-content {
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        
+        .article-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .article-source {
+            font-style: italic;
+            color: var(--text-light);
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+        }
+        
+        /* 拼图区域 */
+        .puzzle-container {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border: 1px solid #ddd;
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .puzzle-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+            font-size: 18px;
+        }
+        
+        .puzzle-area {
+            /* 由 JS 动态设置为碎片总宽度，使外框紧贴拼图 */
+            width: auto;
+            height: 350px;
+            position: relative;
+            margin: 0 auto; /* 居中放置 */
+            border: 1px dashed #999;
+            background-color: #f9f9f9;
+        }
+        
+        .puzzle-piece {
+            position: absolute;
+            cursor: move;
+            user-select: none;
+            border: 1px solid #aaa;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            background-size: 600px 350px;
+            background-repeat: no-repeat;
+        }
+        
+        .puzzle-piece:hover {
+            transform: scale(1.02);
+            z-index: 10;
+        }
+        
+        .puzzle-piece.correct {
+            border: 2px solid #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+        
+        .puzzle-complete-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+        }
+        
+        .puzzle-complete-message h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .puzzle-complete-message p {
+            margin-bottom: 20px;
+            max-width: 80%;
+        }
+        
+        .reveal-button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .reveal-button:hover {
+            background-color: #45a049;
+        }
+        
+        /* 图片区域 */
+        .image-container {
+            display: none;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .image-item {
+            flex: 1 1 100%;
+            max-width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--dark-shadow);
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            filter: grayscale(100%);
+        }
+        
+        .image-caption {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 10px;
+            font-style: italic;
+            padding: 0 10px;
+        }
+        
+        /* 评论区 */
+        .comment-section {
+            display: none;
+        }
+        
+        .comment {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-user {
+            font-weight: bold;
+            color: #444;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-user::before {
+            content: "👤";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-content {
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        
+        .comment-reply {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 3px solid #666;
+        }
+        
+        .comment-reply-user {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-reply-user::before {
+            content: "💬";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-likes {
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .comment-likes::before {
+            content: "👍";
+            margin-right: 5px;
+            color: #666;
+        }
+        
+        .view-more {
+            color: #666;
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px dashed #666;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .view-more:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .hot-comment-tag {
+            background-color: #666;
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        
+        /* 底部装饰 */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, #666, #999, #666);
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🕯️ 铭记历史 • 逝者安息 🕯️";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: #444;
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        /* 页脚 */
+        .page-footer {
+            text-align: center;
+            padding: 10px;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .header-title h1 {
+                font-size: 26px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .puzzle-area {
+                height: 300px;
+            }
+            
+            .puzzle-piece {
+                background-size: 500px 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态加载搜索框 -->
+    <script src="headbar.js" defer></script>
+    
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <header>
+            <!-- 使用符合主题的图片 -->
+            <img src="新闻顶部背景图.png" alt="山体滑坡灾害现场" class="header-image">
+            <div class="header-title">
+                <h1>【灾后纪实】2008年戛洒镇8.25特大山体滑坡灾害</h1>
+                <p>添清小院论坛 | 发布于 2008-09-10</p>
+            </div>
+        </header>
+        
+        <section class="content-section">
+            <h2 class="section-title">灾害纪实</h2>
+            
+            <div class="article-content">
+                <p>（本报讯） 2008年8月25日，受持续强降雨影响，我市戛洒镇耀南村一带发生特大山体滑坡灾害，造成47人遇难，多处民房、道路被毁，灾情惨重。</p>
+                <p>灾害发生后，各级部门迅速组织救援力量赶赴现场，争分夺秒展开生命搜救与抢险救灾工作。在清理核心受灾区域时，救援人员除了发现本次灾害的遇难者遗体外，还在一处地势较高的隐蔽山坳中，发现了令人费解的一幕。</p>
+                <p>现场救援人员描述："我们发现了<strong>多具穿着统一'白色袍服'的尸体，被并排安置</strong>。这些遗体腐烂程度差异很大，显然并非在同一时间死亡，也并非本次灾害的直接受害者。他们的死亡原因非常可疑。"</p>
+                <p>目前，这些遗体的身份和死因正在由警方进一步调查中。本社将持续关注事件进展。</p>
+                
+                <div class="article-source">—— 摘自《玉溪日报》2008年9月1日头版报道</div>
+            </div>
+            
+            <h2 class="section-title">破碎的真相</h2>
+            
+            <div class="puzzle-container">
+                <div class="puzzle-title">拼合图片碎片，揭示完整真相</div>
+                <div class="puzzle-area" id="puzzleArea">
+                    <!-- 拼图碎片将通过JavaScript动态生成 -->
+                </div>
+                <div class="puzzle-complete-message" id="completeMessage">
+                    <h3>真相揭示</h3>
+                    <p>你已成功拼合所有碎片，揭示了这张关键照片的完整内容。</p>
+                    <button class="reveal-button" id="revealButton">查看完整报道</button>
+                </div>
+            </div>
+            
+            <div class="image-container" id="completeImage">
+                <div class="image-item">
+                    <!-- 替换为本地拼成后的图片 -->
+                    <img src="新闻顶部背景图.png" alt="山体滑坡灾害现场">
+                    <div class="image-caption">救援人员在灾害现场发现的不明身份遗体，警方已介入调查。（图片来源：资料图）</div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="content-section comment-section" id="commentSection">
+            <h2 class="section-title">网友评论</h2>
+            
+            <div class="comment">
+                <div class="comment-user">@铭记历史</div>
+                <div class="comment-content">愿逝者安息，每次看到当年的新闻都很难过。</div>
+                <div class="comment-likes">22</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@求真者</div>
+                <div class="comment-content">那些穿白袍的人到底是怎么回事？后来有调查结果吗？这个坑填了吗？</div>
+                <div class="comment-likes">15</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@本地人</div>
+                <div class="comment-content">没下文了。当时传言很多，有说是邪教的，但后来就不让讨论了。反正挺邪门的。</div>
+                <div class="comment-reply">
+                    <div class="comment-reply-user">@匿名用户 回复 @求真者：</div>
+                    <div class="comment-content">没下文了。当时传言很多，有说是邪教的，但后来就不让讨论了。反正挺邪门的。</div>
+                </div>
+                <div class="comment-likes">38</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@过客</div>
+                <div class="comment-content">天灾无情，但人祸更可怕。希望真相能大白于天下。</div>
+                <div class="comment-likes">10</div>
+            </div>
+            
+            <div class="view-more">查看更多评论...</div>
+        </section>
+        
+        <div class="page-footer">6/19</div>
+        
+        <div class="bottom-decoration"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 拼图游戏实现
+            const puzzleArea = document.getElementById('puzzleArea');
+            const completeMessage = document.getElementById('completeMessage');
+            const revealButton = document.getElementById('revealButton');
+            const completeImage = document.getElementById('completeImage');
+            const commentSection = document.getElementById('commentSection');
+            
+            // 拼图配置
+            const rows = 3;
+            const cols = 3;
+            const totalPieces = rows * cols;
+            const pieceWidth = 200;
+            const pieceHeight = 116.67;
+            
+            // 创建拼图碎片
+            function createPuzzlePieces() {
+                // 清空拼图区域
+                puzzleArea.innerHTML = '';
+                // 计算并设置拼图区域尺寸：让外框紧贴拼图
+                const areaWidth = cols * pieceWidth;
+                const areaHeight = rows * pieceHeight;
+                puzzleArea.style.width = areaWidth + 'px';
+                puzzleArea.style.height = areaHeight + 'px';
+                
+                // 创建碎片
+                for (let i = 0; i < totalPieces; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'puzzle-piece';
+                    piece.dataset.index = i;
+                    
+                    // 计算背景位置
+                    const row = Math.floor(i / cols);
+                    const col = i % cols;
+                    const bgX = -col * pieceWidth;
+                    const bgY = -row * pieceHeight;
+                    
+                    // 设置样式
+                    piece.style.width = `${pieceWidth}px`;
+                    piece.style.height = `${pieceHeight}px`;
+                    // 使用本地拼图图片（请保存为 images/puzzle_reveal.jpg）
+                    piece.style.backgroundImage = 'url("images/puzzle_reveal.jpg")';
+                    piece.style.backgroundPosition = `${bgX}px ${bgY}px`;
+                    piece.style.filter = 'grayscale(100%)';
+                    
+                    // 随机位置
+                    const randomX = Math.random() * (puzzleArea.offsetWidth - pieceWidth);
+                    const randomY = Math.random() * (puzzleArea.offsetHeight - pieceHeight);
+                    piece.style.left = `${randomX}px`;
+                    piece.style.top = `${randomY}px`;
+                    
+                    // 添加拖拽功能
+                    makeDraggable(piece);
+                    
+                    // 添加到拼图区域
+                    puzzleArea.appendChild(piece);
+                }
+            }
+            
+            // 使元素可拖拽
+            function makeDraggable(element) {
+                let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+                
+                element.onmousedown = dragMouseDown;
+                
+                function dragMouseDown(e) {
+                    e.preventDefault();
+                    // 获取鼠标初始位置
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    document.onmouseup = closeDragElement;
+                    document.onmousemove = elementDrag;
+                    element.style.zIndex = "100";
+                }
+                
+                function elementDrag(e) {
+                    e.preventDefault();
+                    // 计算新位置
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    // 设置元素新位置
+                    element.style.top = (element.offsetTop - pos2) + "px";
+                    element.style.left = (element.offsetLeft - pos1) + "px";
+                    
+                    // 检查是否在正确位置
+                    checkPiecePosition(element);
+                }
+                
+                function closeDragElement() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                    element.style.zIndex = "1";
+                }
+            }
+            
+            // 检查拼图碎片位置
+            function checkPiecePosition(piece) {
+                const index = parseInt(piece.dataset.index);
+                const row = Math.floor(index / cols);
+                const col = index % cols;
+                
+                const correctX = col * pieceWidth;
+                const correctY = row * pieceHeight;
+                
+                const currentX = parseInt(piece.style.left);
+                const currentY = parseInt(piece.style.top);
+                
+                // 如果位置接近正确位置，则吸附到正确位置
+                if (Math.abs(currentX - correctX) < 30 && Math.abs(currentY - correctY) < 30) {
+                    piece.style.left = `${correctX}px`;
+                    piece.style.top = `${correctY}px`;
+                    piece.classList.add('correct');
+                    piece.style.cursor = 'default';
+                    piece.onmousedown = null; // 禁用拖拽
+                    
+                    // 检查是否所有拼图都已完成
+                    checkPuzzleComplete();
+                }
+            }
+            
+            // 检查拼图是否完成
+            function checkPuzzleComplete() {
+                const pieces = document.querySelectorAll('.puzzle-piece');
+                let completed = true;
+                
+                pieces.forEach(piece => {
+                    if (!piece.classList.contains('correct')) {
+                        completed = false;
+                    }
+                });
+                
+                if (completed) {
+                    setTimeout(() => {
+                        completeMessage.style.display = 'flex';
+                    }, 500);
+                }
+            }
+            
+            // 显示完整报道
+            revealButton.addEventListener('click', function() {
+                completeMessage.style.display = 'none';
+                completeImage.style.display = 'flex';
+                commentSection.style.display = 'block';
+                
+                // 添加平滑滚动到评论区
+                commentSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // 初始化拼图
+            createPuzzlePieces();
+        });
+    </script>
+</body>
+</html>

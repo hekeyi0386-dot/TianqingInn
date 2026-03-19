@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清秘录·甲等祈愿仪式——补天祀</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8f4a;
+            --dark-green: #1a5c1a;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(to bottom, #1a3a1a 0%, #0d2b0d 50%, rgb(0, 68, 0) 100%);
+            color: #e8f5e8;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 30px 100px;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .title {
+            font-size: 2.5em;
+            font-weight: 300;
+            letter-spacing: 5px;
+            color: #d4f1d4;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a8d5a8;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .images-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .image-box {
+            flex: 1;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(164, 213, 164, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .image-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+            border-color: rgba(74, 143, 74, 0.4);
+        }
+
+        .image-label {
+            text-align: center;
+            font-size: 1.1em;
+            color: #b8e0b8;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .image-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .image-wrapper:hover .image-preview {
+            transform: scale(1.03);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay-text {
+            color: white;
+            font-size: 1.3em;
+            letter-spacing: 2px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .image-wrapper:hover .overlay {
+            opacity: 1;
+        }
+
+        /* 放大模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 2px solid #4a8f4a;
+            animation: zoomIn 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #d4f1d4;
+            font-size: 2.5em;
+            font-weight: 300;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #a8d5a8;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 40px;
+            padding-bottom: 30px;
+            animation: fadeIn 1.5s ease-out 0.6s both;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 40px;
+            font-size: 1.2em;
+            font-weight: 500;
+            color: white;
+            background: linear-gradient(135deg, #2d5f2d 0%, rgb(0, 68, 0) 100%);
+            border: 2px solid #4a8f4a;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 3px;
+            box-shadow: 0 10px 30px rgba(0, 68, 0, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 68, 0, 0.6);
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+        }
+
+        .back-button:hover::before {
+            left: 100%;
+        }
+
+        .back-button:hover .arrow {
+            transform: translateX(-5px);
+        }
+
+        .back-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(0, 68, 0, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 900px) {
+            .images-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+            }
+            
+            .image-box {
+                max-width: 600px;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px 80px;
+            }
+
+            .title {
+                font-size: 2em;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .image-box {
+                padding: 20px;
+            }
+
+            .back-button {
+                padding: 14px 35px;
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.6em;
+                letter-spacing: 2px;
+            }
+
+            .image-box {
+                padding: 15px;
+            }
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a3a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #2d5f2d 0%, rgb(0, 68, 0) 100%);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #3d7f3d 0%, #1a5c1a 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">添清秘录·甲等祈愿仪式——补天祀</h1>
+            <p class="subtitle">对比解读：古文版本与现代文译注</p>
+        </div>
+
+        <div class="images-container">
+            <!-- 左侧：古文版本 -->
+            <div class="image-box">
+                <div class="image-label">古文原版</div>
+                <div class="image-wrapper" id="archaic-image">
+                    <img src="a_level_text_archaic_ver_.png" alt="添清秘录·甲等祈愿仪式古文原版" class="image-preview">
+                    <div class="overlay">
+                        <div class="overlay-text">点击查看大图</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：现代文版本 -->
+            <div class="image-box">
+                <div class="image-label">现代文译注</div>
+                <div class="image-wrapper" id="modern-image">
+                    <img src="a_level_text_morden_ver_.png" alt="添清秘录·甲等祈愿仪式现代文译注" class="image-preview">
+                    <div class="overlay">
+                        <div class="overlay-text">点击查看大图</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图片放大模态框 -->
+        <div class="modal" id="image-modal">
+            <span class="modal-close" id="modal-close">&times;</span>
+            <img class="modal-content" id="modal-image">
+        </div>
+
+        
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 获取所有图片容器
+            const archaicImage = document.getElementById('archaic-image');
+            const modernImage = document.getElementById('modern-image');
+            const modal = document.getElementById('image-modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalClose = document.getElementById('modal-close');
+            
+            // 古文图片点击事件
+            archaicImage.addEventListener('click', function () {
+                modalImage.src = 'a_level_text_archaic_ver_.png';
+                modalImage.alt = '添清秘录·甲等祈愿仪式古文原版（放大）';
+                modal.classList.add('active');
+            });
+            
+            // 现代文图片点击事件
+            modernImage.addEventListener('click', function () {
+                modalImage.src = 'a_level_text_morden_ver_.png';
+                modalImage.alt = '添清秘录·甲等祈愿仪式现代文译注（放大）';
+                modal.classList.add('active');
+            });
+            
+            // 关闭模态框
+            modalClose.addEventListener('click', function () {
+                modal.classList.remove('active');
+            });
+            
+            // 点击模态框背景也关闭
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+            
+            // ESC键关闭模态框
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
+            
+            // 为图片容器添加键盘支持
+            [archaicImage, modernImage].forEach(imageContainer => {
+                imageContainer.setAttribute('tabindex', '0');
+                imageContainer.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+        });
+    </script>
+</script>
+    <!-- 全站通用 headbar -->
+    <script src="headbar.js"></script>
+</body>
+</html>

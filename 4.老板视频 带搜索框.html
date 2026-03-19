@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清小院 - 云南民俗文化论坛</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            background-color: #f9fbf8;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* 顶部装饰 */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: var(--light-green);
+            border-radius: 8px;
+        }
+        
+        /* 全局搜索框样式 */
+        .global-search {
+            background-color: var(--light-green);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        /* 头部区域 */
+        header {
+            position: relative;
+            height: 320px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-bottom: 3px solid var(--medium-green);
+        }
+        
+        .header-title {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(transparent, rgba(45, 90, 61, 0.85));
+            color: white;
+            padding: 25px 30px;
+        }
+        
+        .header-title h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .header-title p {
+            font-size: 16px;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-title p::before {
+            content: "🌿";
+            margin-right: 8px;
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-green);
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: var(--accent-green);
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* 视频区域 */
+        .video-container {
+            background-color: #f5f9f5;
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .video-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green));
+        }
+        
+        .video-error-icon {
+            font-size: 60px;
+            color: var(--medium-green);
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .video-error-text {
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+        
+        .video-note {
+            font-size: 15px;
+            color: var(--text-light);
+            text-align: center;
+            max-width: 80%;
+            line-height: 1.8;
+            background-color: var(--light-green);
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        
+        /* 文字稿区域 */
+        .dialogue {
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: #fafefa;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-green);
+        }
+        
+        .speaker {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark-green);
+            display: flex;
+            align-items: center;
+        }
+        
+        .speaker::before {
+            content: "•";
+            color: var(--accent-green);
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .speaker-content {
+            margin-left: 20px;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        
+        /* 评论区 */
+        .comment {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .comment:last-child {
+            border-bottom: none;
+        }
+        
+        .comment-user {
+            font-weight: bold;
+            color: var(--dark-green);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-user::before {
+            content: "👤";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-content {
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        
+        .comment-reply {
+            background-color: var(--light-green);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 12px;
+            border-left: 3px solid var(--accent-green);
+        }
+        
+        .comment-reply-user {
+            font-weight: bold;
+            color: var(--medium-green);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .comment-reply-user::before {
+            content: "💬";
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        .comment-likes {
+            color: var(--text-light);
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .comment-likes::before {
+            content: "👍";
+            margin-right: 5px;
+            color: var(--medium-green);
+        }
+        
+        .view-more {
+            color: var(--medium-green);
+            text-align: center;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border: 1px dashed var(--medium-green);
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .view-more:hover {
+            background-color: var(--light-green);
+        }
+        
+        .hot-comment-tag {
+            background-color: var(--accent-green);
+            color: white;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
+        }
+        
+        /* 底部装饰 */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🌿 添清小院 • 回归自然本真 🌿";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: var(--dark-green);
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid var(--light-green);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .header-title h1 {
+                font-size: 26px;
+            }
+            
+            .video-container {
+                height: 250px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态加载搜索框 -->
+    <script src="headbar.js" defer></script>
+    
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <header>
+            <!-- 老板站在添清门口照片 -->
+            <img src="新闻顶部背景图.png" alt="新闻顶部背景图" class="header-image">
+            <div class="header-title">
+                <h1>回归山林，找回生活本真——添清小院杨立强的故事</h1>
+                <p>云南文旅专访 | 发布于 2023-10-15</p>
+            </div>
+        </header>
+        
+        <section class="content-section">
+            <h2 class="section-title">视频采访</h2>
+            
+            <div class="video-container">
+                <div class="video-error-icon">❌</div>
+                <div class="video-error-text">抱歉，该视频已被删除</div>
+                <div class="video-error-text">加载失败，请稍后再试</div>
+                <p class="video-note">视频暂时无法播放，请阅读下方的文字稿了解完整采访内容，并参与评论区讨论</p>
+            </div>
+        </section>
+        
+        <section class="content-section">
+            <h2 class="section-title">采访文字稿</h2>
+            <div class="dialogue">
+                <div class="speaker">记者：</div>
+                <div class="speaker-content">杨老板，很多人都说添清小院有一种特别的魅力，能让人来了就不想走。您能分享一下创办小院的故事吗？</div>
+                
+                <div class="speaker">杨立强：</div>
+                <div class="speaker-content">（憨厚地笑了笑）说实话，开这小院之前，我人生挺失败的。在城里开过好几家小饭店，川菜、火锅都试过，但都倒闭了。那段时间，欠了一身债，感觉人生没希望了，最难过的时候，甚至想过自杀。</div>
+                
+                <div class="speaker">记者：</div>
+                <div class="speaker-content">那是什么让您走出了低谷呢？</div>
+                
+                <div class="speaker">杨立强：</div>
+                <div class="speaker-content">是我的一个老朋友。他当时来找我，跟我说："立强，回山里去吧，你的根在那里。"是他带着我，一起开了这家"添清小院"。（眼神充满感激）可以说，没有他，就没有我的今天。</div>
+                
+                <div class="speaker">记者：</div>
+                <div class="speaker-content">看来这位老朋友是您的贵人了。回到戛洒镇后，感觉怎么样？</div>
+                
+                <div class="speaker">杨立强：</div>
+                <div class="speaker-content">（语气变得坚定而虔诚）戛洒镇真是我的福地。这里的水土养人，累祈山的雾也像能洗掉人的烦恼。我就是在这里，重新找到了平静和生活的方向。</div>
+            </div>
+        </section>
+        
+        <section class="content-section">
+            <h2 class="section-title">评论区</h2>
+            
+            <div class="comment">
+                <div class="comment-user">@某某 <span class="hot-comment-tag">热门</span></div>
+                <div class="comment-content">老板你是戛洒镇（玉溪市新平县）村民吗？</div>
+                <div class="comment-reply">
+                    <div class="comment-reply-user">@杨立强 回复：</div>
+                    <div class="comment-content">感谢关注！我们是累祈山区域的，不分彼此，都是山的子民~</div>
+                </div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@睡个好觉</div>
+                <div class="comment-content">山好水好，睡的特别好。</div>
+                <div class="comment-likes">12</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@雾里看花</div>
+                <div class="comment-content">山好水好，睡的特别好。</div>
+                <div class="comment-likes">10</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@自然醒</div>
+                <div class="comment-content">山好水好，睡的特别好。</div>
+                <div class="comment-likes">15</div>
+            </div>
+            
+            <div class="comment">
+                <div class="comment-user">@云深不知处</div>
+                <div class="comment-content">立强老板人真的超好！特别热心！</div>
+                <div class="comment-likes">8</div>
+            </div>
+            
+            <div class="view-more">查看更多评论...</div>
+        </section>
+        
+        <div class="bottom-decoration"></div>
+    </div>
+</body>
+</html>

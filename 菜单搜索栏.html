@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添清小院 - 每日菜谱</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        
+        :root {
+            --primary-white: #ffffff;
+            --light-green: #e8f4e8;
+            --medium-green: #4a8c5c;
+            --dark-green: #2d5a3d;
+            --accent-green: #6abf69;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-light: #e0e0e0;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        body {
+            background-color: #f9fbf8;
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--primary-white);
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        /* 顶部装饰 */
+        .top-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            position: relative;
+        }
+        
+        .top-decoration::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 16px;
+            background-color: var(--light-green);
+            border-radius: 8px;
+        }
+        
+        /* 全局搜索框样式 */
+        .global-search {
+            background-color: var(--light-green);
+            padding: 20px 30px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        
+        .search-form {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: var(--shadow);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            background-color: var(--primary-white);
+        }
+        
+        .search-input::placeholder {
+            color: var(--text-light);
+        }
+        
+        .search-btn {
+            padding: 12px 25px;
+            background-color: var(--medium-green);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--dark-green);
+        }
+        
+        /* 头部区域 */
+        .menu-header {
+            background: url("新闻顶部背景图.png") top center no-repeat;
+            background-size: cover;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .menu-header h1 {
+            font-size: 2.5rem;
+            color: #ffffff;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+        }
+        
+        /* 副标题默认白色，但可用 .keep-green 保持绿色样式（白色 pill 不变） */
+        .menu-header .subtitle {
+            font-size: 1rem;
+            color: #ffffff;
+            font-weight: 500;
+            letter-spacing: 1px;
+            background-color: transparent;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+        }
+
+        .menu-header .subtitle .keep-green {
+            color: var(--dark-green);
+            background-color: rgba(255,255,255,0.7);
+            padding: 5px 15px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        
+        /* 内容区域 */
+        .content-section {
+            padding: 25px 30px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--dark-green);
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--light-green);
+            padding-bottom: 10px;
+        }
+        
+        .section-title::before {
+            content: "";
+            display: inline-block;
+            width: 6px;
+            height: 22px;
+            background-color: var(--accent-green);
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* 每日菜单的“日期栏” */
+        .day-title {
+            background: var(--medium-green);
+            padding: 12px 20px;
+            font-size: 1.2rem;
+            color: #fff;
+            border-bottom: 2px solid var(--light-green);
+            font-weight: 700;
+            border-radius: 6px 6px 0 0;
+        }
+
+        /* 具体菜品区 */
+        .day-content {
+            padding: 20px;
+            line-height: 2;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 15px;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            background-color: #fafefa;
+        }
+
+        .day-content span {
+            color: var(--dark-green);
+            font-weight: 700;
+        }
+
+        .dish-item {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        /* 底部装饰 */
+        .bottom-decoration {
+            height: 10px;
+            background: linear-gradient(90deg, var(--medium-green), var(--accent-green), var(--medium-green));
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        .bottom-decoration::before {
+            content: "🌿 添清小院 • 回归自然本真 🌿";
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary-white);
+            padding: 5px 15px;
+            color: var(--dark-green);
+            font-size: 14px;
+            border-radius: 20px;
+            border: 1px solid var(--light-green);
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 0;
+            }
+            
+            .content-section {
+                padding: 20px;
+            }
+            
+            .menu-header h1 {
+                font-size: 2rem;
+            }
+            
+            .menu-header .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .day-title {
+                font-size: 1rem;
+            }
+
+            .day-content {
+                font-size: 1rem;
+                line-height: 1.8;
+                padding: 15px;
+            }
+            
+            .global-search {
+                padding: 15px 20px;
+            }
+            
+            .search-input {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .search-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script defer src="headbar.js"></script>
+
+    
+    <div class="container">
+        <div class="top-decoration"></div>
+        
+        <!-- 菜谱标题区 -->
+        <div class="menu-header">
+            <h1>添清小院每日菜谱</h1>
+            <p class="subtitle"><span class="keep-green">地道云南风味     更多详细菜品欢迎来店挑选</span></p>
+        </div>
+        
+        <section class="content-section">
+            <h2 class="section-title">每周特色菜品</h2>
+            
+            <!-- 周一 -->
+            <div class="day-block">
+                <div class="day-title">周一</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：野生菌炒牛肝菌</p>
+                    <p class="dish-item">🥗 配菜：清炒时蔬（菠菜、豆芽）</p>
+                    <p class="dish-item">🍚 主食：杂粮饭</p>
+                    <p class="dish-item">🍵 例汤：枸杞叶瘦肉汤</p>
+                </div>
+            </div>
+
+            <!-- 周二 -->
+            <div class="day-block">
+                <div class="day-title">周二</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：宣威小炒肉</p>
+                    <p class="dish-item">🥗 配菜：凉拌黄瓜木耳</p>
+                    <p class="dish-item">🍚 主食：白米饭</p>
+                    <p class="dish-item">🍵 例汤：玉米胡萝卜排骨汤</p>
+                </div>
+            </div>
+
+            <!-- 周三 -->
+            <div class="day-block">
+                <div class="day-title">周三</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：酸木瓜炖鸡</p>
+                    <p class="dish-item">🥗 配菜：清炒西兰花</p>
+                    <p class="dish-item">🍚 主食：紫薯饭</p>
+                    <p class="dish-item">🍵 例汤：莲藕排骨汤</p>
+                </div>
+            </div>
+
+            <!-- 周四 -->
+            <div class="day-block">
+                <div class="day-title">周四</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：过桥米线（含鲜肉、鹌鹑蛋、豆皮等）</p>
+                    <p class="dish-item">🥗 配菜：凉拌豆芽粉丝</p>
+                    <p class="dish-item">🍚 主食：米线（本身含主食，可搭配小馒头）</p>
+                    <p class="dish-item">🍵 例汤：番茄鸡蛋汤（米线汤可选）</p>
+                </div>
+            </div>
+
+            <!-- 周五 -->
+            <div class="day-block">
+                <div class="day-title">周五</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：汽锅鸡</p>
+                    <p class="dish-item">🥗 配菜：清炒油麦菜</p>
+                    <p class="dish-item">🍚 主食：南瓜饭</p>
+                    <p class="dish-item">🍵 例汤：香菇乌鸡汤（汽锅鸡汤可作汤品）</p>
+                </div>
+            </div>
+
+            <!-- 周六 -->
+            <div class="day-block">
+                <div class="day-title">周六</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：腾冲大救驾（炒饵块，含火腿、鸡蛋等）</p>
+                    <p class="dish-item">🥗 配菜：凉拌土豆丝</p>
+                    <p class="dish-item">🍚 主食：大救驾（本身含主食，可搭配玉米）</p>
+                    <p class="dish-item">🍵 例汤：白菜豆腐汤</p>
+                </div>
+            </div>
+
+            <!-- 周日 -->
+            <div class="day-block">
+                <div class="day-title">周日</div>
+                <div class="day-content">
+                    <p>🌿 特色主食：<span>护身粥</span></p>
+                    <p class="dish-item">🍲 菜品：傣味香茅草烤鱼</p>
+                    <p class="dish-item">🥗 配菜：傣味凉拌舂鸡脚（可根据喜好调整）</p>
+                    <p class="dish-item">🍚 主食：菠萝饭</p>
+                    <p class="dish-item">🍵 例汤：柠檬叶炖排骨（傣味风格汤品）</p>
+                </div>
+            </div>
+        </section>
+        
+        <div class="bottom-decoration"></div>
+    </div>
+</body>
+</html>

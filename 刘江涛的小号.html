@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人主页</title>
+  <style>
+    /* 基础样式 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9; /* 保留浅绿色背景 */
+      font-family: "Microsoft YaHei", sans-serif;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* （已移除本地搜索栏样式，使用全站 headbar） */
+
+    /* 个人信息头部区域（仅保留框架，无数据） */
+    .profile-header {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid #f0f0f0;
+      flex-shrink: 0;
+      background-color: #f5f5f5; /* 头像占位背景 */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .profile-desc {
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.8;
+    }
+
+    .profile-stats {
+      display: none; /* 隐藏关注/粉丝等统计数据 */
+    }
+
+    /* 内容模块区域 - 两列布局 */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 25px;
+    }
+
+    /* 左侧主要内容区（仅保留空框架） */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .content-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      color: #999;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f0f0;
+      color: #333;
+    }
+
+    .empty-tip {
+      padding: 40px 0;
+      font-size: 1rem;
+    }
+
+    /* 右侧侧边栏（仅保留空框架） */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .sidebar-card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .followers-card { position: relative; }
+    .photo-popover { position: absolute; right: 20px; top: 10px; width: 180px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); background: #fff; padding: 8px; display: none; z-index: 10; }
+    .photo-popover.visible { display: block; }
+    .photo-popover img { width: 100%; height: auto; display: block; border-radius: 6px; }
+
+    /* 链接下划线特效 */
+    .photo-trigger {
+      color: #006600;
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      text-decoration: none;
+    }
+    .photo-trigger::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 100%;
+      height: 2px;
+      background: currentColor;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .photo-trigger:hover::after,
+    .photo-trigger:focus::after {
+      transform: scaleX(1);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-menu a {
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s;
+    }
+
+    .sidebar-menu a:hover {
+      color: #006600;
+    }
+
+    .tag-list, .follower-list {
+      display: none; /* 隐藏标签、关注列表 */
+    }
+
+    /* 响应式适配 */
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+      }
+
+      /* 本地搜索栏已移除，无需适配 */
+    }
+  </style>
+</head>
+<body>
+  <script src="headbar.js"></script>
+  <div class="container">
+
+    <!-- 个人信息头部（无统计数据） -->
+    <div class="profile-header">
+      <div class="avatar">
+        暂无头像
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-name">adwejfjgw</h1>
+        <p class="profile-desc">大战邪恶审稿人！！！</p>
+      </div>
+    </div>
+
+    <!-- 内容网格布局（空框架） -->
+    <div class="content-grid">
+      <!-- 左侧主要内容区（无帖子数据） -->
+      <div class="main-content">
+        <!-- 已发布帖子（空） -->
+        <div class="content-card">
+          <h2 class="card-title">已发布帖子</h2>
+          <div class="empty-tip">暂无已发布帖子</div>
+        </div>
+
+        <!-- 草稿箱（空） -->
+        <div class="content-card">
+          <h2 class="card-title">未发布帖子（草稿箱）</h2>
+          <div class="empty-tip" style="color:#000;text-align:left;white-space:pre-wrap">。标目潜的们他是很可，者住入而，式仪ji献种sdhf某行进在正里这：能可个一同向指都ert情细的有所，总之。数胜不gh处之异诡是也镇洒嘎。控操识fm意行进者与对名义的疗食名以过sh通再，径口一统弱削选挑，程流ji献aoeg的装包经过套一是像更动活身养gmsal的的们他，义意根本是组织教xie秘隐个某是而，地基愈疗是不是根本宿民家这，信确更越我，事的些那的我讲跟dje的时酒醉板老前rnfjs之和查调的边周镇洒嘎在我于根werf据。
+里手们dn他到栽人多有道知不，了次多很了做是像得练熟程流那。dm踪失和厥晕到语咒和菇蘑从a的我诉告言真吐后醉酒板老。式仪ji献的回头可法无djw的入进是实其，身养极终的名额疗愈djf一对一度深VIP的为义名下会们他，后最到。象对si祭gfm3的合适挑选，察观中暗在子头教邪fj是则实，愿祷山登去人带是面表，线愿祈林sf山谓所。的辞说心养清添套整一了信真们人等。yin上又松放感人让，分成菇蘑的huan致了加其是其，疗食的身养然rjke自是似看只是粥身护，测推我据</div>
+        </div>
+      </div>
+
+      <!-- 右侧侧边栏（仅保留菜单，无其他数据） -->
+      <div class="sidebar">
+        <!-- 个人菜单 -->
+        <div class="sidebar-card">
+          <h3 class="card-title">个人中心</h3>
+          <ul class="sidebar-menu">
+            <li><a href="#">我的主页</a></li>
+            <li><a href="#">编辑资料</a></li>
+            <li><a href="#">发布新帖</a></li>
+            <li><a href="#">消息通知</a></li>
+            <li><a href="#">收藏夹</a></li>
+            <li><a href="#">设置</a></li>
+          </ul>
+        </div>
+
+        <!-- 常用标签（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">常用标签</h3>
+          <div class="empty-tip">暂无常用标签</div>
+        </div>
+
+        <!-- 关注的人（空） -->
+        <div class="sidebar-card followers-card">
+          <h3 class="card-title">关注的人</h3>
+          <div class="empty-tip"><span class="photo-trigger" tabindex="0">@woshileichuan</span></div>
+          <div class="photo-popover" id="zhouzhouPhoto"><img src="粥粥id.png" alt="粥粥照片"></div>
+        </div>
+
+        <!-- 活跃度统计（空） -->
+        <div class="sidebar-card">
+          <h3 class="card-title">本月活跃度</h3>
+          <div class="empty-tip">暂无活跃度数据</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var trigger = document.querySelector('.photo-trigger');
+      var card = document.querySelector('.followers-card');
+      var pop = document.getElementById('zhouzhouPhoto');
+      if (trigger && card && pop){
+        trigger.addEventListener('click', function(){ pop.classList.add('visible'); });
+        card.addEventListener('mouseleave', function(){ pop.classList.remove('visible'); });
+      }
+    })();
+  </script>
+</body>
+</html>

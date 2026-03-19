@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>戛洒镇 - 添清小院</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #e9f8e9;
+      font-family: "Microsoft YaHei", sans-serif;
+      color: #333;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      text-align: center;
+      font-size: 2rem;
+      color: #006600;
+      margin-bottom: 50px;
+      font-weight: bold;
+    }
+
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .news-item {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .news-item:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .news-title {
+      font-size: 1.3rem;
+      color: #006600;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .news-link {
+      display: inline-block;
+      padding: 12px 30px;
+      background-color: #006600;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .news-link:hover {
+      background-color: #004d00;
+    }
+
+    @media (max-width: 500px) {
+      .page-title {
+        font-size: 1.5rem;
+        margin-bottom: 40px;
+      }
+
+      .news-item {
+        padding: 20px;
+      }
+
+      .news-title {
+        font-size: 1.1rem;
+      }
+
+      .news-link {
+        padding: 10px 24px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script defer src="headbar.js"></script>
+  
+  <div class="container">
+    <h1 class="page-title">戛洒镇</h1>
+    
+    <div class="news-list">
+      <!-- 新闻 1 -->
+      <div class="news-item">
+        <h2 class="news-title">戛洒镇新年祈福</h2>
+        <a href="5.跨年活动+互动.html" class="news-link">查看详情</a>
+      </div>
+
+      <!-- 新闻 2 -->
+      <div class="news-item">
+        <h2 class="news-title">戛洒镇8.25特大山体滑坡灾害纪实</h2>
+        <a href="6.灾后纪实.html" class="news-link">查看详情</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
